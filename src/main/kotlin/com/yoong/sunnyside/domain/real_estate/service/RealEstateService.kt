@@ -1,14 +1,21 @@
 package com.yoong.sunnyside.domain.real_estate.service
 
+import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstateDto
+import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponseDto
+import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstateDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+
 interface RealEstateService {
 
-    fun createRealEstate()
+    fun createRealEstate(createRealEstateDto: CreateRealEstateDto): DefaultResponseDto
 
-    fun getRealEstate()
+    fun getRealEstate(realEstateId: Long): RealEstateResponseDto
 
-    fun getRealEstateList()
+    fun getRealEstateList(pageable: Pageable): Page<RealEstateResponseDto>
 
-    fun updateRealEstateList()
+    fun updateRealEstate(realEstateId: Long, updateRealEstateDto: UpdateRealEstateDto): DefaultResponseDto
 
-    fun deleteRealEstateList()
+    fun deleteRealEstate(realEstateId: Long): DefaultResponseDto
 }
