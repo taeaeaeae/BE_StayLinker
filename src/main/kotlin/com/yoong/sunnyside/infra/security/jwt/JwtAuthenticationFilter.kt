@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.infra.security.jwt
 
 import com.yoong.sunnyside.infra.security.MemberPrincipal
+import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
