@@ -1,4 +1,8 @@
 package com.yoong.sunnyside.domain.real_estate.service
 
-class RealEstateServiceImpl {
+import org.springframework.stereotype.Service
+
+@Service
+class RealEstateServiceImpl: RealEstateService {
+
 }
