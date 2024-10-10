@@ -23,6 +23,7 @@ class RealEstateServiceImpl(
         if(realEstateRepository.existsByAddress(createRealEstateDto.address)) throw RuntimeException("중복 되는 매물 입니다")
 
         realEstateRepository.save(
+            //business 테이블 이 없는 관계로 우선 1L 로 설정
             RealEstate(1L, createRealEstateDto)
         )
 
