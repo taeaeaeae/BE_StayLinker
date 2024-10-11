@@ -1,7 +1,7 @@
 package com.yoong.sunnyside.infra.security.config
 
 import com.yoong.sunnyside.infra.security.CustomAccessDeniedHandler
-import com.yoong.sunnyside.infra.security.jwt.CustomAuthenticationEntryPoint
+import com.yoong.sunnyside.infra.security.CustomAuthenticationEntryPoint
 import com.yoong.sunnyside.infra.security.jwt.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

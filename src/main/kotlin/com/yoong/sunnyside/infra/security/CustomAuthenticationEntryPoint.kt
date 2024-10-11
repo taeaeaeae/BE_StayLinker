@@ -1,4 +1,4 @@
-package com.yoong.sunnyside.infra.security.jwt
+package com.yoong.sunnyside.infra.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletRequest
