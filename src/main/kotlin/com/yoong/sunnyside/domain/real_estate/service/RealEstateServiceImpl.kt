@@ -37,10 +37,14 @@ class RealEstateServiceImpl(
         return RealEstateResponseDto.from(realEstate)
     }
 
-    override fun getRealEstateList(pageable: Pageable): Page<RealEstateResponseDto> {
-        TODO("Not yet implemented")
+    override fun getRealEstatePage(pageable: Pageable): Page<RealEstateResponseDto> {
+
+        val realEstatePage = realEstateRepository.findAll(pageable)
+
+        return realEstatePage.map { RealEstateResponseDto.from(it) }
     }
 
+    @Transactional
     override fun updateRealEstate(realEstateId: Long, updateRealEstateDto: UpdateRealEstateDto): DefaultResponseDto {
 
         val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
@@ -51,6 +55,7 @@ class RealEstateServiceImpl(
 
     }
 
+    @Transactional
     override fun deleteRealEstate(realEstateId: Long): DefaultResponseDto {
 
         val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")

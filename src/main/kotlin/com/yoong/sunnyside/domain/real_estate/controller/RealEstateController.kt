@@ -31,10 +31,10 @@ class RealEstateController(
         = ResponseEntity.status(HttpStatus.OK).body(realEstateService.getRealEstate(realEstateId))
 
     @GetMapping
-    fun getRealEstateList(
+    fun getRealEstatePage(
         @PageableDefault(size = 10, page = 0) pageable: Pageable
     ): ResponseEntity<Page<RealEstateResponseDto>>
-            = ResponseEntity.status(HttpStatus.OK).body(realEstateService.getRealEstateList(pageable))
+            = ResponseEntity.status(HttpStatus.OK).body(realEstateService.getRealEstatePage(pageable))
 
     @PutMapping("/{real-estate-id}")
     fun updateRealEstate(

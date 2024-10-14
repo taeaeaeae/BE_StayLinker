@@ -13,7 +13,7 @@ interface RealEstateService {
 
     fun getRealEstate(realEstateId: Long): RealEstateResponseDto
 
-    fun getRealEstateList(pageable: Pageable): Page<RealEstateResponseDto>
+    fun getRealEstatePage(pageable: Pageable): Page<RealEstateResponseDto>
 
     fun updateRealEstate(realEstateId: Long, updateRealEstateDto: UpdateRealEstateDto): DefaultResponseDto
 
