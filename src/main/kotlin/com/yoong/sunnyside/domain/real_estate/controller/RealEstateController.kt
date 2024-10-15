@@ -2,6 +2,7 @@ package com.yoong.sunnyside.domain.real_estate.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstateDto
+import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponseDto
 import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponseDto
 import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstateDto
 import com.yoong.sunnyside.domain.real_estate.service.RealEstateService
@@ -33,7 +34,7 @@ class RealEstateController(
     @GetMapping
     fun getRealEstatePage(
         @PageableDefault(size = 10, page = 0) pageable: Pageable
-    ): ResponseEntity<Page<RealEstateResponseDto>>
+    ): ResponseEntity<Page<RealEstatePageResponseDto>>
             = ResponseEntity.status(HttpStatus.OK).body(realEstateService.getRealEstatePage(pageable))
 
     @PutMapping("/{real-estate-id}")

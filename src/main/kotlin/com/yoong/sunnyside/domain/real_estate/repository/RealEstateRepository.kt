@@ -9,4 +9,5 @@ interface RealEstateRepository {
     fun save(realEstate: RealEstate): RealEstate
     fun findByIdOrNull(realEstateId: Long): RealEstate?
     fun findAll(pageable: Pageable): Page<RealEstate>
+    fun saveAndFlush(realEstate: RealEstate): RealEstate
 }

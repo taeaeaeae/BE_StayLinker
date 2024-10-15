@@ -45,4 +45,8 @@ class RealEstateRepositoryImpl(
     override fun findByIdOrNull(realEstateId: Long): RealEstate? {
         return realEstateJpaRepository.findByIdOrNull(realEstateId)
     }
+
+    override fun saveAndFlush(realEstate: RealEstate): RealEstate {
+        return realEstateJpaRepository.saveAndFlush(realEstate)
+    }
 }
