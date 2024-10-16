@@ -49,4 +49,8 @@ class RealEstateRepositoryImpl(
     override fun saveAndFlush(realEstate: RealEstate): RealEstate {
         return realEstateJpaRepository.saveAndFlush(realEstate)
     }
+
+    override fun existsById(realEstateId: Long): Boolean {
+        return realEstateJpaRepository.existsById(realEstateId)
+    }
 }

@@ -27,6 +27,10 @@ class RealEstateOption(
         realEstate = realEstate
     )
 
+    fun delete() {
+        deletedAt = LocalDateTime.now()
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
@@ -39,5 +43,5 @@ class RealEstateOption(
     val updatedAt: LocalDateTime = LocalDateTime.now()
 
     @Column(name="deleted_at", nullable = true)
-    val deletedAt: LocalDateTime? = null
+    var deletedAt: LocalDateTime? = null
 }

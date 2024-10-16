@@ -7,4 +7,6 @@ interface RealEstateOptionRepository {
     fun saveAll(options: List<RealEstateOption>)
 
     fun findAllByRealEstateId(realEstateId: Long): List<RealEstateOption>
+
+    fun findAllByIdAndRealEstateId(realEstateId: Long, ids: List<Long>): List<RealEstateOption>
 }
