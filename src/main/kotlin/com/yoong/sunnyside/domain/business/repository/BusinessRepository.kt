@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BusinessRepository : JpaRepository<Business, Long> {
     fun existsBusinessCode(businessCode: String): Boolean
+    fun findByBusinessCode(businessCode: String): Business?
     fun existsEmail(email: String): Boolean
     fun findByEmail(email: String): Business?
 }

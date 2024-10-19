@@ -1,10 +1,13 @@
 package com.yoong.sunnyside.domain.business.service
 
 import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
-import com.yoong.sunnyside.domain.business.model.Business
+import com.yoong.sunnyside.domain.business.dto.LoginResponse
+import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.model.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
+import com.yoong.sunnyside.infra.security.MemberRole
+import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional
 class BusinessService(
     private val businessRepository: BusinessRepository,
     private val tempBusinessRepository: TempBusinessRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val jwtHelper: JwtHelper
 ) {
 
     @Transactional
@@ -33,6 +37,18 @@ class BusinessService(
                 address = request.address,
                 businessCertificate = request.businessCertificate,
                 nickName = request.nickName,
+            )
+        )
+    }
+
+    fun login(request: LoginRequest): LoginResponse {
+        val business = businessRepository.findByBusinessCode(request.businessCode)
+            ?: throw IllegalArgumentException("business code ${request.businessCode} not exists")
+
+        return LoginResponse(
+            accessToken = jwtHelper.generateToken(
+                userId = business.id!!,
+                role = MemberRole.BUSINESS
             )
         )
     }
