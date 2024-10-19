@@ -1,4 +1,4 @@
-package com.yoong.sunnyside.domain.consumer.model
+package com.yoong.sunnyside.domain.business.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.GeneratedValue
