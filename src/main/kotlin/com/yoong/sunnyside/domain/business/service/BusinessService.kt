@@ -22,9 +22,9 @@ class BusinessService(
 
     @Transactional
     fun signUp(request: BusinessSignupRequest) {
-        if (businessRepository.existsBusinessCode(request.businessCode))
+        if (businessRepository.existsByBusinessCode(request.businessCode))
             throw IllegalArgumentException("business code ${request.businessCode} already exists")
-        else if (tempBusinessRepository.existsBusinessCode(request.businessCode))
+        else if (tempBusinessRepository.existsByBusinessCode(request.businessCode))
             throw IllegalArgumentException("business code ${request.businessCode} under review")
 
         tempBusinessRepository.save(
@@ -44,6 +44,8 @@ class BusinessService(
     fun login(request: LoginRequest): LoginResponse {
         val business = businessRepository.findByBusinessCode(request.businessCode)
             ?: throw IllegalArgumentException("business code ${request.businessCode} not exists")
+        if (!passwordEncoder.matches(request.password, business.password))
+            throw IllegalArgumentException("password does not match.")
 
         return LoginResponse(
             accessToken = jwtHelper.generateToken(

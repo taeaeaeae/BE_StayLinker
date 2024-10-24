@@ -1,9 +1,12 @@
 package com.yoong.sunnyside.domain.consumer.model
 
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
 @Entity
+@SQLRestriction("deleted_at=null")
+@Table
 class Consumer(
     @Column(name = "email", nullable = false)
     val email: String,
@@ -21,22 +24,22 @@ class Consumer(
     val country: String,
 
     @Column(name = "phone_number", nullable = false)
-    var phoneNumber : String,
+    var phoneNumber: String,
 
     @Column(name = "foreign_number")
-    var foreignNumber : String? = null,
+    var foreignNumber: String? = null,
 
     @Column(name = "foreign_create_at")
-    var foreignCreateAt : String? = null,
+    var foreignCreateAt: String? = null,
 
     @Column(name = "created_at", nullable = false)
-    val createdAt : LocalDateTime,
+    val createdAt: LocalDateTime,
 
     @Column(name = "updated_at")
-    var updatedAt : LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null,
 
     @Column(name = "deleted_at")
-    var deletedAt : LocalDateTime? = null
+    var deletedAt: LocalDateTime? = null
 
 ) {
     @Id

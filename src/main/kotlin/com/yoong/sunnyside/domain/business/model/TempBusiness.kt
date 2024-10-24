@@ -1,11 +1,10 @@
 package com.yoong.sunnyside.domain.business.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
+@Entity
+@Table
 class TempBusiness(
     @Column(name = "business_code", nullable = false)
     val businessCode: String,
@@ -31,19 +30,17 @@ class TempBusiness(
     @Column(name = "nickName", nullable = false)
     var nickName: String,
 
-    @Column(name = "created_at", nullable = false)
-    val createdAt: LocalDateTime,
 
-    @Column(name = "updated_at")
-    var updatedAt: LocalDateTime? = null,
-
-    @Column(name = "deleted_at")
-    var deletedAt: LocalDateTime? = null
-
-) {
+    ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    @Column(name = "created_at", nullable = false)
+    val createdAt: LocalDateTime = LocalDateTime.now()
+
+    @Column(name = "deleted_at")
+    var deletedAt: LocalDateTime? = null
 
     companion object {
         fun from(
@@ -64,8 +61,7 @@ class TempBusiness(
                 password = password,
                 address = address,
                 businessCertificate = businessCertificate,
-                nickName = nickName,
-                createdAt = LocalDateTime.now()
+                nickName = nickName
             )
         }
     }
