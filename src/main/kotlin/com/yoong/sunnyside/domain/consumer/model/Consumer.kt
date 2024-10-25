@@ -1,11 +1,9 @@
 package com.yoong.sunnyside.domain.consumer.model
 
 import jakarta.persistence.*
-import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
 @Entity
-@SQLRestriction("deleted_at=null")
 @Table
 class Consumer(
     @Column(name = "email", nullable = false)

@@ -55,5 +55,20 @@ class BusinessService(
         )
     }
 
+    fun checkCode(code: String): Boolean {
+        return (businessRepository.existsByBusinessCode(code)
+                || tempBusinessRepository.existsByBusinessCode(code))
+    }
+
+    fun checkNickName(nickName: String): Boolean {
+        return (businessRepository.existsByNickName(nickName)
+                || tempBusinessRepository.existsByNickName(nickName))
+    }
+
+    fun checkEmail(email: String): Boolean {
+        return (businessRepository.existsByEmail(email)
+                || tempBusinessRepository.existsByEmail(email))
+    }
+
 
 }

@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface TempBusinessRepository : JpaRepository<TempBusiness, Long> {
     fun existsByBusinessCode(businessCode: String): Boolean
-    fun findByBusinessCode(businessCode: String): TempBusiness?
+    fun existsByNickName(nickName: String): Boolean
+    fun existsByEmail(email: String): Boolean
 }
