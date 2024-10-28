@@ -60,4 +60,8 @@ class Business(
             )
         }
     }
+
+    fun passwdChange(passwd: String) {
+        password = passwd
+    }
 }
