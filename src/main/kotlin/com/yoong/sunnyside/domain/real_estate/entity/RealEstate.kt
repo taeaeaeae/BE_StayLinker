@@ -11,7 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@SQLRestriction("deleted_at=null")
+@SQLRestriction("deleted_at is null")
 @Table(name = "real_estate")
 class RealEstate(
 
@@ -23,6 +23,9 @@ class RealEstate(
 
     @Column(name="address", nullable = false)
     var address: String,
+
+    @Column(name="price", nullable = false)
+    var price: Long,
 
     @Column(name="completion_date", nullable = false)
     var completionDate: LocalDateTime,
@@ -108,6 +111,7 @@ class RealEstate(
 
     constructor(businessId: Long, createRealEstateDto: CreateRealEstateDto) : this(
         businessId = businessId,
+        price = createRealEstateDto.price,
         name = createRealEstateDto.name,
         address = createRealEstateDto.address,
         completionDate = createRealEstateDto.completionDate,
