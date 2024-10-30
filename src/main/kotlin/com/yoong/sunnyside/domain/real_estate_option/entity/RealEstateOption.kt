@@ -18,7 +18,7 @@ class RealEstateOption(
     var description: String?,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="real_estate")
+    @JoinColumn(name="real_estate_id")
     var realEstate: RealEstate,
 ){
     constructor(createRealEstateOptionDto: CreateRealEstateOptionDto, realEstate: RealEstate): this(

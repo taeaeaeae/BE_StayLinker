@@ -9,6 +9,7 @@ data class CreateRealEstateDto (
     var name: String,
     var address: String,
     var completionDate: LocalDateTime,
+    var price: Long,
     var houseType: HouseType,
     var goodsType: GoodsType,
     var security: Int,
