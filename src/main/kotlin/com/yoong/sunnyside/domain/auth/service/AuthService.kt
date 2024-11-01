@@ -1,7 +1,9 @@
 package com.yoong.sunnyside.domain.auth.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.domain.auth.dto.AccessTokenRequestDto
 import com.yoong.sunnyside.domain.auth.dto.EmailRequestDto
+import com.yoong.sunnyside.domain.auth.dto.MemberRoleResponseDto
 import com.yoong.sunnyside.domain.auth.dto.NicknameRequestDto
 import org.springframework.stereotype.Service
 
@@ -17,6 +19,10 @@ class AuthService {
     }
 
     fun verifyEmail(emailRequestDto: EmailRequestDto, code: String): EmailRequestDto {
+        TODO()
+    }
+
+    fun getRole(accessTokenRequestDto: AccessTokenRequestDto): MemberRoleResponseDto {
         TODO()
     }
 

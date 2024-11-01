@@ -1,7 +1,9 @@
 package com.yoong.sunnyside.domain.auth.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.domain.auth.dto.AccessTokenRequestDto
 import com.yoong.sunnyside.domain.auth.dto.EmailRequestDto
+import com.yoong.sunnyside.domain.auth.dto.MemberRoleResponseDto
 import com.yoong.sunnyside.domain.auth.dto.NicknameRequestDto
 import com.yoong.sunnyside.domain.auth.service.AuthService
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -34,5 +36,11 @@ class AuthController(
         @RequestParam code: String
     ): ResponseEntity<EmailRequestDto>
             = ResponseEntity.status(HttpStatus.OK).body(authService.verifyEmail(emailRequestDto, code))
+
+    @GetMapping("/role")
+    fun getRole(
+        @RequestBody accessTokenRequestDto: AccessTokenRequestDto
+    ): ResponseEntity<MemberRoleResponseDto>
+        = ResponseEntity.status(HttpStatus.OK).body(authService.getRole(accessTokenRequestDto))
 
 }
