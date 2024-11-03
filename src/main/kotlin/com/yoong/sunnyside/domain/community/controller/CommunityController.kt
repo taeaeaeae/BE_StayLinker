@@ -21,7 +21,7 @@ class CommunityController(
     @Operation(summary = "커뮤니티 글 생성 API")
     @PostMapping
     fun createCommunity(
-        @RequestBody communityRequestDto: CommunityRequestDto
+        @RequestBody communityRequestDto: CommunityRequestDto,
     ): ResponseEntity<DefaultResponseDto>
         = ResponseEntity.status(HttpStatus.OK).body(communityService.createCommunity(communityRequestDto))
 
@@ -41,7 +41,7 @@ class CommunityController(
     @PutMapping("/{communityId}")
     fun updateCommunity(
         @PathVariable("communityId") communityId: Long,
-        @RequestBody communityRequestDto: CommunityRequestDto
+        @RequestBody communityRequestDto: CommunityRequestDto,
     ): ResponseEntity<DefaultResponseDto>
             = ResponseEntity.status(HttpStatus.OK).body(communityService.updateCommunity(communityRequestDto, communityId))
 
