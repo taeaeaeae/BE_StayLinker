@@ -1,11 +1,11 @@
-package com.yoong.sunnyside.domain.community.favorite.service
+package com.yoong.sunnyside.domain.trade.favorite.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.community.dto.AllCommunityResponseDto
+import com.yoong.sunnyside.domain.trade.dto.AllTradeResponseDto
 import org.springframework.stereotype.Service
 
 @Service
-class CommunityFavoriteService {
+class TradeFavoriteService {
 
     fun createFavorite(communityId: Long): DefaultResponseDto {
         TODO()
@@ -16,7 +16,7 @@ class CommunityFavoriteService {
         TODO()
     }
 
-    fun getFavorite(): List<AllCommunityResponseDto> {
+    fun getFavorite(): List<AllTradeResponseDto> {
         TODO()
     }
 }
