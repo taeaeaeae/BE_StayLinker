@@ -2,17 +2,18 @@ package com.yoong.sunnyside.domain.community.favorite.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.community.dto.AllCommunityResponseDto
+import com.yoong.sunnyside.domain.favorite.service.FavoriteService
 import org.springframework.stereotype.Service
 
 @Service
-class CommunityFavoriteService {
+class CommunityFavoriteService: FavoriteService {
 
-    fun createFavorite(communityId: Long): DefaultResponseDto {
+    override fun createFavorite(id: Long): DefaultResponseDto {
         TODO()
     }
 
 
-    fun deleteFavorite(replyId: Long): DefaultResponseDto {
+    override fun deleteFavorite(id: Long): DefaultResponseDto {
         TODO()
     }
 

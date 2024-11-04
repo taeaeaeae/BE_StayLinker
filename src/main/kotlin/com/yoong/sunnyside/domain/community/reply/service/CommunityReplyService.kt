@@ -1,21 +1,24 @@
 package com.yoong.sunnyside.domain.community.reply.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.community.reply.dto.CommunityReplyRequestDto
+import com.yoong.sunnyside.domain.reply.dto.ReplyRequestDto
+import com.yoong.sunnyside.domain.reply.service.ReplyService
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
 @Service
-class CommunityReplyService {
+@Qualifier("communityReplyService")
+class CommunityReplyService: ReplyService {
 
-        fun createReply(communityReplyRequestDto: CommunityReplyRequestDto, communityId: Long): DefaultResponseDto {
-            TODO()
-        }
+    override fun createReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 
-        fun updateReply(communityReplyRequestDto: CommunityReplyRequestDto, replyId: Long): DefaultResponseDto {
-            TODO()
-        }
+    override fun updateReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 
-        fun deleteReply(replyId: Long): DefaultResponseDto {
-            TODO()
-        }
+    override fun deleteReply(id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 }

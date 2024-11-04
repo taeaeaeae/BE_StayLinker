@@ -1,21 +1,25 @@
 package com.yoong.sunnyside.domain.trade.reply.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.trade.reply.dto.TradeReplyRequestDto
+import com.yoong.sunnyside.domain.reply.dto.ReplyRequestDto
+import com.yoong.sunnyside.domain.reply.service.ReplyService
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class TradeReplyService {
+@Qualifier("tradeReplyService")
+class TradeReplyService : ReplyService {
 
-        fun createReply(tradeReplyRequestDto: TradeReplyRequestDto, communityId: Long): DefaultResponseDto {
-            TODO()
-        }
+    override fun createReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 
-        fun updateReply(tradeReplyRequestDto: TradeReplyRequestDto, replyId: Long): DefaultResponseDto {
-            TODO()
-        }
+    override fun updateReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 
-        fun deleteReply(replyId: Long): DefaultResponseDto {
-            TODO()
-        }
+    override fun deleteReply(id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 }

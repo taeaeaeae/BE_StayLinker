@@ -7,6 +7,7 @@ import com.yoong.sunnyside.domain.trade.dto.TradeResponseDto
 import com.yoong.sunnyside.domain.trade.service.TradeService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
