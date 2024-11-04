@@ -13,7 +13,7 @@ class CommunityService {
         TODO()
     }
 
-    fun getAllCommunity(): AllCommunityResponseDto {
+    fun getAllCommunity(): List<AllCommunityResponseDto> {
         TODO()
     }
 

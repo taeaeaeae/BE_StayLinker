@@ -27,7 +27,7 @@ class CommunityController(
 
     @Operation(summary = "커뮤니티 글 전체 조회 API")
     @GetMapping
-    fun getAllCommunity(): ResponseEntity<AllCommunityResponseDto>
+    fun getAllCommunity(): ResponseEntity<List<AllCommunityResponseDto>>
             = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity())
 
     @Operation(summary = "커뮤니티 특정 글 조회 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
