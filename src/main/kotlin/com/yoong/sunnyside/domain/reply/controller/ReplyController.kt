@@ -11,4 +11,5 @@ interface ReplyController {
     fun createReply(@PathVariable id: Long, @RequestBody replyRequestDto: ReplyRequestDto): ResponseEntity<DefaultResponseDto>
     fun updateReply(@PathVariable id: Long, @RequestBody replyRequestDto: ReplyRequestDto): ResponseEntity<DefaultResponseDto>
     fun deleteReply(@PathVariable id: Long): ResponseEntity<DefaultResponseDto>
+    fun reportReply(@PathVariable id: Long): ResponseEntity<DefaultResponseDto>
 }

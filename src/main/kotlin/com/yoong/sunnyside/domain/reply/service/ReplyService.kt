@@ -11,4 +11,5 @@ interface ReplyService {
     fun createReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto
     fun updateReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto
     fun deleteReply(id: Long): DefaultResponseDto
+    fun reportReply(id: Long): DefaultResponseDto
 }

@@ -29,4 +29,8 @@ class TradeService {
     fun deleteTrade(tradeId: Long): DefaultResponseDto {
         TODO()
     }
+
+    fun reportTrade(tradeId: Long): DefaultResponseDto {
+        TODO()
+    }
 }

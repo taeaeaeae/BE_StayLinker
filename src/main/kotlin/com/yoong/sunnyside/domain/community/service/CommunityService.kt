@@ -28,4 +28,8 @@ class CommunityService {
     fun deleteCommunity(communityId: Long): DefaultResponseDto {
         TODO()
     }
+
+    fun reportCommunity(communityId: Long): DefaultResponseDto {
+        TODO()
+    }
 }

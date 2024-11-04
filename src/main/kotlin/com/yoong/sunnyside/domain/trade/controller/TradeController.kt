@@ -52,4 +52,11 @@ class TradeController(
         @PathVariable("tradeId") tradeId: Long,
     ): ResponseEntity<DefaultResponseDto>
             = ResponseEntity.status(HttpStatus.OK).body(tradeService.deleteTrade(tradeId))
+
+
+    @PatchMapping("/report/{tradeId}")
+    fun reportTrade(
+        @PathVariable tradeId: Long
+    ): ResponseEntity<DefaultResponseDto>
+    = ResponseEntity.status(HttpStatus.OK).body(tradeService.reportTrade(tradeId))
 }

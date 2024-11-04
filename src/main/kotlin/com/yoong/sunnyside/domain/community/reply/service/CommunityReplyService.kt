@@ -21,4 +21,8 @@ class CommunityReplyService: ReplyService {
     override fun deleteReply(id: Long): DefaultResponseDto {
         TODO("Not yet implemented")
     }
+
+    override fun reportReply(id: Long): DefaultResponseDto {
+        TODO("Not yet implemented")
+    }
 }

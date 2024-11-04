@@ -51,4 +51,11 @@ class CommunityController(
         @PathVariable("communityId") communityId: Long,
     ): ResponseEntity<DefaultResponseDto>
             = ResponseEntity.status(HttpStatus.OK).body(communityService.deleteCommunity(communityId))
+
+    @Operation(summary = "커뮤니티 글 신고 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
+    @PatchMapping("/report/{communityId}")
+    fun reportCommunity(
+        @PathVariable("communityId") communityId: Long,
+    ): ResponseEntity<DefaultResponseDto>
+        = ResponseEntity.status(HttpStatus.OK).body(communityService.reportCommunity(communityId))
 }

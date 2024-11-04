@@ -42,4 +42,11 @@ class TradeReplyController(
         @PathVariable id: Long,
     ): ResponseEntity<DefaultResponseDto>
             = ResponseEntity.status(HttpStatus.OK).body(tradeReplyService.deleteReply(id))
+
+    @Operation
+    @PatchMapping("/report/{id}")
+    override fun reportReply(
+        @PathVariable id: Long
+    ): ResponseEntity<DefaultResponseDto>
+        = ResponseEntity.status(HttpStatus.OK).body(tradeReplyService.reportReply(id))
 }

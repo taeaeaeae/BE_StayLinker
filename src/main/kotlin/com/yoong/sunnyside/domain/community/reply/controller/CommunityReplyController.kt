@@ -25,21 +25,26 @@ class CommunityReplyController(
     override fun createReply(
         @PathVariable id: Long,
         @RequestBody replyRequestDto: ReplyRequestDto
-    ): ResponseEntity<DefaultResponseDto>
-            = ResponseEntity.status(HttpStatus.OK).body(communityReplyService.createReply(replyRequestDto, id))
+    ): ResponseEntity<DefaultResponseDto> =
+        ResponseEntity.status(HttpStatus.OK).body(communityReplyService.createReply(replyRequestDto, id))
 
     @Operation(summary = "커뮤니티 댓글 수정 API", description = "커뮤니티 댓글 id 값을 넣어 주시면 됩니다")
     @PutMapping("/{id}")
     override fun updateReply(
         @PathVariable id: Long,
         @RequestBody replyRequestDto: ReplyRequestDto
-    ): ResponseEntity<DefaultResponseDto>
-            = ResponseEntity.status(HttpStatus.OK).body(communityReplyService.updateReply(replyRequestDto, id))
+    ): ResponseEntity<DefaultResponseDto> =
+        ResponseEntity.status(HttpStatus.OK).body(communityReplyService.updateReply(replyRequestDto, id))
 
     @Operation(summary = "커뮤니티 댓글 삭제 API", description = "커뮤니티 댓글 id 값을 넣어 주시면 됩니다")
     @DeleteMapping("/{id}")
     override fun deleteReply(
         @PathVariable id: Long,
-    ): ResponseEntity<DefaultResponseDto>
-            = ResponseEntity.status(HttpStatus.OK).body(communityReplyService.deleteReply(id))
+    ): ResponseEntity<DefaultResponseDto> = ResponseEntity.status(HttpStatus.OK).body(communityReplyService.deleteReply(id))
+
+    @Operation(summary = "커뮤니티 댓글 신고 API", description = "커뮤니티 댓글 id 값을 넣어 주시면 됩니다")
+    @PatchMapping("/report/{id}")
+    override fun reportReply(
+        @PathVariable id: Long
+    ): ResponseEntity<DefaultResponseDto> = ResponseEntity.status(HttpStatus.OK).body(communityReplyService.reportReply(id))
 }
