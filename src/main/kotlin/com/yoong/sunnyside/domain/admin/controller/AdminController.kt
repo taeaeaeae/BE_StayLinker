@@ -1,5 +1,6 @@
 package com.yoong.sunnyside.domain.admin.controller
 
+import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.admin.service.AdminService
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
@@ -19,7 +20,7 @@ class AdminController(
     private val adminService: AdminService
 ) {
     @PostMapping("/business/allow/{businessId}")
-    fun allow(@PathVariable("businessId") id: Long): ResponseEntity<Any> {
+    fun allow(@PathVariable("businessId") id: Long): ResponseEntity<DefaultResponseDto> {
         return ResponseEntity.status(HttpStatus.CREATED).body(adminService.allowBusiness(id))
     }
 
