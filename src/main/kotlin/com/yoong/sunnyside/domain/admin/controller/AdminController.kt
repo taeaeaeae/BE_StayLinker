@@ -18,19 +18,24 @@ import org.springframework.web.bind.annotation.*
 class AdminController(
     private val adminService: AdminService
 ) {
-    @PatchMapping("/regist/{businessId}")
-    fun allow(@PathVariable("businessId") id: Long): ResponseEntity<DefaultResponseDto> {
+    @PatchMapping("/regist/{auditId}")
+    fun allow(@PathVariable("auditId") id: Long): ResponseEntity<DefaultResponseDto> {
         return ResponseEntity.status(HttpStatus.CREATED).body(adminService.allowBusiness(id))
     }
 
-    @PatchMapping("/companion/{businessId}")
-    fun companion(@PathVariable("businessId") id: Long, request: CompanionRequest): ResponseEntity<DefaultResponseDto> {
+    @PatchMapping("/companion/{auditId}")
+    fun companion(@PathVariable("auditId") id: Long, request: CompanionRequest): ResponseEntity<DefaultResponseDto> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
-    @DeleteMapping("/remove/{businessId}")
-    fun deleteAudit(@PathVariable("businessId") id: Long): ResponseEntity<DefaultResponseDto> {
+    @DeleteMapping("/remove/{auditId}")
+    fun deleteAudit(@PathVariable("auditId") id: Long): ResponseEntity<DefaultResponseDto> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TODO())
+    }
+
+    @GetMapping("/audit/{auditId}")
+    fun audit(@PathVariable("auditId") aid: Long): ResponseEntity<TempBusinessResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
     @GetMapping("/audit")
@@ -41,5 +46,10 @@ class AdminController(
     @GetMapping("/business")
     fun getAllBusiness(): ResponseEntity<List<BusinessResponse>> {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getAllBusiness())
+    }
+
+    @GetMapping("/business/{businessId}")
+    fun getBusiness(): ResponseEntity<BusinessResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 }
