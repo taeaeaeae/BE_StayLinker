@@ -6,6 +6,7 @@ import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponseDto
 import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponseDto
 import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstateDto
 import com.yoong.sunnyside.domain.real_estate.service.RealEstateService
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+@Tag(name = "부동산", description = "부동산 관련 CRUD")
 @RestController
 @RequestMapping("/real-estate")
 class RealEstateController(
