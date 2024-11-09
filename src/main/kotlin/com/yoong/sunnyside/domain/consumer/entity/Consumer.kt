@@ -1,4 +1,4 @@
-package com.yoong.sunnyside.domain.consumer.model
+package com.yoong.sunnyside.domain.consumer.entity
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
