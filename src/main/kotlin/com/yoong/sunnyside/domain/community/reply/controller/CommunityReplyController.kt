@@ -4,10 +4,8 @@ import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.community.reply.service.CommunityReplyService
 import com.yoong.sunnyside.domain.reply.controller.ReplyController
 import com.yoong.sunnyside.domain.reply.dto.ReplyRequestDto
-import com.yoong.sunnyside.domain.reply.service.ReplyService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/community/reply")
 class CommunityReplyController(
-    @Qualifier("communityReplyService") private val communityReplyService: ReplyService
+    private val communityReplyService: CommunityReplyService,
 ):ReplyController {
 
     @Operation(summary = "커뮤니티 댓글 생성 API", description = "커뮤니티 id 값을 넣어 주시면 됩니다")
