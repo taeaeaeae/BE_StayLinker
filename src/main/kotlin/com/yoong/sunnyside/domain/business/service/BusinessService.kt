@@ -5,7 +5,7 @@ import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
 import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
-import com.yoong.sunnyside.domain.business.model.TempBusiness
+import com.yoong.sunnyside.domain.business.entity.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
 import com.yoong.sunnyside.infra.security.MemberRole

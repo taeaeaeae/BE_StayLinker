@@ -4,8 +4,6 @@ import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.admin.service.AdminService
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
-import com.yoong.sunnyside.domain.business.model.Business
-import com.yoong.sunnyside.domain.business.model.TempBusiness
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
