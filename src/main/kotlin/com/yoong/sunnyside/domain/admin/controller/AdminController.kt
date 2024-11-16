@@ -1,10 +1,9 @@
 package com.yoong.sunnyside.domain.admin.controller
 
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.admin.service.AdminService
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
-import com.yoong.sunnyside.domain.business.model.Business
-import com.yoong.sunnyside.domain.business.model.TempBusiness
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,7 +20,7 @@ class AdminController(
     private val adminService: AdminService
 ) {
     @PostMapping("/business/allow/{businessId}")
-    fun allow(@PathVariable("businessId") id: Long): ResponseEntity<Any> {
+    fun allow(@PathVariable("businessId") id: Long): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.CREATED).body(adminService.allowBusiness(id))
     }
 

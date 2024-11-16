@@ -1,4 +1,4 @@
-package com.yoong.sunnyside.domain.business.model
+package com.yoong.sunnyside.domain.business.entity
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -29,6 +29,9 @@ class TempBusiness(
 
     @Column(name = "nickName", nullable = false)
     var nickName: String,
+
+    @Column(name = "is_approved")
+    var isApproved: Boolean? = null,
 
 
     ) {
