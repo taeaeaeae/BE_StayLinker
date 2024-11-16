@@ -1,5 +1,5 @@
 package com.yoong.sunnyside.common.dto
 
-data class DefaultResponseDto(
+data class DefaultResponse(
     val msg: String,
 )

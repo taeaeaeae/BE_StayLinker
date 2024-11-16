@@ -1,15 +1,12 @@
 package com.yoong.sunnyside.domain.reply.service
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.reply.dto.ReplyRequestDto
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
+import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.domain.reply.dto.ReplyRequest
 
 interface ReplyService {
 
-    fun createReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto
-    fun updateReply(replyRequestDto: ReplyRequestDto, id: Long): DefaultResponseDto
-    fun deleteReply(id: Long): DefaultResponseDto
-    fun reportReply(id: Long): DefaultResponseDto
+    fun createReply(replyRequest: ReplyRequest, id: Long): DefaultResponse
+    fun updateReply(replyRequest: ReplyRequest, id: Long): DefaultResponse
+    fun deleteReply(id: Long): DefaultResponse
+    fun reportReply(id: Long): DefaultResponse
 }

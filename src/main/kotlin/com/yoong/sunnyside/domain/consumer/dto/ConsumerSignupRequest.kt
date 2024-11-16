@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.consumer.dto
 
-data class ConsumerSignupRequestDto(
+data class ConsumerSignupRequest(
     val email: String,
     val password: String,
     val nickname: String,

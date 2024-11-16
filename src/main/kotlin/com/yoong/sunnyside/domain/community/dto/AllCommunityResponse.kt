@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.community.dto
 
-data class AllCommunityResponseDto(
+data class AllCommunityResponse(
     val userId: Long,
     val communityId: Long,
     val title: String,

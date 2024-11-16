@@ -1,33 +1,33 @@
 package com.yoong.sunnyside.domain.consumer.service
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerLoginRequestDto
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequestDto
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequestDto
-import com.yoong.sunnyside.domain.consumer.dto.PasswordRequestDto
+import com.yoong.sunnyside.domain.consumer.dto.ConsumerLoginRequest
+import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
+import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
+import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
 import org.springframework.stereotype.Service
 
 @Service
 class ConsumerService{
 
-    fun signUp(consumerSignupRequestDto : ConsumerSignupRequestDto): DefaultResponseDto{
+    fun signUp(consumerSignupRequest : ConsumerSignupRequest): DefaultResponse{
         TODO()
     }
 
-    fun login(consumerLoginRequestDto: ConsumerLoginRequestDto): LoginResponse {
+    fun login(consumerLoginRequest: ConsumerLoginRequest): LoginResponse {
         TODO()
     }
 
-    fun changePassword(passwordRequestDto: PasswordRequestDto): DefaultResponseDto {
+    fun changePassword(passwordRequest: PasswordRequest): DefaultResponse {
         TODO()
     }
 
-    fun updateConsumer(consumerUpdateRequestDto: ConsumerUpdateRequestDto): DefaultResponseDto {
+    fun updateConsumer(consumerUpdateRequest: ConsumerUpdateRequest): DefaultResponse {
         TODO()
     }
 
-    fun deleteConsumer(): DefaultResponseDto {
+    fun deleteConsumer(): DefaultResponse {
         TODO()
     }
 }

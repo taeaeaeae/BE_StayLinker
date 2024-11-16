@@ -1,5 +1,5 @@
 package com.yoong.sunnyside.domain.reply.dto
 
-data class ReplyRequestDto(
+data class ReplyRequest(
     val description: String
 )

@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.consumer.dto
 
-data class PasswordRequestDto(
+data class PasswordRequest(
     val password: String,
     val retryPassword: String
 )

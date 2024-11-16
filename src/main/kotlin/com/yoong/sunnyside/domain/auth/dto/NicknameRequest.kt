@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.auth.dto
 
-data class NicknameRequestDto(
+data class NicknameRequest(
 
     val nickname: String
 )

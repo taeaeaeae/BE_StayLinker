@@ -1,8 +1,8 @@
 package com.yoong.sunnyside.domain.real_estate_option.controller
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.real_estate_option.dto.CreateRealEstateListDto
-import com.yoong.sunnyside.domain.real_estate_option.dto.DeleteRealEstateOptionDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.domain.real_estate_option.dto.CreateRealEstateList
+import com.yoong.sunnyside.domain.real_estate_option.dto.DeleteRealEstateOption
 import com.yoong.sunnyside.domain.real_estate_option.service.RealEstateOptionService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -19,12 +19,12 @@ class RealEstateOptionController(
     @PostMapping("/{realEstateId}")
     fun updateRealEstateOption(
         @PathVariable("realEstateId") realEstateId: Long,
-        @RequestBody createRealEstateListDto: CreateRealEstateListDto
-    ): ResponseEntity<DefaultResponseDto> = ResponseEntity.status(HttpStatus.OK).body(realEstateOptionService.updateRealEstateOption(realEstateId, createRealEstateListDto))
+        @RequestBody createRealEstateList: CreateRealEstateList
+    ): ResponseEntity<DefaultResponse> = ResponseEntity.status(HttpStatus.OK).body(realEstateOptionService.updateRealEstateOption(realEstateId, createRealEstateList))
 
     @DeleteMapping("/{realEstateId}")
     fun deleteRealEstateOption(
         @PathVariable("realEstateId") realEstateId: Long,
-        @RequestBody deleteRealEstateOptionDto: DeleteRealEstateOptionDto
-    ): ResponseEntity<DefaultResponseDto> = ResponseEntity.status(HttpStatus.OK).body(realEstateOptionService.deleteRealEstateOption(realEstateId, deleteRealEstateOptionDto))
+        @RequestBody deleteRealEstateOption: DeleteRealEstateOption
+    ): ResponseEntity<DefaultResponse> = ResponseEntity.status(HttpStatus.OK).body(realEstateOptionService.deleteRealEstateOption(realEstateId, deleteRealEstateOption))
 }

@@ -1,10 +1,10 @@
 package com.yoong.sunnyside.domain.favorite.service
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 
 interface FavoriteService {
 
-    fun createFavorite(id: Long): DefaultResponseDto
+    fun createFavorite(id: Long): DefaultResponse
 
-    fun deleteFavorite(id: Long): DefaultResponseDto
+    fun deleteFavorite(id: Long): DefaultResponse
 }

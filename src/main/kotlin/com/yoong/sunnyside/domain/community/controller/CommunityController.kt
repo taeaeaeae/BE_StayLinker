@@ -1,9 +1,9 @@
 package com.yoong.sunnyside.domain.community.controller
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.community.dto.AllCommunityResponseDto
-import com.yoong.sunnyside.domain.community.dto.CommunityRequestDto
-import com.yoong.sunnyside.domain.community.dto.CommunityResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
+import com.yoong.sunnyside.domain.community.dto.CommunityRequest
+import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.service.CommunityService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -21,41 +21,41 @@ class CommunityController(
     @Operation(summary = "커뮤니티 글 생성 API")
     @PostMapping
     fun createCommunity(
-        @RequestBody communityRequestDto: CommunityRequestDto,
-    ): ResponseEntity<DefaultResponseDto>
-        = ResponseEntity.status(HttpStatus.OK).body(communityService.createCommunity(communityRequestDto))
+        @RequestBody communityRequest: CommunityRequest,
+    ): ResponseEntity<DefaultResponse>
+        = ResponseEntity.status(HttpStatus.OK).body(communityService.createCommunity(communityRequest))
 
     @Operation(summary = "커뮤니티 글 전체 조회 API")
     @GetMapping
-    fun getAllCommunity(): ResponseEntity<List<AllCommunityResponseDto>>
+    fun getAllCommunity(): ResponseEntity<List<AllCommunityResponse>>
             = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity())
 
     @Operation(summary = "커뮤니티 특정 글 조회 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @GetMapping("/{communityId}")
     fun getCommunity(
         @PathVariable("communityId") communityId: Long,
-    ): ResponseEntity<CommunityResponseDto>
+    ): ResponseEntity<CommunityResponse>
             = ResponseEntity.status(HttpStatus.OK).body(communityService.getCommunity(communityId))
 
     @Operation(summary = "커뮤니티 글 수정 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @PutMapping("/{communityId}")
     fun updateCommunity(
         @PathVariable("communityId") communityId: Long,
-        @RequestBody communityRequestDto: CommunityRequestDto,
-    ): ResponseEntity<DefaultResponseDto>
-            = ResponseEntity.status(HttpStatus.OK).body(communityService.updateCommunity(communityRequestDto, communityId))
+        @RequestBody communityRequest: CommunityRequest,
+    ): ResponseEntity<DefaultResponse>
+            = ResponseEntity.status(HttpStatus.OK).body(communityService.updateCommunity(communityRequest, communityId))
 
     @Operation(summary = "커뮤니티 글 삭제 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @DeleteMapping("/{communityId}")
     fun deleteCommunity(
         @PathVariable("communityId") communityId: Long,
-    ): ResponseEntity<DefaultResponseDto>
+    ): ResponseEntity<DefaultResponse>
             = ResponseEntity.status(HttpStatus.OK).body(communityService.deleteCommunity(communityId))
 
     @Operation(summary = "커뮤니티 글 신고 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @PatchMapping("/report/{communityId}")
     fun reportCommunity(
         @PathVariable("communityId") communityId: Long,
-    ): ResponseEntity<DefaultResponseDto>
+    ): ResponseEntity<DefaultResponse>
         = ResponseEntity.status(HttpStatus.OK).body(communityService.reportCommunity(communityId))
 }
