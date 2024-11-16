@@ -21,6 +21,6 @@ class GlobalExceptionHandler {
             = ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(404, e.message!!))
 
     @ExceptionHandler(CustomIllegalArgumentException::class)
-    fun customIllegalArgumentException(e: AccessDeniedException): ResponseEntity<ErrorResponse>
+    fun customIllegalArgumentException(e: CustomIllegalArgumentException): ResponseEntity<ErrorResponse>
             = ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse(409, e.message!!))
 }

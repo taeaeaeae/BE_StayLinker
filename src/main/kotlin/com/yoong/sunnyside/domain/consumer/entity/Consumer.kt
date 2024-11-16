@@ -1,13 +1,16 @@
 package com.yoong.sunnyside.domain.consumer.entity
 
+import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
 import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.annotations.UpdateTimestamp
 import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 
 @Entity
+@SQLRestriction("deleted_at is null")
 @Table
 class Consumer(
     @Column(name = "email", nullable = false)
@@ -34,10 +37,24 @@ class Consumer(
     @Column(name = "foreign_create_at")
     var foreignCreateAt: String,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     var role: MemberRole
 
 ) {
+    fun changePassword(password: String) {
+        this.password = password
+    }
+
+    fun update(consumerUpdateRequest: ConsumerUpdateRequest) {
+        this.address = consumerUpdateRequest.address
+        this.nickname = consumerUpdateRequest.nickname
+    }
+
+    fun delete() {
+        this.deletedAt = LocalDateTime.now()
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

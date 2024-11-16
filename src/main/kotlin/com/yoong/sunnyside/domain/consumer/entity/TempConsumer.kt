@@ -1,5 +1,6 @@
 package com.yoong.sunnyside.domain.consumer.entity
 
+import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
 import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
@@ -10,7 +11,7 @@ import java.time.LocalDateTime
 @Table(name = "temp_consumer")
 class TempConsumer(
     @Column(name = "email", nullable = false)
-    val email: String,
+    var email: String,
 
     @Column(name = "password", nullable = false)
     var password: String,
@@ -33,6 +34,7 @@ class TempConsumer(
     @Column(name = "foreign_create_at")
     var foreignCreateAt: String? = null,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     var role: MemberRole,
 
@@ -41,14 +43,16 @@ class TempConsumer(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @Column(name = "created_at", nullable = false)
-    @CreationTimestamp
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    constructor(consumerSignupRequest: ConsumerSignupRequest, encodedPassword: String) : this(
+        email =consumerSignupRequest.email,
+        password = encodedPassword,
+        address = consumerSignupRequest.address,
+        nickname = consumerSignupRequest.nickname,
+        country = consumerSignupRequest.country,
+        phoneNumber = consumerSignupRequest.phoneNumber,
+        role = MemberRole.CONSUMER,
+        foreignNumber = null,
+        foreignCreateAt = null
+    )
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    var updatedAt: LocalDateTime = LocalDateTime.now()
-
-    @Column(name = "deleted_at")
-    var deletedAt: LocalDateTime? = null
 }
