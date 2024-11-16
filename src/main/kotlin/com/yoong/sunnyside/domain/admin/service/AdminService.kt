@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.admin.service
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
 import com.yoong.sunnyside.domain.business.entity.Business
@@ -17,7 +17,7 @@ class AdminService(
 ) {
 
     @Transactional
-    fun allowBusiness(id: Long): DefaultResponseDto {
+    fun allowBusiness(id: Long): DefaultResponse {
         val tempBusiness = tempBusinessRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("id $id under review")
 
@@ -27,7 +27,7 @@ class AdminService(
         businessRepository.save(
             Business.from(tempBusiness)
         )
-        return DefaultResponseDto("allowed")
+        return DefaultResponse("allowed")
     }
 
     fun getAllApplication(): List<TempBusinessResponse> {

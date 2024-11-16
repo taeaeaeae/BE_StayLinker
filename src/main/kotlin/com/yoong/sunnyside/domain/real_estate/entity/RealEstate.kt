@@ -1,7 +1,7 @@
 package com.yoong.sunnyside.domain.real_estate.entity
 
-import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstateDto
-import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstateDto
+import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstate
+import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstate
 import com.yoong.sunnyside.domain.real_estate.enum_class.GoodsType
 import com.yoong.sunnyside.domain.real_estate.enum_class.HouseType
 import jakarta.persistence.*
@@ -87,46 +87,46 @@ class RealEstate(
     @Column(name="deleted_at", nullable = true)
     var deletedAt: LocalDateTime? = null
 
-    fun update(updateRealEstateDto: UpdateRealEstateDto) {
-        this.name = updateRealEstateDto.name
-        this.address = updateRealEstateDto.address
-        this.completionDate = updateRealEstateDto.completionDate
-        this.houseType = updateRealEstateDto.houseType
-        this.goodsType = updateRealEstateDto.goodsType
-        this.security = updateRealEstateDto.security
-        this.rent = updateRealEstateDto.rent
-        this.houseSize = updateRealEstateDto.size
-        this.maintenanceCost = updateRealEstateDto.maintenanceCost
-        this.roomCount = updateRealEstateDto.roomCount
-        this.floor = updateRealEstateDto.floor
-        this.contractPeriod = updateRealEstateDto.contractPeriod
-        this.description = updateRealEstateDto.description
-        this.bathroomCount = updateRealEstateDto.bathroomCount
-        this.isParked = updateRealEstateDto.isParked
+    fun update(updateRealEstate: UpdateRealEstate) {
+        this.name = updateRealEstate.name
+        this.address = updateRealEstate.address
+        this.completionDate = updateRealEstate.completionDate
+        this.houseType = updateRealEstate.houseType
+        this.goodsType = updateRealEstate.goodsType
+        this.security = updateRealEstate.security
+        this.rent = updateRealEstate.rent
+        this.houseSize = updateRealEstate.size
+        this.maintenanceCost = updateRealEstate.maintenanceCost
+        this.roomCount = updateRealEstate.roomCount
+        this.floor = updateRealEstate.floor
+        this.contractPeriod = updateRealEstate.contractPeriod
+        this.description = updateRealEstate.description
+        this.bathroomCount = updateRealEstate.bathroomCount
+        this.isParked = updateRealEstate.isParked
     }
 
     fun delete() {
         this.deletedAt = LocalDateTime.now()
     }
 
-    constructor(businessId: Long, createRealEstateDto: CreateRealEstateDto) : this(
+    constructor(businessId: Long, createRealEstate: CreateRealEstate) : this(
         businessId = businessId,
-        price = createRealEstateDto.price,
-        name = createRealEstateDto.name,
-        address = createRealEstateDto.address,
-        completionDate = createRealEstateDto.completionDate,
-        houseType = createRealEstateDto.houseType,
-        goodsType = createRealEstateDto.goodsType,
-        security = createRealEstateDto.security,
-        rent = createRealEstateDto.rent,
-        houseSize = createRealEstateDto.size,
-        maintenanceCost = createRealEstateDto.maintenanceCost,
-        roomCount = createRealEstateDto.roomCount,
-        floor = createRealEstateDto.floor,
-        contractPeriod = createRealEstateDto.contractPeriod,
-        description = createRealEstateDto.description,
-        bathroomCount = createRealEstateDto.bathroomCount,
-        isParked = createRealEstateDto.isParked,
+        price = createRealEstate.price,
+        name = createRealEstate.name,
+        address = createRealEstate.address,
+        completionDate = createRealEstate.completionDate,
+        houseType = createRealEstate.houseType,
+        goodsType = createRealEstate.goodsType,
+        security = createRealEstate.security,
+        rent = createRealEstate.rent,
+        houseSize = createRealEstate.size,
+        maintenanceCost = createRealEstate.maintenanceCost,
+        roomCount = createRealEstate.roomCount,
+        floor = createRealEstate.floor,
+        contractPeriod = createRealEstate.contractPeriod,
+        description = createRealEstate.description,
+        bathroomCount = createRealEstate.bathroomCount,
+        isParked = createRealEstate.isParked,
         rate = 0.0,
     )
 

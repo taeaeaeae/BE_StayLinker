@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.business.controller
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.service.BusinessService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
@@ -18,7 +18,7 @@ class BusinessController(private val businessService: BusinessService) {
 
     @Operation(summary = "사업자 신청")
     @PostMapping("/apply")
-    fun signup(@RequestBody request: BusinessSignupRequest): ResponseEntity<DefaultResponseDto> {
+    fun signup(@RequestBody request: BusinessSignupRequest): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.CREATED).body(businessService.signUp(request))
     }
 
@@ -42,7 +42,7 @@ class BusinessController(private val businessService: BusinessService) {
     fun memberModify(
         @RequestBody request: BusinessModifyRequest,
         @AuthenticationPrincipal auth: MemberPrincipal
-    ): ResponseEntity<DefaultResponseDto> {
+    ): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
@@ -58,19 +58,19 @@ class BusinessController(private val businessService: BusinessService) {
     @DeleteMapping("/member")
     fun memberDelete(
         @AuthenticationPrincipal auth: MemberPrincipal
-    ): ResponseEntity<DefaultResponseDto> {
+    ): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TODO())
     }
 
     @Operation(summary = "사업자 등록 번호 검사")
     @PostMapping("/businessNumber")
-    fun numberCheck(request: BusinessNumberRequest): ResponseEntity<DefaultResponseDto> {
+    fun numberCheck(request: BusinessNumberRequest): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
     @Operation(summary = "사업자 등록증 이미지 등록(업로드 한 링크 저장)")
     @PostMapping("/businessImage")
-    fun businessImage(request: BusinessImageRequest): ResponseEntity<DefaultResponseDto> {
+    fun businessImage(request: BusinessImageRequest): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 

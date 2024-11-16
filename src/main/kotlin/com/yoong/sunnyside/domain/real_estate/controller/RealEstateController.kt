@@ -1,10 +1,10 @@
 package com.yoong.sunnyside.domain.real_estate.controller
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstateDto
-import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponseDto
-import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponseDto
-import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstateDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstate
+import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponse
+import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponse
+import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstate
 import com.yoong.sunnyside.domain.real_estate.service.RealEstateService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
@@ -23,34 +23,34 @@ class RealEstateController(
 
     @PostMapping
     fun createRealEstate(
-        @RequestBody createRealEstateDto: CreateRealEstateDto
-    ): ResponseEntity<DefaultResponseDto>
-        = ResponseEntity.status(HttpStatus.CREATED).body(realEstateService.createRealEstate(createRealEstateDto))
+        @RequestBody createRealEstate: CreateRealEstate
+    ): ResponseEntity<DefaultResponse>
+        = ResponseEntity.status(HttpStatus.CREATED).body(realEstateService.createRealEstate(createRealEstate))
 
     @GetMapping("/{real-estate-id}")
     fun getRealEstate(
         @PathVariable("real-estate-id") realEstateId: Long
-    ): ResponseEntity<RealEstateResponseDto>
+    ): ResponseEntity<RealEstateResponse>
         = ResponseEntity.status(HttpStatus.OK).body(realEstateService.getRealEstate(realEstateId))
 
     @GetMapping
     fun getRealEstatePage(
         @PageableDefault(size = 10, page = 0) pageable: Pageable
-    ): ResponseEntity<Page<RealEstatePageResponseDto>>
+    ): ResponseEntity<Page<RealEstatePageResponse>>
             = ResponseEntity.status(HttpStatus.OK).body(realEstateService.getRealEstatePage(pageable))
 
     @PutMapping("/{real-estate-id}")
     fun updateRealEstate(
         @PathVariable("real-estate-id") realEstateId: Long,
-        @RequestBody updateRealEstateDto: UpdateRealEstateDto
-    ): ResponseEntity<DefaultResponseDto>
+        @RequestBody updateRealEstate: UpdateRealEstate
+    ): ResponseEntity<DefaultResponse>
             = ResponseEntity.status(HttpStatus.OK)
-                .body(realEstateService.updateRealEstate(realEstateId, updateRealEstateDto))
+                .body(realEstateService.updateRealEstate(realEstateId, updateRealEstate))
 
     @DeleteMapping("/{real-estate-id}")
     fun deleteRealEstate(
         @PathVariable("real-estate-id") realEstateId: Long
-    ): ResponseEntity<DefaultResponseDto>
+    ): ResponseEntity<DefaultResponse>
             = ResponseEntity.status(HttpStatus.OK)
                 .body(realEstateService.deleteRealEstate(realEstateId))
 
