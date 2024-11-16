@@ -4,12 +4,11 @@ import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 
 @Entity
-@Table
-class Consumer(
+@Table(name = "temp_consumer")
+class TempConsumer(
     @Column(name = "email", nullable = false)
     val email: String,
 
@@ -29,15 +28,15 @@ class Consumer(
     var phoneNumber: String,
 
     @Column(name = "foreign_number")
-    var foreignNumber: String,
+    var foreignNumber: String? = null,
 
     @Column(name = "foreign_create_at")
-    var foreignCreateAt: String,
+    var foreignCreateAt: String? = null,
 
     @Column(name = "role", nullable = false)
-    var role: MemberRole
+    var role: MemberRole,
 
-) {
+    ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
