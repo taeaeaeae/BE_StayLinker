@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.business.dto
 
-import com.yoong.sunnyside.domain.business.model.Business
+import com.yoong.sunnyside.domain.business.entity.Business
 import java.time.LocalDateTime
 
 data class BusinessResponse(

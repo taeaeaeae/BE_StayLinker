@@ -1,10 +1,11 @@
 package com.yoong.sunnyside.domain.business.service
 
+import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
 import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
-import com.yoong.sunnyside.domain.business.model.TempBusiness
+import com.yoong.sunnyside.domain.business.entity.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
 import com.yoong.sunnyside.infra.security.MemberRole
@@ -23,7 +24,7 @@ class BusinessService(
 ) {
 
     @Transactional
-    fun signUp(request: BusinessSignupRequest) {
+    fun signUp(request: BusinessSignupRequest): DefaultResponseDto {
         if (businessRepository.existsByBusinessCode(request.businessCode))
             throw IllegalArgumentException("business code ${request.businessCode} already exists")
         else if (tempBusinessRepository.existsByBusinessCode(request.businessCode))
@@ -41,6 +42,7 @@ class BusinessService(
                 nickName = request.nickName,
             )
         )
+        return DefaultResponseDto("created")
     }
 
     fun login(request: LoginRequest): LoginResponse {

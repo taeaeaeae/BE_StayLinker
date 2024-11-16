@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.business.repository
 
-import com.yoong.sunnyside.domain.business.model.Business
+import com.yoong.sunnyside.domain.business.entity.Business
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface BusinessRepository : JpaRepository<Business, Long> {
