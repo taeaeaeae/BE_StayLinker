@@ -22,4 +22,8 @@ class ConsumerRepositoryImpl(
     override fun tempUserSave(tempConsumer: TempConsumer) {
         tempConsumerJpaRepository.save(tempConsumer)
     }
+
+    override fun save(consumer: Consumer):Consumer {
+        return consumerJpaRepository.save(consumer)
+    }
 }
