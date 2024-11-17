@@ -1,4 +1,4 @@
-package com.yoong.sunnyside.domain.community.reply.service
+package com.yoong.sunnyside.domain.community.comment.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.reply.dto.ReplyRequest
@@ -6,7 +6,7 @@ import com.yoong.sunnyside.domain.reply.service.ReplyService
 import org.springframework.stereotype.Service
 
 @Service
-class CommunityReplyService: ReplyService {
+class CommunityCommentService: ReplyService {
 
     override fun createReply(replyRequest: ReplyRequest, id: Long): DefaultResponse {
         TODO("Not yet implemented")
