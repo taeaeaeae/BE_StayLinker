@@ -32,9 +32,9 @@ class CommunityService(
 
     fun getCommunity(communityId: Long): CommunityResponse {
 
-        val community = communityRepository.findByIdOrNull(communityId) ?: throw ModelNotFoundException("Community is not found")
+        val communityTuple =  communityRepository.findById(communityId)
 
-        return CommunityResponse.from(community, listOf())
+        return communityTuple
     }
 
     @Transactional

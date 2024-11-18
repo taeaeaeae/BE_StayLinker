@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.infra.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yoong.sunnyside.common.dto.ErrorResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -21,7 +22,7 @@ class CustomAccessDeniedHandler : AccessDeniedHandler {
         response.characterEncoding = "UTF-8"
 
         val objectMapper = ObjectMapper()
-        val jsonString = objectMapper.writeValueAsString(accessDeniedException.message)
+        val jsonString = objectMapper.writeValueAsString(ErrorResponse(403, "Access denied"))
         response.writer.write(jsonString)
     }
 }

@@ -9,12 +9,12 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "community_comment")
-class CommunityComment(
+@Table(name = "community_reply")
+class CommunityReply(
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id", nullable = false)
-    val community: Community,
+    @JoinColumn(name = "comment_id", nullable = false)
+    val comment: CommunityComment,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_id", nullable = false)
@@ -39,13 +39,14 @@ class CommunityComment(
     @Column(name = "deleted_at",nullable = true)
     var deletedAt: LocalDateTime? = null
 
-    constructor(replyRequest: ReplyRequest, community: Community, consumer: Consumer) : this(
-        community = community,
+    constructor(replyRequest: ReplyRequest, communityComment: CommunityComment, consumer: Consumer) : this(
+        comment = communityComment,
         consumer = consumer,
         description = replyRequest.description
     )
 
     fun update(replyRequest: ReplyRequest) {
+
         this.description = replyRequest.description
     }
 

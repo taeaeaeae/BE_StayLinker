@@ -61,8 +61,9 @@ class CommunityController(
     @DeleteMapping("/{communityId}")
     fun deleteCommunity(
         @PathVariable("communityId") communityId: Long,
+        @AuthenticationPrincipal principal: MemberPrincipal
     ): ResponseEntity<DefaultResponse>
-            = ResponseEntity.status(HttpStatus.OK).body(communityService.deleteCommunity(communityId))
+            = ResponseEntity.status(HttpStatus.OK).body(communityService.deleteCommunity(communityId, principal.id))
 
     @Operation(summary = "커뮤니티 글 신고 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @PatchMapping("/report/{communityId}")

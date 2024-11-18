@@ -3,7 +3,9 @@ package com.yoong.sunnyside.domain.community.comment.service
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.domain.community.comment.entity.CommunityComment
+import com.yoong.sunnyside.domain.community.comment.entity.CommunityReply
 import com.yoong.sunnyside.domain.community.comment.repository.CommunityCommentJpaRepository
+import com.yoong.sunnyside.domain.community.comment.repository.CommunityReplyJpaRepository
 import com.yoong.sunnyside.domain.community.repository.CommunityRepository
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
 import com.yoong.sunnyside.domain.reply.dto.ReplyRequest
@@ -12,41 +14,41 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-class CommunityCommentService(
+class CommunityReplyService(
+    private val communityReplyRepository: CommunityReplyJpaRepository,
     private val communityCommentRepository: CommunityCommentJpaRepository,
-    private val communityRepository: CommunityRepository,
     private val consumerRepository: ConsumerRepository,
 ): ReplyService {
 
     @Transactional
     override fun createReply(replyRequest: ReplyRequest, id: Long, authorId: Long): DefaultResponse {
 
-        val community = communityRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("community is not found")
+        val communityComment = communityCommentRepository.findByIdAndConsumerId(id, authorId) ?: throw ModelNotFoundException("community is not found")
         val consumer = consumerRepository.findByIdOrNull(authorId) ?: throw ModelNotFoundException("consumer is not found")
 
-        communityCommentRepository.save(CommunityComment(replyRequest, community, consumer))
+        communityReplyRepository.save(CommunityReply(replyRequest, communityComment, consumer))
 
-        return DefaultResponse("CommunityComment created successfully")
+        return DefaultResponse("CommunityReply created successfully")
     }
 
     @Transactional
     override fun updateReply(replyRequest: ReplyRequest, id: Long, authorId: Long): DefaultResponse {
 
-        val comment = communityCommentRepository.findByIdAndConsumerId(id, authorId) ?: throw ModelNotFoundException("comment not found")
+        val communityReply = communityReplyRepository.findByIdAndConsumerId(id, authorId) ?: throw ModelNotFoundException("CommunityReply not found")
 
-        comment.update(replyRequest)
+        communityReply.update(replyRequest)
 
-        return DefaultResponse("CommunityComment updated successfully")
+        return DefaultResponse("CommunityReply updated successfully")
     }
 
     @Transactional
     override fun deleteReply(id: Long, authorId: Long): DefaultResponse {
 
-        val comment = communityCommentRepository.findByIdAndConsumerId(id, authorId) ?: throw ModelNotFoundException("comment not found")
+        val communityReply = communityReplyRepository.findByIdAndConsumerId(id, authorId) ?: throw ModelNotFoundException("comment not found")
 
-        comment.delete()
+        communityReply.delete()
 
-        return DefaultResponse("CommunityComment deleted successfully")
+        return DefaultResponse("CommunityReply deleted successfully")
     }
 
     override fun reportReply(id: Long, authorId: Long): DefaultResponse {

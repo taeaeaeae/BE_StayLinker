@@ -1,9 +1,19 @@
 package com.yoong.sunnyside.domain.community.repository
 
+import com.querydsl.core.Tuple
+import com.querydsl.core.types.Projections
+import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
+import com.yoong.sunnyside.common.exception.ModelNotFoundException
+import com.yoong.sunnyside.domain.community.comment.dto.CommentResponse
+import com.yoong.sunnyside.domain.community.comment.dto.ReplyResponse
+import com.yoong.sunnyside.domain.community.comment.entity.QCommunityComment
+import com.yoong.sunnyside.domain.community.comment.entity.QCommunityReply
+import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
 import com.yoong.sunnyside.domain.community.entity.QCommunity
 import jakarta.persistence.EntityManager
+import jakarta.persistence.EntityNotFoundException
 import jakarta.persistence.PersistenceContext
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -17,13 +27,35 @@ class CommunityRepositoryImpl(
 
     val queryFactory = JPAQueryFactory(em)
     val community = QCommunity.community!!
+    val communityComment = QCommunityComment.communityComment!!
+    val communityReply = QCommunityReply.communityReply!!
 
     override fun save(community: Community): Community {
         return communityJpaRepository.save(community)
     }
 
     override fun findByIdOrNull(communityId: Long): Community? {
-        return communityJpaRepository.findByIdOrNull(communityId)
+
+       return communityJpaRepository.findByIdOrNull(communityId)
+    }
+
+    override fun findById(communityId: Long): CommunityResponse {
+
+        val communityResult = communityJpaRepository.findByIdOrNull(communityId) ?: throw ModelNotFoundException("Community is not found")
+
+        val communityComments = queryFactory.selectFrom(
+            communityComment
+        )
+            .where(communityComment.community.id.eq(communityId))
+            .fetch()
+
+        val communityCommentIds = communityComments.map { it.id }
+
+        val communityReplies = queryFactory.selectFrom(communityReply)
+            .where(communityReply.comment.id.`in`(communityCommentIds))
+            .fetch()
+
+        return CommunityResponse.from(communityResult, communityComments, communityReplies)
     }
 
     override fun findAll(cursor: Long?, limit: Int, search: String?): List<Community> {
@@ -34,7 +66,7 @@ class CommunityRepositoryImpl(
             .selectFrom(community)
             .where(
                 cursor?.let{ community.id.lt(it) },
-                search.let {
+                search?.let {
                     community.title.like(it)
                         .or(community.description.like(it))
                            },
