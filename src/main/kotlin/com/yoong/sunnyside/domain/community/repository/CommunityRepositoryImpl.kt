@@ -81,4 +81,9 @@ class CommunityRepositoryImpl(
     override fun findByIdAndConsumerId(id: Long, consumerId: Long): Community? {
         return findByIdAndConsumerId(id, consumerId)
     }
+
+    // 커서 기반 으로 페이지네이션을 할지 논의
+    override fun findAllByIdIn(ids: List<Long>): List<Community> {
+        return communityJpaRepository.findAllByIdIn(ids)
+    }
 }

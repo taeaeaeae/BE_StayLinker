@@ -9,4 +9,5 @@ interface CommunityRepository {
     fun findAll(cursor: Long?, limit: Int, search: String?): List<Community>
     fun findByIdAndConsumerId(id: Long, consumerId: Long): Community?
     fun findById(communityId: Long): CommunityResponse
+    fun findAllByIdIn(ids: List<Long>): List<Community>
 }
