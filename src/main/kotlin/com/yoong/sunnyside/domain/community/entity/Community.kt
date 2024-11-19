@@ -27,7 +27,7 @@ class Community(
 ){
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)

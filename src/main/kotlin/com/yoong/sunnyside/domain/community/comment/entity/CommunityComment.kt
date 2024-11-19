@@ -26,7 +26,7 @@ class CommunityComment(
 
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 
     @Column(name = "created_at",nullable = false)
     @CreationTimestamp
