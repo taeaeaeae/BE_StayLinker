@@ -5,6 +5,6 @@ import java.io.Serializable
 
 @Embeddable
 class FavoriteId (
-    val consumer: Long = 0,
-    val community: Long = 0
+    val consumerId: Long? = null,
+    val communityId: Long? = null
 ): Serializable

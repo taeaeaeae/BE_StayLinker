@@ -1,7 +1,5 @@
 package com.yoong.sunnyside.domain.community.favorite.entity
 
-import com.yoong.sunnyside.domain.community.entity.Community
-import com.yoong.sunnyside.domain.consumer.entity.Consumer
 import jakarta.persistence.*
 
 @IdClass(FavoriteId::class)

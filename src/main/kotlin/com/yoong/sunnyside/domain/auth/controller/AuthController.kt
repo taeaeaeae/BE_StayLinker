@@ -1,10 +1,7 @@
 package com.yoong.sunnyside.domain.auth.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
-import com.yoong.sunnyside.domain.auth.dto.AccessTokenRequest
-import com.yoong.sunnyside.domain.auth.dto.EmailRequest
-import com.yoong.sunnyside.domain.auth.dto.MemberRoleResponse
-import com.yoong.sunnyside.domain.auth.dto.NicknameRequest
+import com.yoong.sunnyside.domain.auth.dto.*
 import com.yoong.sunnyside.domain.auth.service.AuthService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -36,10 +33,9 @@ class AuthController(
     @PostMapping("/email/confirm")
     @Operation(summary = "이메일 인증 코드 검사 API")
     fun verifyEmail(
-        @RequestBody emailRequest: EmailRequest,
-        @RequestParam code: String
-    ): ResponseEntity<EmailRequest>
-            = ResponseEntity.status(HttpStatus.OK).body(authService.verifyEmail(emailRequest, code))
+        @RequestBody verifyCodeRequest: VerifyCodeRequest,
+    ): ResponseEntity<EmailResponse>
+            = ResponseEntity.status(HttpStatus.OK).body(authService.verifyEmail(verifyCodeRequest))
 
     @GetMapping("/role")
     @Operation(summary = "토큰 권한 확인 API")
