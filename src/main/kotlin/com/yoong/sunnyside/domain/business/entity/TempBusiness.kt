@@ -27,7 +27,7 @@ class TempBusiness(
     @Column(name = "business_certificate", nullable = false)
     var businessCertificate: String,
 
-    @Column(name = "nickName", nullable = false)
+    @Column(name = "nickname", nullable = false)
     var nickName: String,
 
     @Column(name = "is_approved")

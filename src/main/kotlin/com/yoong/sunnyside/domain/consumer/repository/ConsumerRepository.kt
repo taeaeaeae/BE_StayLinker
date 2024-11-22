@@ -9,4 +9,5 @@ interface ConsumerRepository {
     fun findByEmail(email: String): Consumer?
     fun tempUserSave(tempConsumer: TempConsumer)
     fun save(consumer: Consumer): Consumer
+    fun existsByNickname(nickname: String): Boolean
 }

@@ -26,4 +26,8 @@ class ConsumerRepositoryImpl(
     override fun save(consumer: Consumer):Consumer {
         return consumerJpaRepository.save(consumer)
     }
+
+    override fun existsByNickname(nickname: String): Boolean {
+        return consumerJpaRepository.existsByNickname(nickname)
+    }
 }

@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.domain.auth.dto
 
-data class NicknameRequest(
+import com.yoong.sunnyside.infra.security.MemberRole
 
-    val nickname: String
+data class NicknameRequest(
+    val nickname: String,
 )
