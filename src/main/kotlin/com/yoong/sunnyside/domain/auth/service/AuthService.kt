@@ -29,7 +29,6 @@ class AuthService(
     private val tempConsumerRepository: TempConsumerJpaRepository,
     private val tempBusinessRepository: TempBusinessRepository,
     private val authRepository: AuthRepository,
-    private val jwtHelper: JwtHelper,
     @Value("\${spring.mail.auth-code-expiration-millis}") private val expirationMillis: Long
 ){
 
