@@ -2,22 +2,17 @@ package com.yoong.sunnyside.domain.auth.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.CustomIllegalArgumentException
-import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.domain.auth.dto.*
 import com.yoong.sunnyside.domain.auth.repository.AuthRepository
 import com.yoong.sunnyside.domain.business.entity.TempBusiness
-import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
 import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
-import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
 import com.yoong.sunnyside.domain.consumer.repository.TempConsumerJpaRepository
 import com.yoong.sunnyside.infra.email.EmailUtils
 import com.yoong.sunnyside.infra.redis.RedisUtils
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import com.yoong.sunnyside.infra.security.MemberRole
-import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 const val AUTHENTICATE = "AUTHENTICATE"
@@ -34,7 +29,7 @@ class AuthService(
 
     fun checkNickname(nickname: String): NicknameResponse {
 
-        if(!checkedNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
+        if(!validNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
 
         return NicknameResponse(true)
     }
@@ -120,7 +115,7 @@ class AuthService(
 
     }
 
-    private fun checkedNickname(nickname: String): Boolean {
+    private fun validNickname(nickname: String): Boolean {
 
         if (authRepository.validNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
 
