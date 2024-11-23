@@ -2,13 +2,14 @@ package com.yoong.sunnyside.domain.notification.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponseDto
 import com.yoong.sunnyside.domain.notification.dto.CreateNotificationRequest
-import com.yoong.sunnyside.domain.notification.entity.Notification
+import com.yoong.sunnyside.domain.notification.dto.NotificationResponse
+import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@Tag(name = "관리자", description = "관리자 전용 API")
+@Tag(name = "공지사항", description = "공지사항 API")
 @RestController
 @RequestMapping("/notification")
 class NotificationController(
@@ -19,14 +20,14 @@ class NotificationController(
     }
 
     @GetMapping
-    fun getNotification(): ResponseEntity<DefaultResponseDto> {
+    fun getNotification(): ResponseEntity<List<NotificationResponse>> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
     @PutMapping("{notificationId}")
     fun updateNotification(
         @PathVariable("notificationId") id: Long,
-        @RequestBody notification: Notification
+        @RequestBody request: UpdateNotificationRequest
     ): ResponseEntity<DefaultResponseDto> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
