@@ -20,7 +20,12 @@ class FaqController(
     }
 
     @GetMapping
-    fun getFna(): ResponseEntity<List<FaqResponse>> {
+    fun getAllFna(): ResponseEntity<List<FaqResponse>> {
+        return ResponseEntity.status(HttpStatus.OK).body(TODO())
+    }
+
+    @GetMapping
+    fun getFna(): ResponseEntity<FaqResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 

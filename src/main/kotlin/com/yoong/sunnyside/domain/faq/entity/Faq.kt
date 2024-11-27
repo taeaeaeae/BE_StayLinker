@@ -1,36 +1,34 @@
-package com.yoong.sunnyside.domain.notification.entity
+package com.yoong.sunnyside.domain.faq.entity
 
-import com.yoong.sunnyside.domain.notification.dto.CreateNotificationRequest
+import com.yoong.sunnyside.domain.faq.dto.CreateFaqRequest
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "notification")
-class Notification(
-    @Column(name = "title", nullable = false)
-    var title: String,
+@Table(name = "faq")
+class Faq(
+    @Column(name = "question", nullable = false)
+    var question: String,
 
-    @Column(name = "description", nullable = false)
-    var description: String,
-
-    @Column(name = "admin_id", nullable = false)
-    var adminId: Long,
+    @Column(name = "answer", nullable = false)
+    var answer: String,
 
     @Column(name = "division", nullable = false)
     var division: String,
 ) {
-    constructor(request: CreateNotificationRequest) : this(
-        title = request.title,
-        description = request.description,
-        adminId = request.adminId,
+
+    constructor(request: CreateFaqRequest) : this(
+        question = request.question,
+        answer = request.answer,
         division = request.division
     )
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
