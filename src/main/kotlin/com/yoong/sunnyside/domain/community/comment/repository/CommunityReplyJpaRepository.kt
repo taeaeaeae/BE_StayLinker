@@ -8,4 +8,5 @@ interface CommunityReplyJpaRepository: JpaRepository<CommunityReply, Long> {
 
     fun findByIdAndConsumerId(id: Long, consumerId: Long): CommunityReply?
     fun findByCommentId(commentId: Long): List<CommunityReply>
+    fun findAllByCommentId(id: Long): List<CommunityReply>
 }

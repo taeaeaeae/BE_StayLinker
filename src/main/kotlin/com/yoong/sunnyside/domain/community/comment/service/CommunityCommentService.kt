@@ -4,6 +4,7 @@ import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.domain.community.comment.entity.CommunityComment
 import com.yoong.sunnyside.domain.community.comment.repository.CommunityCommentJpaRepository
+import com.yoong.sunnyside.domain.community.comment.repository.CommunityReplyJpaRepository
 import com.yoong.sunnyside.domain.community.repository.CommunityRepository
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
 import com.yoong.sunnyside.domain.reply.dto.ReplyRequest
@@ -16,6 +17,7 @@ class CommunityCommentService(
     private val communityCommentRepository: CommunityCommentJpaRepository,
     private val communityRepository: CommunityRepository,
     private val consumerRepository: ConsumerRepository,
+    private val communityReplyRepository: CommunityReplyJpaRepository,
 ): ReplyService {
 
     @Transactional
@@ -43,6 +45,14 @@ class CommunityCommentService(
     override fun deleteReply(id: Long, authorId: Long): DefaultResponse {
 
         val comment = communityCommentRepository.findByIdAndConsumerId(id, authorId) ?: throw ModelNotFoundException("comment not found")
+
+        val commentReplies = communityReplyRepository.findAllByCommentId(comment.id!!)
+
+        if(commentReplies.isNotEmpty()) {
+            commentReplies.forEach{
+                it.delete()
+            }
+        }
 
         comment.delete()
 
