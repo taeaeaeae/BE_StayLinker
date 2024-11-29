@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.koreainfo.controller
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.koreainfo.dto.CreateKoreaInfoRequest
 import com.yoong.sunnyside.domain.koreainfo.dto.KoreaInfoResponse
 import com.yoong.sunnyside.domain.koreainfo.dto.UpdateKoreaInfoRequest
@@ -35,7 +35,7 @@ class KoreaInfoController {
     }
 
     @PostMapping
-    fun createKoreaInfo(@RequestBody request: CreateKoreaInfoRequest): ResponseEntity<DefaultResponseDto> {
+    fun createKoreaInfo(@RequestBody request: CreateKoreaInfoRequest): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.CREATED).body(TODO())
     }
 
@@ -43,12 +43,12 @@ class KoreaInfoController {
     fun updateKoreaInfo(
         @PathVariable("informationId") id: Long,
         @RequestBody request: UpdateKoreaInfoRequest
-    ): ResponseEntity<DefaultResponseDto> {
+    ): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
     @DeleteMapping("/{informationId}")
-    fun deleteKoreaInfo(@PathVariable("informationId") id: Long): ResponseEntity<DefaultResponseDto> {
+    fun deleteKoreaInfo(@PathVariable("informationId") id: Long): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TODO())
     }
 }

@@ -1,11 +1,10 @@
 package com.yoong.sunnyside.domain.admin.service
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
-import com.yoong.sunnyside.domain.business.model.Business
-import com.yoong.sunnyside.domain.business.model.TempBusiness
+import com.yoong.sunnyside.domain.business.entity.Business
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -19,7 +18,7 @@ class AdminService(
 ) {
 
     @Transactional
-    fun allowBusiness(id: Long): DefaultResponseDto {
+    fun allowBusiness(id: Long): DefaultResponse {
         val tempBusiness = tempBusinessRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("id $id under review")
 
@@ -29,7 +28,7 @@ class AdminService(
         businessRepository.save(
             Business.from(tempBusiness)
         )
-        return DefaultResponseDto("allow business")
+        return DefaultResponse("allow business")
     }
 
     fun getAllApplication(): List<TempBusinessResponse> {

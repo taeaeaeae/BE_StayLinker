@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.domain.notification.controller
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.notification.dto.CreateNotificationRequest
 import com.yoong.sunnyside.domain.notification.dto.NotificationResponse
 import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 class NotificationController(
 ) {
     @PostMapping
-    fun creatNotification(@RequestBody request: CreateNotificationRequest): ResponseEntity<DefaultResponseDto> {
+    fun creatNotification(@RequestBody request: CreateNotificationRequest): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.CREATED).body(TODO())
     }
 
@@ -28,12 +28,12 @@ class NotificationController(
     fun updateNotification(
         @PathVariable("notificationId") id: Long,
         @RequestBody request: UpdateNotificationRequest
-    ): ResponseEntity<DefaultResponseDto> {
+    ): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
     @DeleteMapping("{notificationId}")
-    fun deleteNotification(@PathVariable("notificationId") id: Long): ResponseEntity<DefaultResponseDto> {
+    fun deleteNotification(@PathVariable("notificationId") id: Long): ResponseEntity<DefaultResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TODO())
     }
 }
