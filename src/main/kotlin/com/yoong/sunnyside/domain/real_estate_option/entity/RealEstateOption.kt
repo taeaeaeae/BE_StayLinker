@@ -1,7 +1,7 @@
 package com.yoong.sunnyside.domain.real_estate_option.entity
 
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
-import com.yoong.sunnyside.domain.real_estate_option.dto.CreateRealEstateOptionDto
+import com.yoong.sunnyside.domain.real_estate_option.dto.CreateRealEstateOption
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -21,9 +21,9 @@ class RealEstateOption(
     @JoinColumn(name="real_estate_id")
     var realEstate: RealEstate,
 ){
-    constructor(createRealEstateOptionDto: CreateRealEstateOptionDto, realEstate: RealEstate): this(
-        name = createRealEstateOptionDto.name,
-        description = createRealEstateOptionDto.description,
+    constructor(createRealEstateOption: CreateRealEstateOption, realEstate: RealEstate): this(
+        name = createRealEstateOption.name,
+        description = createRealEstateOption.description,
         realEstate = realEstate
     )
 

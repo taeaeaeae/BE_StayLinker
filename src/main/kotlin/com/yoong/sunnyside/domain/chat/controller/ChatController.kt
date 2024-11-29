@@ -1,7 +1,7 @@
 package com.yoong.sunnyside.domain.chat.controller
 
-import com.yoong.sunnyside.domain.chat.dto.ChatRequestDto
-import com.yoong.sunnyside.domain.chat.dto.ChatResponseDto
+import com.yoong.sunnyside.domain.chat.dto.ChatRequest
+import com.yoong.sunnyside.domain.chat.dto.ChatResponse
 import com.yoong.sunnyside.domain.chat.service.ChatService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -22,7 +22,7 @@ class ChatController(
     @Operation(summary = "채팅 API", description = "확정 되지 않은 API 입니다")
     @PostMapping
     fun chat(
-        @RequestBody chatRequestDto: ChatRequestDto
-    ): ResponseEntity<ChatResponseDto>
-        = ResponseEntity.status(HttpStatus.OK).body(chatService.chat(chatRequestDto))
+        @RequestBody chatRequest: ChatRequest
+    ): ResponseEntity<ChatResponse>
+        = ResponseEntity.status(HttpStatus.OK).body(chatService.chat(chatRequest))
 }

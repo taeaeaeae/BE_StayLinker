@@ -1,1 +1,1 @@
-rootProject.name = "SunnySide"
+rootProject.name = "StayLinker"

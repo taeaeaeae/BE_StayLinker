@@ -1,28 +1,28 @@
 package com.yoong.sunnyside.domain.auth.service
 
-import com.yoong.sunnyside.common.dto.DefaultResponseDto
-import com.yoong.sunnyside.domain.auth.dto.AccessTokenRequestDto
-import com.yoong.sunnyside.domain.auth.dto.EmailRequestDto
-import com.yoong.sunnyside.domain.auth.dto.MemberRoleResponseDto
-import com.yoong.sunnyside.domain.auth.dto.NicknameRequestDto
+import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.domain.auth.dto.AccessTokenRequest
+import com.yoong.sunnyside.domain.auth.dto.EmailRequest
+import com.yoong.sunnyside.domain.auth.dto.MemberRoleResponse
+import com.yoong.sunnyside.domain.auth.dto.NicknameRequest
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService {
 
-    fun checkNickname(nickNameRequestDto: NicknameRequestDto): DefaultResponseDto {
+    fun checkNickname(nickNameRequest: NicknameRequest): DefaultResponse {
         TODO()
     }
 
-    fun sendEmail(emailRequestDto: EmailRequestDto): DefaultResponseDto {
+    fun sendEmail(emailRequest: EmailRequest): DefaultResponse {
         TODO()
     }
 
-    fun verifyEmail(emailRequestDto: EmailRequestDto, code: String): EmailRequestDto {
+    fun verifyEmail(emailRequest: EmailRequest, code: String): EmailRequest {
         TODO()
     }
 
-    fun getRole(accessTokenRequestDto: AccessTokenRequestDto): MemberRoleResponseDto {
+    fun getRole(accessTokenRequest: AccessTokenRequest): MemberRoleResponse {
         TODO()
     }
 
