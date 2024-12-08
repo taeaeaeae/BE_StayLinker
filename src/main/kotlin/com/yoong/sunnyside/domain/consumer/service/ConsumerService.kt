@@ -10,6 +10,7 @@ import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
 import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
 import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
+import com.yoong.sunnyside.infra.redis.RedisUtils
 import com.yoong.sunnyside.infra.security.config.PasswordEncoderConfig
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import jakarta.transaction.Transactional
@@ -19,13 +20,16 @@ import org.springframework.stereotype.Service
 class ConsumerService(
     private val consumerRepository: ConsumerRepository,
     private val passwordEncoderConfig: PasswordEncoderConfig,
-    private val jwtHelper: JwtHelper
+    private val jwtHelper: JwtHelper,
+    private val redisUtils: RedisUtils
 ){
 
     private val passwordEncoder = passwordEncoderConfig.passwordEncoder()
 
     @Transactional
     fun signUp(request : ConsumerSignupRequest): DefaultResponse{
+
+        redisUtils.getStringData(request.email) ?: throw ModelNotFoundException("이메일 인증이 진행 되지 않았습니다")
 
         if(request.password != request.confirmPassword) throw CustomIllegalArgumentException("Password does not match")
         consumerRepository.tempUserSave(TempConsumer(request, passwordEncoder.encode(request.password)))

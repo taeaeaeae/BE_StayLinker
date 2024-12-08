@@ -44,7 +44,7 @@ class TempConsumer(
     var id: Long? = null
 
     constructor(consumerSignupRequest: ConsumerSignupRequest, encodedPassword: String) : this(
-        email =consumerSignupRequest.email,
+        email = consumerSignupRequest.email,
         password = encodedPassword,
         address = consumerSignupRequest.address,
         nickname = consumerSignupRequest.nickname,

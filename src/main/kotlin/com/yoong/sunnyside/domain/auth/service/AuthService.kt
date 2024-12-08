@@ -21,8 +21,6 @@ const val AUTHENTICATE = "AUTHENTICATE"
 class AuthService(
     private val emailUtils: EmailUtils,
     private val redisUtils: RedisUtils,
-    private val tempConsumerRepository: TempConsumerJpaRepository,
-    private val tempBusinessRepository: TempBusinessRepository,
     private val authRepository: AuthRepository,
     @Value("\${spring.mail.auth-code-expiration-millis}") private val expirationMillis: Long
 ){
@@ -48,7 +46,7 @@ class AuthService(
         return DefaultResponse("Email send Successful")
     }
 
-    fun verifyEmail(verifyCodeRequest: VerifyCodeRequest): EmailResponse {
+    fun verifyEmail(verifyCodeRequest: VerifyCodeRequest): DefaultResponse {
 
         val verityCode = redisUtils.getStringData("${AUTHENTICATE}_${verifyCodeRequest.email}")
 
@@ -56,7 +54,9 @@ class AuthService(
 
             redisUtils.deleteStringData("${AUTHENTICATE}_${verifyCodeRequest.email}")
 
-            return createMember(verifyCodeRequest)
+            redisUtils.setStringData(verifyCodeRequest.email, verifyCodeRequest.role.name, 300000)
+
+            return DefaultResponse("Email sent successfully")
         }
 
         throw CustomIllegalArgumentException("Verification code does not match")
@@ -65,54 +65,6 @@ class AuthService(
     fun getRole(principal: MemberPrincipal): MemberRoleResponse {
 
         return MemberRoleResponse.from(principal)
-    }
-
-    private fun createMember(verifyCodeRequest: VerifyCodeRequest): EmailResponse {
-
-        if(verifyCodeRequest.role == MemberRole.CONSUMER){
-
-            val consumer = tempConsumerRepository.saveAndFlush(
-                TempConsumer(
-                    email = verifyCodeRequest.email,
-                    password = "",
-                    address = "",
-                    nickname = "",
-                    country = "",
-                    phoneNumber = "",
-                    foreignNumber = null,
-                    foreignCreateAt = null,
-                    role = MemberRole.CONSUMER
-                )
-            )
-
-            return EmailResponse(
-                id = consumer.id!!,
-                role = MemberRole.CONSUMER
-            )
-
-        }else{
-
-            val business = tempBusinessRepository.saveAndFlush(
-                TempBusiness(
-                    email = verifyCodeRequest.email,
-                    password = "",
-                    address = "",
-                    businessCode = "",
-                    businessName = "",
-                    businessCertificate = "",
-                    nickName = "",
-                    isApproved = false,
-                    phoneNumber = "",
-                )
-            )
-
-            return EmailResponse(
-                id = business.id!!,
-                role = MemberRole.CONSUMER
-            )
-
-        }
-
     }
 
     private fun validNickname(nickname: String): Boolean {

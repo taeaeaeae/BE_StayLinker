@@ -38,7 +38,7 @@ class AuthController(
     @Operation(summary = "이메일 인증 코드 검사 API")
     fun verifyEmail(
         @RequestBody verifyCodeRequest: VerifyCodeRequest,
-    ): ResponseEntity<EmailResponse>
+    ): ResponseEntity<DefaultResponse>
             = ResponseEntity.status(HttpStatus.OK).body(authService.verifyEmail(verifyCodeRequest))
 
     @GetMapping("/role")

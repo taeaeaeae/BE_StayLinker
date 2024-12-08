@@ -14,8 +14,8 @@ class RedisUtils(
         redisTemplate.opsForValue().set(key, value, duration)
     }
 
-    fun getStringData(key: String): String {
-        return redisTemplate.opsForValue()[key] as? String? ?: "존재하지 않는 값입니다."
+    fun getStringData(key: String): String? {
+        return redisTemplate.opsForValue()[key] as? String?
     }
 
     fun deleteStringData(key: String) {
