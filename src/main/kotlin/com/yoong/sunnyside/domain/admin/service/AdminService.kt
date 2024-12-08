@@ -2,6 +2,7 @@ package com.yoong.sunnyside.domain.admin.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
+import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
 import com.yoong.sunnyside.domain.business.entity.Business
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
@@ -27,7 +28,7 @@ class AdminService(
         businessRepository.save(
             Business.from(tempBusiness)
         )
-        return DefaultResponse("allowed")
+        return DefaultResponse("allow business")
     }
 
     fun getAllApplication(): List<TempBusinessResponse> {
