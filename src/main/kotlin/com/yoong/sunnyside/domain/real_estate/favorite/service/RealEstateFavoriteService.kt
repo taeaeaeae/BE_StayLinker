@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service
 @Service
 class RealEstateFavoriteService: FavoriteService {
 
-    override fun createFavorite(id: Long): DefaultResponse {
+    override fun createFavorite(id: Long, memberId: Long): DefaultResponse {
         TODO("Not yet implemented")
     }
 
-    override fun deleteFavorite(id: Long): DefaultResponse {
+    override fun deleteFavorite(id: Long, memberId: Long): DefaultResponse {
         TODO("Not yet implemented")
     }
 }

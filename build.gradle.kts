@@ -33,6 +33,8 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
     kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 

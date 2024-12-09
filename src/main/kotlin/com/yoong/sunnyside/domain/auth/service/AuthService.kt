@@ -1,30 +1,79 @@
 package com.yoong.sunnyside.domain.auth.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
-import com.yoong.sunnyside.domain.auth.dto.AccessTokenRequest
-import com.yoong.sunnyside.domain.auth.dto.EmailRequest
-import com.yoong.sunnyside.domain.auth.dto.MemberRoleResponse
-import com.yoong.sunnyside.domain.auth.dto.NicknameRequest
+import com.yoong.sunnyside.common.exception.CustomIllegalArgumentException
+import com.yoong.sunnyside.domain.auth.dto.*
+import com.yoong.sunnyside.domain.auth.repository.AuthRepository
+import com.yoong.sunnyside.domain.business.entity.TempBusiness
+import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
+import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
+import com.yoong.sunnyside.domain.consumer.repository.TempConsumerJpaRepository
+import com.yoong.sunnyside.infra.email.EmailUtils
+import com.yoong.sunnyside.infra.redis.RedisUtils
+import com.yoong.sunnyside.infra.security.MemberPrincipal
+import com.yoong.sunnyside.infra.security.MemberRole
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
-@Service
-class AuthService {
+const val AUTHENTICATE = "AUTHENTICATE"
 
-    fun checkNickname(nickNameRequest: NicknameRequest): DefaultResponse {
-        TODO()
+@Service
+class AuthService(
+    private val emailUtils: EmailUtils,
+    private val redisUtils: RedisUtils,
+    private val authRepository: AuthRepository,
+    @Value("\${spring.mail.auth-code-expiration-millis}") private val expirationMillis: Long
+){
+
+    fun checkNickname(nickname: String): NicknameResponse {
+
+        if(!validNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
+
+        return NicknameResponse(true)
     }
+
+
 
     fun sendEmail(emailRequest: EmailRequest): DefaultResponse {
-        TODO()
+
+        val code: String = emailUtils.createCode()
+        val title = "StayLinker Mail Authentication"
+
+        emailUtils.sendEmail(emailRequest.email, title, code)
+
+        redisUtils.setStringData("${AUTHENTICATE}_${emailRequest.email}", code, expirationMillis)
+
+        return DefaultResponse("Email send Successful")
     }
 
-    fun verifyEmail(emailRequest: EmailRequest, code: String): EmailRequest {
-        TODO()
+    fun verifyEmail(verifyCodeRequest: VerifyCodeRequest): DefaultResponse {
+
+        val verityCode = redisUtils.getStringData("${AUTHENTICATE}_${verifyCodeRequest.email}")
+
+        if(verityCode == verifyCodeRequest.code){
+
+            redisUtils.deleteStringData("${AUTHENTICATE}_${verifyCodeRequest.email}")
+
+            redisUtils.setStringData(verifyCodeRequest.email, verifyCodeRequest.role.name, 300000)
+
+            return DefaultResponse("Email sent successfully")
+        }
+
+        throw CustomIllegalArgumentException("Verification code does not match")
     }
 
-    fun getRole(accessTokenRequest: AccessTokenRequest): MemberRoleResponse {
-        TODO()
+    fun getRole(principal: MemberPrincipal): MemberRoleResponse {
+
+        return MemberRoleResponse.from(principal)
     }
+
+    private fun validNickname(nickname: String): Boolean {
+
+        if (authRepository.validNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
+
+        return true
+    }
+
 
 
 }
