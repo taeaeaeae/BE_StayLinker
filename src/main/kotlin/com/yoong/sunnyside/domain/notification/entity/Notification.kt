@@ -21,10 +21,10 @@ class Notification(
     @Column(name = "division", nullable = false)
     var division: String,
 ) {
-    constructor(request: CreateNotificationRequest) : this(
+    constructor(request: CreateNotificationRequest, adminId: Long) : this(
         title = request.title,
         description = request.description,
-        adminId = request.adminId,
+        adminId = adminId,
         division = request.division
     )
 
