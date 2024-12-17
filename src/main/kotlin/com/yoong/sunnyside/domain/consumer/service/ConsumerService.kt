@@ -77,4 +77,12 @@ class ConsumerService(
 
         return DefaultResponse("deleted consumer successful")
     }
+
+    @Transactional
+    fun forgotPassword(password: String, email: String) {
+
+        val consumer = consumerRepository.findByEmail(email) ?: throw ModelNotFoundException("member is not found")
+
+        consumer.changePassword(passwordEncoder.encode(password))
+    }
 }

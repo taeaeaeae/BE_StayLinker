@@ -5,6 +5,7 @@ import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.domain.community.comment.entity.CommunityComment
 import com.yoong.sunnyside.domain.community.comment.entity.CommunityReply
 import com.yoong.sunnyside.domain.community.comment.repository.CommunityCommentJpaRepository
+import com.yoong.sunnyside.domain.community.comment.repository.CommunityReplyJpaRepository
 import com.yoong.sunnyside.domain.community.comment.service.CommunityReplyServiceTest.Companion
 import com.yoong.sunnyside.domain.community.comment.service.CommunityReplyServiceTest.Companion.COMMUNITY_COMMENT
 import com.yoong.sunnyside.domain.community.entity.Community
@@ -27,7 +28,8 @@ class CommunityCommentServiceTest : StringSpec({
     val communityCommentRepository = mockk<CommunityCommentJpaRepository>()
     val communityRepository = mockk<CommunityRepository>()
     val consumerRepository = mockk<ConsumerRepository>()
-    val communityCommentService = CommunityCommentService(communityCommentRepository, communityRepository, consumerRepository)
+    val communityReplyRepository = mockk<CommunityReplyJpaRepository>()
+    val communityCommentService = CommunityCommentService(communityCommentRepository, communityRepository, consumerRepository, communityReplyRepository)
 
     "커뮤니티 댓글이 없을 경우 ModelNotFoundException"{
 

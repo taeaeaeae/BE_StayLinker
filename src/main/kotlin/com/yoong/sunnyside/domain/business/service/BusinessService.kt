@@ -79,5 +79,12 @@ class BusinessService(
                 || tempBusinessRepository.existsByEmail(email))
     }
 
+    fun changePassword(password: String, email: String) {
+
+        val business = businessRepository.findByEmail(email) ?: throw RuntimeException("email not found")
+
+        business.passwdChange(passwordEncoder.encode(password))
+    }
+
 
 }
