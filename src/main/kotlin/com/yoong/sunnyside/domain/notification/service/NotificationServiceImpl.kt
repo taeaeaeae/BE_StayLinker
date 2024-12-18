@@ -7,8 +7,6 @@ import com.yoong.sunnyside.domain.notification.dto.NotificationResponse
 import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
 import com.yoong.sunnyside.domain.notification.entity.Notification
 import com.yoong.sunnyside.domain.notification.repository.NotificationRepository
-import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
-import com.yoong.sunnyside.domain.real_estate_option.entity.RealEstateOption
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -60,7 +58,7 @@ class NotificationServiceImpl(
     override fun deleteNotification(notificationId: Long): DefaultResponse {
         val notification = notificationRepository.findByIdOrNull(notificationId)
             ?: throw ModelNotFoundException("{notificationId}가 존재하지 않아요")
-        notificationRepository.delete(notification)
+        notification.delete(notificationId)
         return DefaultResponse("공지 삭제가 완료되었습니다.")
     }
 }

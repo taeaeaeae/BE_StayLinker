@@ -35,6 +35,10 @@ class Notification(
         description = request.description
     }
 
+    fun delete(id: Long) {
+        deletedAt = LocalDateTime.now()
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
