@@ -9,6 +9,8 @@ import com.yoong.sunnyside.domain.notification.entity.Notification
 import com.yoong.sunnyside.domain.notification.repository.NotificationRepository
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
 import com.yoong.sunnyside.domain.real_estate_option.entity.RealEstateOption
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -37,8 +39,10 @@ class NotificationServiceImpl(
         return NotificationResponse.from(notification)
     }
 
-    override fun getNotificationPage(): List<NotificationResponse> {
-        TODO("Not yet implemented")
+    override fun getNotificationPage(title: String?, pageable: Pageable): Page<NotificationResponse> {
+        val notificationPage = notificationRepository.findAllByTitleContains(title, pageable)
+        return notificationPage.map { NotificationResponse.from(it) }
+
     }
 
     @Transactional

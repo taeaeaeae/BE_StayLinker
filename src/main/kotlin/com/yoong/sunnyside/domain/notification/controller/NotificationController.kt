@@ -6,6 +6,10 @@ import com.yoong.sunnyside.domain.notification.dto.NotificationResponse
 import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
 import com.yoong.sunnyside.domain.notification.service.NotificationService
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -28,8 +32,11 @@ class NotificationController(
     }
 
     @GetMapping
-    fun getNotificationPage(): ResponseEntity<List<NotificationResponse>> {
-        return ResponseEntity.status(HttpStatus.OK).body(notificationService.getNotificationPage())
+    fun getNotificationPage(
+        @RequestParam title: String?,
+        @PageableDefault(page = 0, size = 10, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
+    ): ResponseEntity<Page<NotificationResponse>> {
+        return ResponseEntity.status(HttpStatus.OK).body(notificationService.getNotificationPage(title, pageable))
     }
 
     @GetMapping("{notificationId}")
