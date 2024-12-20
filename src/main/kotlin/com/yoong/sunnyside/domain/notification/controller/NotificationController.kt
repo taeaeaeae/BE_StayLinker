@@ -5,6 +5,7 @@ import com.yoong.sunnyside.domain.notification.dto.CreateNotificationRequest
 import com.yoong.sunnyside.domain.notification.dto.NotificationResponse
 import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
 import com.yoong.sunnyside.domain.notification.service.NotificationService
+import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,9 +27,9 @@ class NotificationController(
     @PostMapping
     fun creatNotification(
         @RequestBody request: CreateNotificationRequest,
-        @AuthenticationPrincipal adminId: Long
+        @AuthenticationPrincipal admin: MemberPrincipal
     ): ResponseEntity<DefaultResponse> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(notificationService.createNotification(request, adminId))
+        return ResponseEntity.status(HttpStatus.CREATED).body(notificationService.createNotification(request, admin.id))
     }
 
     @GetMapping
