@@ -4,11 +4,13 @@ import com.yoong.sunnyside.domain.notification.dto.CreateNotificationRequest
 import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "notification")
+@SQLRestriction("deleted_at is null")
 class Notification(
     @Column(name = "title", nullable = false)
     var title: String,
@@ -35,7 +37,7 @@ class Notification(
         description = request.description
     }
 
-    fun delete(id: Long) {
+    fun delete() {
         deletedAt = LocalDateTime.now()
     }
 
