@@ -1,13 +1,16 @@
 package com.yoong.sunnyside.domain.notification.entity
 
 import com.yoong.sunnyside.domain.notification.dto.CreateNotificationRequest
+import com.yoong.sunnyside.domain.notification.dto.UpdateNotificationRequest
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "notification")
+@SQLRestriction("deleted_at is null")
 class Notification(
     @Column(name = "title", nullable = false)
     var title: String,
@@ -21,12 +24,22 @@ class Notification(
     @Column(name = "division", nullable = false)
     var division: String,
 ) {
-    constructor(request: CreateNotificationRequest) : this(
+
+    constructor(request: CreateNotificationRequest, adminId: Long) : this(
         title = request.title,
         description = request.description,
-        adminId = request.adminId,
+        adminId = adminId,
         division = request.division
     )
+
+    fun update(request: UpdateNotificationRequest) {
+        title = request.title
+        description = request.description
+    }
+
+    fun delete() {
+        deletedAt = LocalDateTime.now()
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
