@@ -54,6 +54,8 @@ class ConsumerServiceTest : StringSpec({
             country = "test"
         )
 
+        every { redisUtils.getStringData(any()) } returns "test"
+
         //When & Then
         shouldThrow<CustomIllegalArgumentException> {
             consumerService.signUp(consumerSignupRequest)
@@ -78,7 +80,7 @@ class ConsumerServiceTest : StringSpec({
         )
 
         //When
-
+        every { redisUtils.getStringData(any()) } returns "test"
         every { passwordEncoder.encode(any()) } returns "testXX"
         every { consumerRepository.tempUserSave(any()) } answers {
 

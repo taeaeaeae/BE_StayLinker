@@ -178,6 +178,7 @@ class AuthServiceTest : StringSpec({
         every { redisUtils.setStringData(any(), any(), any()) } just Runs
         every { redisUtils.getStringData("${AUTHENTICATE}_${forgotPasswordRequest.email}") } returns "test"
         every { consumerRepository.findByEmail(forgotPasswordRequest.email) } returns consumer
+        every { consumerService.forgotPassword(any(), any()) } just Runs
 
         val result = authService.forgotPassword(forgotPasswordRequest)
 

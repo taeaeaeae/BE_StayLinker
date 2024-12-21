@@ -139,6 +139,7 @@ class CommunityCommentServiceTest : StringSpec({
             communityComment.id = 1L
             communityComment
         }
+        every { communityReplyRepository.findAllByCommentId(any()) } returns emptyList()
 
         //When & Then
 
