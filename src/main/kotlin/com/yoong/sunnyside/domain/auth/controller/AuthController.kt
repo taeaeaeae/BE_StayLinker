@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
 
 @Tag(name = "중복 검사 및 인증 절차 API", description = "닉네임 중복 검사 및 이메일 인증 절차를 위한 API 입니다")
 @RestController
@@ -48,5 +47,14 @@ class AuthController(
         @AuthenticationPrincipal principal: MemberPrincipal,
     ): ResponseEntity<MemberRoleResponse>
         = ResponseEntity.status(HttpStatus.OK).body(authService.getRole(principal))
+
+    @PostMapping("/forgot/password")
+    @Operation(summary = "비밀번호 찾기 API")
+    fun forgotPassword(
+        @RequestBody forgotPasswordRequest: ForgotPasswordRequest,
+    ):ResponseEntity<DefaultResponse>
+        = ResponseEntity.status(HttpStatus.OK).body(authService.forgotPassword(forgotPasswordRequest))
+
+
 
 }

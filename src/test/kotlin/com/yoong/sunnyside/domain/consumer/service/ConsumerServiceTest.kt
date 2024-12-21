@@ -9,6 +9,7 @@ import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
 import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
+import com.yoong.sunnyside.infra.redis.RedisUtils
 import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.config.PasswordEncoderConfig
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
@@ -28,13 +29,14 @@ class ConsumerServiceTest : StringSpec({
     val passwordEncoderConfig = mockk<PasswordEncoderConfig>()
     val jwtHelper = mockk<JwtHelper>()
     val passwordEncoder = mockk<PasswordEncoder>()
+    val redisUtils = mockk<RedisUtils>()
     lateinit var consumerService: ConsumerService
 
     beforeTest {
         every { passwordEncoderConfig.passwordEncoder() } returns passwordEncoder
         every { passwordEncoder.encode(any()) } returns "password"
 
-        consumerService = ConsumerService(consumerRepository, passwordEncoderConfig, jwtHelper)
+        consumerService = ConsumerService(consumerRepository, passwordEncoderConfig, jwtHelper, redisUtils)
     }
 
     "패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException"{
@@ -51,6 +53,8 @@ class ConsumerServiceTest : StringSpec({
             languages = listOf(),
             country = "test"
         )
+
+        every { redisUtils.getStringData(any()) } returns "test"
 
         //When & Then
         shouldThrow<CustomIllegalArgumentException> {
@@ -76,7 +80,7 @@ class ConsumerServiceTest : StringSpec({
         )
 
         //When
-
+        every { redisUtils.getStringData(any()) } returns "test"
         every { passwordEncoder.encode(any()) } returns "testXX"
         every { consumerRepository.tempUserSave(any()) } answers {
 
