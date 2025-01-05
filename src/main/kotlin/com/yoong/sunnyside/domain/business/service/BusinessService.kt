@@ -1,10 +1,7 @@
 package com.yoong.sunnyside.domain.business.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
-import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
-import com.yoong.sunnyside.domain.business.dto.LoginResponse
-import com.yoong.sunnyside.domain.business.dto.LoginRequest
-import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
+import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.entity.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
@@ -85,6 +82,14 @@ class BusinessService(
 
         business.passwdChange(passwordEncoder.encode(password))
     }
+
+    fun myPage(id:Long) :  BusinessResponse {
+        val business = businessRepository.findByIdOrNull(id) ?: throw RuntimeException("business id not found")
+
+        return BusinessResponse.from(business)
+    }
+
+    fun
 
 
 }

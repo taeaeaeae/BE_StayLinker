@@ -12,6 +12,7 @@ data class BusinessResponse(
     val address: String,
     val businessCertificate: String,
     val nickName: String,
+    val openingDate: String,
     val createdAt: LocalDateTime,
 ) {
     companion object {
