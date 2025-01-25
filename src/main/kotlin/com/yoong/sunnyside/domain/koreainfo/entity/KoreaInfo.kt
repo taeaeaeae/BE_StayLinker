@@ -1,12 +1,16 @@
 package com.yoong.sunnyside.domain.koreainfo.entity
 
+import com.yoong.sunnyside.domain.koreainfo.dto.CreateKoreaInfoRequest
+import com.yoong.sunnyside.domain.koreainfo.dto.UpdateKoreaInfoRequest
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "koreainfo")
+@SQLRestriction("deleted_at is null")
 class KoreaInfo(
     @Column(name = "title", nullable = false)
     var title: String,
@@ -21,8 +25,26 @@ class KoreaInfo(
     var adminId: Long,
 
     @Column(name = "image", nullable = true)
-    var image: String,
+    var image: String?,
 ) {
+    constructor(createKoreaInfoRequest: CreateKoreaInfoRequest, adminId: Long) : this(
+        title = createKoreaInfoRequest.title,
+        content = createKoreaInfoRequest.content,
+        division = createKoreaInfoRequest.division,
+        adminId = adminId,
+        image = createKoreaInfoRequest.image
+    )
+
+    fun update(updateKoreaInfoRequest: UpdateKoreaInfoRequest) {
+        title = updateKoreaInfoRequest.title
+        content = updateKoreaInfoRequest.content
+        division = updateKoreaInfoRequest.division
+    }
+
+    fun delete() {
+        deletedAt = LocalDateTime.now()
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
