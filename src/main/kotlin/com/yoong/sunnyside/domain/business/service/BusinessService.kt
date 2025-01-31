@@ -5,6 +5,8 @@ import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.entity.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
+import com.yoong.sunnyside.infra.openApi.BusinessVerification
+import com.yoong.sunnyside.infra.openApi.BusinessVerifyResponse
 import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import org.springframework.data.repository.findByIdOrNull
@@ -17,6 +19,7 @@ class BusinessService(
     private val businessRepository: BusinessRepository,
     private val tempBusinessRepository: TempBusinessRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val businessVerification: BusinessVerification,
     private val jwtHelper: JwtHelper
 ) {
 
@@ -37,6 +40,7 @@ class BusinessService(
                 address = request.address,
                 businessCertificate = request.businessCertificate,
                 nickName = request.nickName,
+                openingDate = request.openingDate,
             )
         )
         return DefaultResponse("created")
@@ -61,9 +65,11 @@ class BusinessService(
         if (request.password == request.retryPassword) business.passwdChange(passwordEncoder.encode(request.password))
     }
 
-    fun checkCode(code: String): Boolean {
-        return (businessRepository.existsByBusinessCode(code)
-                || tempBusinessRepository.existsByBusinessCode(code))
+    fun checkVerify(code: String): BusinessVerifyResponse? {
+
+        return businessVerification.getOfficeInfo(code)
+//        return (businessRepository.existsByBusinessCode(code)
+//                || tempBusinessRepository.existsByBusinessCode(code))
     }
 
     fun checkNickName(nickName: String): Boolean {
@@ -83,13 +89,16 @@ class BusinessService(
         business.passwdChange(passwordEncoder.encode(password))
     }
 
-    fun myPage(id:Long) :  BusinessResponse {
+    fun myPage(id: Long): BusinessResponse {
         val business = businessRepository.findByIdOrNull(id) ?: throw RuntimeException("business id not found")
 
         return BusinessResponse.from(business)
     }
 
-    fun
+    fun memberModify(id: Long) {
+        val business = businessRepository.findByIdOrNull(id) ?: throw RuntimeException("business id not found")
+
+    }
 
 
 }

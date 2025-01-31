@@ -58,7 +58,7 @@ class NotificationServiceImpl(
     override fun deleteNotification(notificationId: Long): DefaultResponse {
         val notification = notificationRepository.findByIdOrNull(notificationId)
             ?: throw ModelNotFoundException("{notificationId}가 존재하지 않아요")
-        notification.delete(notificationId)
+        notification.delete()
         return DefaultResponse("공지 삭제가 완료되었습니다.")
     }
 }

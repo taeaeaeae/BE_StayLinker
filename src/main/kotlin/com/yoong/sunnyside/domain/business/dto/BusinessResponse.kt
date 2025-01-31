@@ -26,7 +26,8 @@ data class BusinessResponse(
                 address = business.address,
                 businessCertificate = business.businessCertificate,
                 nickName = business.nickName,
-                createdAt = business.createdAt
+                createdAt = business.createdAt,
+                openingDate = business.openingDate
             )
         }
     }

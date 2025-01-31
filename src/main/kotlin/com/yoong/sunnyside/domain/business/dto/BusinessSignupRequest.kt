@@ -9,4 +9,5 @@ data class BusinessSignupRequest(
     val address: String,
     val businessCertificate: String,
     val nickName: String,
+    val openingDate: String,
 )
