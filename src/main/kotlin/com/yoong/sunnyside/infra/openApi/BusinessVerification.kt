@@ -24,7 +24,6 @@ class BusinessVerification(
             .retrieve()
             .bodyToMono(String::class.java)
             .block()
-        println(response)
 
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
 

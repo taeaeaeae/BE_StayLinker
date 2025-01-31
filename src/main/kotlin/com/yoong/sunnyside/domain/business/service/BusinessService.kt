@@ -61,15 +61,18 @@ class BusinessService(
     }
 
     fun passwd(request: PasswordChangeRequest, id: Long) {
-        val business = businessRepository.findByIdOrNull(id) ?: throw RuntimeException("business code ${id} not found")
+        val business = businessRepository.findByIdOrNull(id) ?: throw RuntimeException("가입되지 않는 사업자등록번호(${id}) 입니다.")
         if (request.password == request.retryPassword) business.passwdChange(passwordEncoder.encode(request.password))
     }
 
-    fun checkVerify(code: String): BusinessVerifyResponse? {
+    fun checkVerify(request: BusinessVerifyRequest): DefaultResponse? {
 
-        return businessVerification.getOfficeInfo(code)
-//        return (businessRepository.existsByBusinessCode(code)
-//                || tempBusinessRepository.existsByBusinessCode(code))
+        (businessRepository.existsByBusinessCode(request.businessNumber) || tempBusinessRepository.existsByBusinessCode(
+            request.businessNumber
+        ))
+
+        val business = businessVerification.getOfficeInfo(request.registrationNumber)
+        return DefaultResponse("")
     }
 
     fun checkNickName(nickName: String): Boolean {

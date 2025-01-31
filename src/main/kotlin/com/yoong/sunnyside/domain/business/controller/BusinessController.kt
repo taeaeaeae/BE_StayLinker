@@ -65,11 +65,11 @@ class BusinessController(private val businessService: BusinessService) {
 
     @Operation(
         summary = "부동산 정보 검사",
-        description = "registrationNumber : 부동산등록번호, name : 상호명 agentName: 대표자명, registDate : 등록일자"
+        description = "businessNumber: 사업자등록번호, registrationNumber : 부동산등록번호, name : 상호명 agentName: 대표자명, registDate : 등록일자"
     )
     @PostMapping("/business-info-verify")
-    fun businessCheck(@RequestBody request: BusinessVerifyRequest): ResponseEntity<BusinessVerifyResponse?> {
-        return ResponseEntity.status(HttpStatus.OK).body(businessService.checkVerify(request.registrationNumber))
+    fun businessCheck(@RequestBody request: BusinessVerifyRequest): ResponseEntity<DefaultResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(businessService.checkVerify(request))
     }
 
     @Operation(summary = "사업자 등록증 이미지 등록(업로드 한 링크 저장)")
