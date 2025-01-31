@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.infra.openApi
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yoong.sunnyside.common.exception.ValidException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.util.UriComponentsBuilder
@@ -13,7 +14,7 @@ class BusinessVerification(
     @Value("\${openapi.key}") private val API_KEY: String
 ) {
 
-    fun getOfficeInfo(jurirno: String): BusinessVerifyResponse? {
+    fun getOfficeInfo(jurirno: String): BusinessVerifyResponse {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
@@ -26,6 +27,7 @@ class BusinessVerification(
             .block()
 
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
+        if (businessRes.EDOffices == null) throw ValidException("부동산 등록번호를 정확하게 입력했는지 확인해주세요.")
 
         return businessRes.EDOffices.field[0]
     }

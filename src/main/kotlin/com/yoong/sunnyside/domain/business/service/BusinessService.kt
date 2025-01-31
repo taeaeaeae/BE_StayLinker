@@ -1,6 +1,9 @@
 package com.yoong.sunnyside.domain.business.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.exception.CustomIllegalArgumentException
+import com.yoong.sunnyside.common.exception.ModelNotFoundException
+import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.entity.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
@@ -61,18 +64,22 @@ class BusinessService(
     }
 
     fun passwd(request: PasswordChangeRequest, id: Long) {
-        val business = businessRepository.findByIdOrNull(id) ?: throw RuntimeException("가입되지 않는 사업자등록번호(${id}) 입니다.")
+        val business =
+            businessRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("가입되지 않는 사업자등록번호(${id}) 입니다.")
         if (request.password == request.retryPassword) business.passwdChange(passwordEncoder.encode(request.password))
     }
 
     fun checkVerify(request: BusinessVerifyRequest): DefaultResponse? {
 
-        (businessRepository.existsByBusinessCode(request.businessNumber) || tempBusinessRepository.existsByBusinessCode(
-            request.businessNumber
-        ))
-
+        if (businessRepository.existsByBusinessCode(request.businessNumber)) throw CustomIllegalArgumentException("이미 가입된 사업자 등록번호 입니다.")
+        else if (tempBusinessRepository.existsByBusinessCode(request.businessNumber)) throw CustomIllegalArgumentException(
+            "가입심사 진행중입니다."
+        )
         val business = businessVerification.getOfficeInfo(request.registrationNumber)
-        return DefaultResponse("")
+        if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
+        if (business.bsnmCmpnm != request.name) throw ValidException("사업자 상호명이 일치하지 않습니다.")
+        if (business.registDe != request.registrationNumber) throw ValidException("등록일자가 일치하지 않습니다.")
+        return DefaultResponse("인증되었습니다.")
     }
 
     fun checkNickName(nickName: String): Boolean {

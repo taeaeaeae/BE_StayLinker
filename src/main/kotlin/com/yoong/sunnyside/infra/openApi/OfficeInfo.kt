@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class OfficeInfo(
     @JsonProperty("EDOffices")
-    val EDOffices: OfficeInfoDetail
+    val EDOffices: OfficeInfoDetail? = null
 )
