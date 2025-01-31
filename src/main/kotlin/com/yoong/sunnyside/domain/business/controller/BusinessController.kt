@@ -4,7 +4,6 @@ import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.service.BusinessService
-import com.yoong.sunnyside.infra.openApi.BusinessVerifyResponse
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -26,7 +25,7 @@ class BusinessController(private val businessService: BusinessService) {
         bindingResult: BindingResult,
     ): ResponseEntity<DefaultResponse> {
 
-        if(bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
+        if (bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
 
         return ResponseEntity.status(HttpStatus.CREATED).body(businessService.signUp(request))
     }
@@ -76,7 +75,7 @@ class BusinessController(private val businessService: BusinessService) {
         description = "businessNumber: 사업자등록번호, registrationNumber : 부동산등록번호, name : 상호명 agentName: 대표자명, registDate : 등록일자"
     )
     @PostMapping("/business-info-verify")
-    fun businessCheck(@RequestBody request: BusinessVerifyRequest): ResponseEntity<DefaultResponse> {
+    fun businessCheck(@RequestBody request: BusinessVerifyRequest): ResponseEntity<BusinessVerifyResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(businessService.checkVerify(request))
     }
 

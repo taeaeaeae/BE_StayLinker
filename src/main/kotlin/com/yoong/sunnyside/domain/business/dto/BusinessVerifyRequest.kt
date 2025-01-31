@@ -1,9 +1,9 @@
 package com.yoong.sunnyside.domain.business.dto
 
 data class BusinessVerifyRequest(
-    val businessNumber: String,
-    val registrationNumber: String,
-    val name: String,
-    val agentName: String,
-    val registDate: String
+    val businessNumber: String,     //사업자등록번호
+    val registrationCode: String,   //부동산등록번호
+    val name: String,               //상호명
+    val agentName: String,          //대표자
+    val registDate: String          //창립일자
 )

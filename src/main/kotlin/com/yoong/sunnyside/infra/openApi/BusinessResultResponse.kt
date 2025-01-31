@@ -1,6 +1,6 @@
 package com.yoong.sunnyside.infra.openApi
 
-data class BusinessVerifyResponse(
+data class BusinessResultResponse(
     val jurirno: String,
     val brkrNm: String,
     val ldCode: String,

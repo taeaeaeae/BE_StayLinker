@@ -14,7 +14,7 @@ class BusinessVerification(
     @Value("\${openapi.key}") private val API_KEY: String
 ) {
 
-    fun getOfficeInfo(jurirno: String): BusinessVerifyResponse {
+    fun getOfficeInfo(jurirno: String): BusinessResultResponse {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
