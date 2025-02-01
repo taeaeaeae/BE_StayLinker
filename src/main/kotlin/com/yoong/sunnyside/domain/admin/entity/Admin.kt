@@ -15,7 +15,7 @@ class Admin(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    val role: MemberRole,
+    val role: MemberRole = MemberRole.ADMIN,
 ){
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

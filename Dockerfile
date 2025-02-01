@@ -16,8 +16,6 @@ COPY gradle/ gradle/
 
 COPY . .
 
-COPY src/main/kotlin /app
-
 RUN dos2unix gradlew && chmod +x gradlew
 
 RUN ./gradlew build -x test --no-daemon

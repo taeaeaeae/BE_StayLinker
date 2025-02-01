@@ -12,6 +12,7 @@ import com.yoong.sunnyside.domain.community.comment.entity.QCommunityReply
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
 import com.yoong.sunnyside.domain.community.entity.QCommunity
+import com.yoong.sunnyside.domain.community.enum_class.CommunityType
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import jakarta.persistence.PersistenceContext
@@ -58,20 +59,20 @@ class CommunityRepositoryImpl(
         return CommunityResponse.from(communityResult, communityComments, communityReplies)
     }
 
-    override fun findAll(cursor: Long?, limit: Int, search: String?): List<Community> {
+    override fun findAll(cursor: Long?, limit: Int, search: String?, communityType: CommunityType, orderBy: Boolean): List<Community> {
 
         val safeLimit = if (limit in 1..1000) limit else 10
 
         val query = queryFactory
             .selectFrom(community)
             .where(
+                community.communityType.eq(communityType),
                 cursor?.let{ community.id.lt(it) },
                 search?.let {
                     community.title.like(it)
                         .or(community.description.like(it))
                            },
-            )
-            .orderBy(community.id.desc())
+            ).orderBy(community.id.desc())
             .limit(safeLimit.toLong())
             .fetch()
 
