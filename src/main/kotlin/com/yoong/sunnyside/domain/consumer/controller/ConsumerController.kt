@@ -3,10 +3,7 @@ package com.yoong.sunnyside.domain.consumer.controller
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerLoginRequest
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
-import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
+import com.yoong.sunnyside.domain.consumer.dto.*
 import com.yoong.sunnyside.domain.consumer.service.ConsumerService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
@@ -69,6 +66,15 @@ class ConsumerController(
         @AuthenticationPrincipal principal: MemberPrincipal
     ): ResponseEntity<DefaultResponse>
             = ResponseEntity.status(HttpStatus.OK).body(consumerService.deleteConsumer(principal.id))
+
+    @Operation(summary = "외국인 등록증 진위 여부 확인 (외국인 등록 번호)")
+    @PreAuthorize("hasRole('CONSUMER')")
+    @PostMapping("/alien-registration-card")
+    fun verifyAlienRegistrationCardByString(
+        @AuthenticationPrincipal principal: MemberPrincipal,
+        @RequestBody alienRegistrationCardRequest: AlienRegistrationCardRequest
+    ):ResponseEntity<DefaultResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(consumerService.verifyAlienRegistrationCardByString(alienRegistrationCardRequest, principal.id))
 
 
 }

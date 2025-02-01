@@ -9,10 +9,12 @@ import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
 import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
+import com.yoong.sunnyside.infra.encrypt.utils.AESUtil
 import com.yoong.sunnyside.infra.redis.RedisUtils
 import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.config.PasswordEncoderConfig
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
+import com.yoong.sunnyside.infra.web_client.hikorea.HiKoreaClient
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
@@ -30,13 +32,15 @@ class ConsumerServiceTest : StringSpec({
     val jwtHelper = mockk<JwtHelper>()
     val passwordEncoder = mockk<PasswordEncoder>()
     val redisUtils = mockk<RedisUtils>()
+    val aesUtil = mockk<AESUtil>()
+    val hiKoreaClient = mockk<HiKoreaClient>()
     lateinit var consumerService: ConsumerService
 
     beforeTest {
         every { passwordEncoderConfig.passwordEncoder() } returns passwordEncoder
         every { passwordEncoder.encode(any()) } returns "password"
 
-        consumerService = ConsumerService(consumerRepository, passwordEncoderConfig, jwtHelper, redisUtils)
+        consumerService = ConsumerService(consumerRepository, passwordEncoderConfig, jwtHelper, redisUtils, hiKoreaClient, aesUtil)
     }
 
     "패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException"{

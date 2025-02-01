@@ -5,6 +5,7 @@ import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
 import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
+import com.yoong.sunnyside.domain.business.entity.Business
 import com.yoong.sunnyside.domain.business.entity.TempBusiness
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
@@ -42,6 +43,7 @@ class BusinessService(
                 nickName = request.nickName,
             )
         )
+
         return DefaultResponse("created")
     }
 

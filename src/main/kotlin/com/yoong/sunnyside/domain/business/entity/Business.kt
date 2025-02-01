@@ -1,5 +1,6 @@
 package com.yoong.sunnyside.domain.business.entity
 
+import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -30,6 +31,10 @@ class Business(
     @Column(name = "nickname", nullable = false)
     var nickName: String,
 
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    var role: MemberRole = MemberRole.BUSINESS
+
     ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +44,7 @@ class Business(
     val createdAt: LocalDateTime = LocalDateTime.now()
 
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime? = null
+    var updatedAt: LocalDateTime = LocalDateTime.now()
 
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null

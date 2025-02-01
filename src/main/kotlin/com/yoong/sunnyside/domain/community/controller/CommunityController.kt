@@ -4,6 +4,7 @@ import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
+import com.yoong.sunnyside.domain.community.enum_class.CommunityType
 import com.yoong.sunnyside.domain.community.service.CommunityService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
@@ -36,8 +37,10 @@ class CommunityController(
         @RequestParam cursor: Long?,
         @RequestParam(defaultValue = "10") limit: Int,
         @RequestParam search: String?,
+        @RequestParam communityType: CommunityType,
+        @RequestParam orderBy: Boolean
     ): ResponseEntity<List<AllCommunityResponse>>
-            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search))
+            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search, communityType, orderBy))
 
     @Operation(summary = "커뮤니티 특정 글 조회 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @GetMapping("/{communityId}")
