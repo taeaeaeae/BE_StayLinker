@@ -16,7 +16,6 @@ class WebClientConfig(
     @Bean
     fun connect(): WebClient {
         return WebClient.builder()
-            .baseUrl("https://datahub-dev.scraping.co.kr")
             .defaultHeaders{
                 it.add(HttpHeaders.CONTENT_TYPE, "application/json")
                 it.add(HttpHeaders.ACCEPT_CHARSET, "utf-8")

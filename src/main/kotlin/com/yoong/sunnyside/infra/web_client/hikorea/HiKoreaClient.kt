@@ -26,7 +26,7 @@ class HiKoreaClient(
 
         return webClient.connect()
             .post()
-            .uri("/scrap/docInq/hikorea/ForeignerAuthenticity")
+            .uri("https://datahub-dev.scraping.co.kr/scrap/docInq/hikorea/ForeignerAuthenticity")
             .body(BodyInserters.fromValue(alienRegistrationCardRequestMap))
             .retrieve()
             .bodyToMono(object : ParameterizedTypeReference<Map<String, Any>>() {})

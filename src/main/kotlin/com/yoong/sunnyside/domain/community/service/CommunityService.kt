@@ -6,6 +6,7 @@ import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
+import com.yoong.sunnyside.domain.community.enum_class.CommunityType
 import com.yoong.sunnyside.domain.community.repository.CommunityRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -23,9 +24,9 @@ class CommunityService(
         return DefaultResponse("Community created")
     }
 
-    fun getAllCommunity(cursor: Long?, limit: Int, search: String?): List<AllCommunityResponse> {
+    fun getAllCommunity(cursor: Long?, limit: Int, search: String?, communityType: CommunityType, orderBy: Boolean): List<AllCommunityResponse> {
 
-        val communities = communityRepository.findAll(cursor, limit, search)
+        val communities = communityRepository.findAll(cursor, limit, search, communityType, orderBy)
 
         return communities.map { AllCommunityResponse.from(it) }
     }
