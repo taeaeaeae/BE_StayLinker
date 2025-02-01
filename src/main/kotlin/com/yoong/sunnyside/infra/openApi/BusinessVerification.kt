@@ -2,6 +2,7 @@ package com.yoong.sunnyside.infra.openApi
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yoong.sunnyside.common.exception.ValidException
+import com.yoong.sunnyside.infra.web_client.WebClientConfig
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.util.UriComponentsBuilder
