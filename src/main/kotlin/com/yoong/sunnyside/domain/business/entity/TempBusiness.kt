@@ -30,6 +30,9 @@ class TempBusiness(
     @Column(name = "nickname", nullable = false)
     var nickName: String,
 
+    @Column(name = "openingdate", nullable = false)
+    var openingDate: String,
+
     @Column(name = "is_approved")
     var isApproved: Boolean? = null,
 
@@ -54,7 +57,8 @@ class TempBusiness(
             password: String,
             address: String,
             businessCertificate: String,
-            nickName: String
+            nickName: String,
+            openingDate: String,
         ): TempBusiness {
             return TempBusiness(
                 businessCode = businessCode,
@@ -64,7 +68,8 @@ class TempBusiness(
                 password = password,
                 address = address,
                 businessCertificate = businessCertificate,
-                nickName = nickName
+                nickName = nickName,
+                openingDate = openingDate
             )
         }
     }

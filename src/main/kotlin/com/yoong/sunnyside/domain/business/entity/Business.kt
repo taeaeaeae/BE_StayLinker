@@ -31,6 +31,9 @@ class Business(
     @Column(name = "nickname", nullable = false)
     var nickName: String,
 
+    @Column(name = "openingdate", nullable = false)
+    var openingDate: String,
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     var role: MemberRole = MemberRole.BUSINESS
@@ -44,7 +47,7 @@ class Business(
     val createdAt: LocalDateTime = LocalDateTime.now()
 
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime? = null
 
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null
@@ -61,7 +64,8 @@ class Business(
                 password = tempBusiness.password,
                 address = tempBusiness.address,
                 businessCertificate = tempBusiness.businessCertificate,
-                nickName = tempBusiness.nickName
+                nickName = tempBusiness.nickName,
+                openingDate = tempBusiness.openingDate
             )
         }
     }
