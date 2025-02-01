@@ -2,6 +2,7 @@ package com.yoong.sunnyside.infra.security.config
 
 import com.yoong.sunnyside.infra.security.CustomAccessDeniedHandler
 import com.yoong.sunnyside.infra.security.CustomAuthenticationEntryPoint
+import com.yoong.sunnyside.infra.security.CustomInternalServerErrorHandler
 import com.yoong.sunnyside.infra.security.jwt.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -24,6 +25,7 @@ class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
+    private val customInternalServerErrorHandler: CustomInternalServerErrorHandler
 ) {
 
     @Bean
@@ -46,7 +48,8 @@ class SecurityConfig(
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.NEVER)
             }
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(customInternalServerErrorHandler, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter, CustomInternalServerErrorHandler::class.java)
             .exceptionHandling {
                 it.authenticationEntryPoint(authenticationEntryPoint)
                 it.accessDeniedHandler(accessDeniedHandler)

@@ -37,6 +37,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail:3.3.0")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
     implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")

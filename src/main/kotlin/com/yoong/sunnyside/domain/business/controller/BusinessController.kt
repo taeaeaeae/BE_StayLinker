@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.domain.business.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.service.BusinessService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,7 +20,13 @@ class BusinessController(private val businessService: BusinessService) {
 
     @Operation(summary = "사업자 신청")
     @PostMapping("/apply")
-    fun signup(@RequestBody request: BusinessSignupRequest): ResponseEntity<DefaultResponse> {
+    fun signup(
+        @RequestBody request: BusinessSignupRequest,
+        bindingResult: BindingResult,
+    ): ResponseEntity<DefaultResponse> {
+
+        if(bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
+
         return ResponseEntity.status(HttpStatus.CREATED).body(businessService.signUp(request))
     }
 
