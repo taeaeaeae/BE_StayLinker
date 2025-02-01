@@ -28,7 +28,7 @@ class AuthController(
         bindingResult: BindingResult
     ): ResponseEntity<NicknameResponse>{
 
-        if(bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
+        if (bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
 
         return ResponseEntity.status(HttpStatus.OK).body(authService.checkNickname(checkNicknameDto.nickname))
     }
@@ -59,7 +59,7 @@ class AuthController(
     @Operation(summary = "비밀번호 찾기 API")
     fun forgotPassword(
         @RequestBody forgotPasswordRequest: ForgotPasswordRequest,
-    ):ResponseEntity<DefaultResponse>
+    ): ResponseEntity<DefaultResponse>
         = ResponseEntity.status(HttpStatus.OK).body(authService.forgotPassword(forgotPasswordRequest))
 
 }
