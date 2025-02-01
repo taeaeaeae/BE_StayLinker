@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.domain.auth.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.auth.dto.*
 import com.yoong.sunnyside.domain.auth.service.AuthService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
