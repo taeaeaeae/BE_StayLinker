@@ -2,6 +2,7 @@ package com.yoong.sunnyside.domain.community.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
+import com.yoong.sunnyside.common.type_class.Cursor
 import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityListResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
@@ -35,10 +36,10 @@ class CommunityService(
 
         return AllCommunityResponse.from(communities, when(setOrder){
             SetOrder.POPULAR -> {
-                    communities.last().community.id!!
+                Cursor.LongCursor(communities.last().community.id!!)
             }
             SetOrder.NEWEST, SetOrder.OLDEST -> {
-                communities.last().community.createdAt
+                Cursor.LocalDateTimeCursor(communities.last().community.createdAt)
             }
         })
     }

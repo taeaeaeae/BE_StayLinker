@@ -1,9 +1,12 @@
 package com.yoong.sunnyside.domain.community.repository
 
+import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
+import com.yoong.sunnyside.common.type_class.Cursor
 import com.yoong.sunnyside.domain.community.comment.entity.QCommunityComment
 import com.yoong.sunnyside.domain.community.comment.entity.QCommunityReply
+import com.yoong.sunnyside.domain.community.dto.CommunityProjectionDto
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
 import com.yoong.sunnyside.domain.community.entity.QCommunity
@@ -12,10 +15,6 @@ import com.yoong.sunnyside.domain.community.enum_class.SetOrder
 import com.yoong.sunnyside.domain.community.favorite.entity.QCommunityFavorite
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
-import com.querydsl.core.Tuple
-import com.querydsl.core.types.Projections
-import com.querydsl.jpa.impl.JPAQuery
-import com.yoong.sunnyside.domain.community.dto.CommunityProjectionDto
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -67,12 +66,12 @@ class CommunityRepositoryImpl(
     override fun findAll(cursor: String?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): List<CommunityProjectionDto> {
 
         //sealed class 로 빼는게 나을 듯??
-        val tempCursor:Any? = when {
-            cursor?.toLongOrNull() != null -> cursor.toLong()
+        val tempCursor:Cursor = when {
+            cursor?.toLongOrNull() != null -> Cursor.LongCursor(cursor.toLong())
             kotlin.runCatching {
                 LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            }.isSuccess ->  LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            else -> null
+            }.isSuccess ->  Cursor.LocalDateTimeCursor(LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+            else -> Cursor.NullCursor(cursor)
         }
 
         val likeCount = favorite.communityId.count().coalesce(0)
@@ -104,7 +103,10 @@ class CommunityRepositoryImpl(
         when (setOrder) {
             SetOrder.NEWEST -> {
                 query.where(
-                    cursor?.let{ community.createdAt.lt(tempCursor as LocalDateTime) },
+                    when(tempCursor){
+                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+                        else -> null
+                    },
                     search?.let {
                         community.title.like(it)
                             .or(community.description.like(it))
@@ -115,7 +117,10 @@ class CommunityRepositoryImpl(
             }
             SetOrder.OLDEST -> {
                 query.where(
-                    cursor?.let{ community.createdAt.lt(tempCursor as LocalDateTime) },
+                    when(tempCursor){
+                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+                        else -> null
+                    },
                     search?.let {
                         community.title.like(it)
                             .or(community.description.like(it))
@@ -127,7 +132,10 @@ class CommunityRepositoryImpl(
             SetOrder.POPULAR -> {
 
                 query.where(
-                        cursor?.let { community.id.lt(tempCursor as Long) },
+                    when(tempCursor){
+                        is Cursor.LongCursor -> community.id.lt(tempCursor.value)
+                        else -> null
+                    },
                         search?.let {
                             community.title.like(it)
                                 .or(community.description.like(it))

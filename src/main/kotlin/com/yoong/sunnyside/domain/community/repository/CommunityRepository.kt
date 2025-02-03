@@ -1,6 +1,5 @@
 package com.yoong.sunnyside.domain.community.repository
 
-import com.querydsl.core.Tuple
 import com.yoong.sunnyside.domain.community.dto.CommunityProjectionDto
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
