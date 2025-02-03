@@ -1,19 +1,24 @@
 package com.yoong.sunnyside.domain.consumer.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.exception.AccessDeniedException
 import com.yoong.sunnyside.common.exception.CustomIllegalArgumentException
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerLoginRequest
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
-import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
+import com.yoong.sunnyside.domain.consumer.dto.*
+import com.yoong.sunnyside.domain.consumer.entity.Consumer
 import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
+import com.yoong.sunnyside.domain.consumer.repository.TempConsumerJpaRepository
+import com.yoong.sunnyside.infra.encrypt.utils.AESUtil
 import com.yoong.sunnyside.infra.redis.RedisUtils
+import com.yoong.sunnyside.infra.security.MemberPrincipal
 import com.yoong.sunnyside.infra.security.config.PasswordEncoderConfig
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
+import com.yoong.sunnyside.infra.web_client.hikorea.HiKoreaClient
 import jakarta.transaction.Transactional
+import org.slf4j.LoggerFactory
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,10 +26,14 @@ class ConsumerService(
     private val consumerRepository: ConsumerRepository,
     private val passwordEncoderConfig: PasswordEncoderConfig,
     private val jwtHelper: JwtHelper,
-    private val redisUtils: RedisUtils
+    private val redisUtils: RedisUtils,
+    private val hiKoreaClient: HiKoreaClient,
+    private val aesUtil: AESUtil
 ){
 
     private val passwordEncoder = passwordEncoderConfig.passwordEncoder()
+
+    val log = LoggerFactory.getLogger("ConsumerService")
 
     @Transactional
     fun signUp(request : ConsumerSignupRequest): DefaultResponse{
@@ -85,4 +94,33 @@ class ConsumerService(
 
         consumer.changePassword(passwordEncoder.encode(password))
     }
+
+    @Transactional
+    fun verifyAlienRegistrationCardByString(alienRegistrationCardRequest: AlienRegistrationCardRequest, id: Long): DefaultResponse{
+
+        val apiResult = hiKoreaClient.request(alienRegistrationCardRequest)
+
+        log.info(apiResult.toString())
+
+        val apiData = (apiResult["data"] as Map<*, *>).mapNotNull{
+
+            if (it.key is String && it.value is String) it.key as String to it.value as String else null
+        }.toMap()
+
+        log.info(apiData.toString())
+
+        if(apiData["REGCHECKYN"].toString() != "Y") throw AccessDeniedException("외국인 등록 정보가 일치하지 않습니다")
+
+        val tempConsumer = consumerRepository.tempUserFindByIdOrNull(id) ?: throw ModelNotFoundException("해당 유저가 존재하지 않습니다")
+
+        consumerRepository.save(Consumer(alienRegistrationCardRequest, tempConsumer))
+
+        return DefaultResponse(apiData["REGCHECKYN"].toString())
+
+    }
+
+    fun verifyAlienRegistrationCardByImage(principal: MemberPrincipal, alienRegistrationCardRequest: AlienRegistrationCardRequest): DefaultResponse{
+        TODO()
+    }
+
 }

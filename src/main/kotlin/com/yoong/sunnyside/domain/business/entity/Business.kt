@@ -1,5 +1,6 @@
 package com.yoong.sunnyside.domain.business.entity
 
+import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -30,6 +31,13 @@ class Business(
     @Column(name = "nickname", nullable = false)
     var nickName: String,
 
+    @Column(name = "openingdate", nullable = false)
+    var openingDate: String,
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    var role: MemberRole = MemberRole.BUSINESS
+
     ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +64,8 @@ class Business(
                 password = tempBusiness.password,
                 address = tempBusiness.address,
                 businessCertificate = tempBusiness.businessCertificate,
-                nickName = tempBusiness.nickName
+                nickName = tempBusiness.nickName,
+                openingDate = tempBusiness.openingDate
             )
         }
     }

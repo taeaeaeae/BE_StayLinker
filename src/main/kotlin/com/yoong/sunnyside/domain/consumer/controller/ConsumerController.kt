@@ -1,11 +1,9 @@
 package com.yoong.sunnyside.domain.consumer.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerLoginRequest
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
-import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
-import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
+import com.yoong.sunnyside.domain.consumer.dto.*
 import com.yoong.sunnyside.domain.consumer.service.ConsumerService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
@@ -14,6 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "소비자", description = "소비자 로그인 관련 CRUD")
@@ -26,9 +25,14 @@ class ConsumerController(
     @Operation(summary = "소비자 회원 가입 API")
     @PostMapping("/signup")
     fun signup(
-        @RequestBody consumerSignupRequest: ConsumerSignupRequest
-    ): ResponseEntity<DefaultResponse>
-    = ResponseEntity.status(HttpStatus.CREATED).body(consumerService.signUp(consumerSignupRequest))
+        @RequestBody consumerSignupRequest: ConsumerSignupRequest,
+        bindingResult: BindingResult,
+    ): ResponseEntity<DefaultResponse>{
+
+        if(bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(consumerService.signUp(consumerSignupRequest))
+    }
 
     @Operation(summary = "소비자 로그인 API")
     @PostMapping("/login")
@@ -62,6 +66,15 @@ class ConsumerController(
         @AuthenticationPrincipal principal: MemberPrincipal
     ): ResponseEntity<DefaultResponse>
             = ResponseEntity.status(HttpStatus.OK).body(consumerService.deleteConsumer(principal.id))
+
+    @Operation(summary = "외국인 등록증 진위 여부 확인 (외국인 등록 번호)")
+    @PreAuthorize("hasRole('CONSUMER')")
+    @PostMapping("/alien-registration-card")
+    fun verifyAlienRegistrationCardByString(
+        @AuthenticationPrincipal principal: MemberPrincipal,
+        @RequestBody alienRegistrationCardRequest: AlienRegistrationCardRequest
+    ):ResponseEntity<DefaultResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(consumerService.verifyAlienRegistrationCardByString(alienRegistrationCardRequest, principal.id))
 
 
 }

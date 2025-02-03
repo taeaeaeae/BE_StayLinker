@@ -33,7 +33,6 @@ class CommunityService(
 
         val communities = communityRepository.findAll(cursor, limit, search, communityType, setOrder)
 
-
         return AllCommunityResponse.from(communities, when(setOrder){
             SetOrder.POPULAR -> {
                 Cursor.LongCursor(communities.last().community.id!!)

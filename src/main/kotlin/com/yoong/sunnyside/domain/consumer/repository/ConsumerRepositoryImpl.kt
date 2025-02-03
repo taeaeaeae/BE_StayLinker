@@ -30,4 +30,8 @@ class ConsumerRepositoryImpl(
     override fun existsByNickname(nickname: String): Boolean {
         return consumerJpaRepository.existsByNickname(nickname)
     }
+
+    override fun tempUserFindByIdOrNull(id: Long): TempConsumer? {
+        return tempConsumerJpaRepository.findByIdOrNull(id)
+    }
 }

@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.domain.business.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.service.BusinessService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,7 +20,13 @@ class BusinessController(private val businessService: BusinessService) {
 
     @Operation(summary = "사업자 신청")
     @PostMapping("/apply")
-    fun signup(@RequestBody request: BusinessSignupRequest): ResponseEntity<DefaultResponse> {
+    fun signup(
+        @RequestBody request: BusinessSignupRequest,
+        bindingResult: BindingResult,
+    ): ResponseEntity<DefaultResponse> {
+
+        if (bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
+
         return ResponseEntity.status(HttpStatus.CREATED).body(businessService.signUp(request))
     }
 
@@ -62,10 +70,13 @@ class BusinessController(private val businessService: BusinessService) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TODO())
     }
 
-    @Operation(summary = "사업자 등록 번호 검사")
-    @PostMapping("/businessNumber")
-    fun numberCheck(request: BusinessNumberRequest): ResponseEntity<DefaultResponse> {
-        return ResponseEntity.status(HttpStatus.OK).body(TODO())
+    @Operation(
+        summary = "부동산 정보 검사",
+        description = "businessNumber: 사업자등록번호, registrationNumber : 부동산등록번호, name : 상호명 agentName: 대표자명, registDate : 등록일자"
+    )
+    @PostMapping("/business-info-verify")
+    fun businessCheck(@RequestBody request: BusinessVerifyRequest): ResponseEntity<BusinessVerifyResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(businessService.checkVerify(request))
     }
 
     @Operation(summary = "사업자 등록증 이미지 등록(업로드 한 링크 저장)")

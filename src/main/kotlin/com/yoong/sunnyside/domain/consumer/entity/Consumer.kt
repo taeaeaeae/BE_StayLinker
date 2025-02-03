@@ -1,5 +1,7 @@
 package com.yoong.sunnyside.domain.consumer.entity
 
+import com.yoong.sunnyside.domain.consumer.dto.AlienRegistrationCardRequest
+import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
 import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
 import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
@@ -14,7 +16,7 @@ import java.time.LocalDateTime
 @Table
 class Consumer(
     @Column(name = "email", nullable = false)
-    val email: String,
+    var email: String,
 
     @Column(name = "password", nullable = false)
     var password: String,
@@ -26,7 +28,7 @@ class Consumer(
     var nickname: String,
 
     @Column(name = "country", nullable = false)
-    val country: String,
+    var country: String,
 
     @Column(name = "phone_number", nullable = false)
     var phoneNumber: String,
@@ -69,4 +71,29 @@ class Consumer(
 
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null
+
+    constructor(alienRegistrationCardRequest: AlienRegistrationCardRequest, tempConsumer: TempConsumer) : this (
+        email = tempConsumer.email,
+        password = tempConsumer.password,
+        address = tempConsumer.address,
+        nickname = tempConsumer.nickname,
+        country = tempConsumer.country,
+        phoneNumber = tempConsumer.phoneNumber,
+        foreignNumber = alienRegistrationCardRequest.toForeignJiminEncrypt(),
+        foreignCreateAt = alienRegistrationCardRequest.toIssueDateEncrypt(),
+        role = tempConsumer.role
+    )
+
+    //임시 적용
+    constructor(consumerSignupRequest: ConsumerSignupRequest, encodedPassword: String): this (
+        email = consumerSignupRequest.email,
+        password = encodedPassword,
+        address = consumerSignupRequest.address,
+        nickname = consumerSignupRequest.nickname,
+        country = consumerSignupRequest.country,
+        phoneNumber = consumerSignupRequest.phoneNumber,
+        foreignNumber = "",
+        foreignCreateAt = "",
+        role = MemberRole.CONSUMER
+    )
 }
