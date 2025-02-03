@@ -4,9 +4,12 @@ import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
+import com.yoong.sunnyside.domain.community.enum_class.CommunityType
+import com.yoong.sunnyside.domain.community.enum_class.SetOrder
 import com.yoong.sunnyside.domain.community.service.CommunityService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -33,11 +36,17 @@ class CommunityController(
     @Operation(summary = "커뮤니티 글 전체 조회 API")
     @GetMapping
     fun getAllCommunity(
-        @RequestParam cursor: Long?,
+        @Parameter(description = "String( number | LocalDateTime 타입이 아닐 경우 예외 발생 )")
+        @RequestParam cursor: String?,
         @RequestParam(defaultValue = "10") limit: Int,
+        @Parameter(description = "Search 는 검색어 입력 (공란 입력 시에 전체 데이터 조회)" )
         @RequestParam search: String?,
-    ): ResponseEntity<List<AllCommunityResponse>>
-            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search))
+        @Parameter(description = "default == ALL" )
+        @RequestParam communityType: CommunityType = CommunityType.ALL,
+        @Parameter(description = "default == NEWEST" )
+        @RequestParam setOrder: SetOrder = SetOrder.NEWEST
+    ): ResponseEntity<AllCommunityResponse>
+            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search, communityType, setOrder))
 
     @Operation(summary = "커뮤니티 특정 글 조회 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @GetMapping("/{communityId}")
