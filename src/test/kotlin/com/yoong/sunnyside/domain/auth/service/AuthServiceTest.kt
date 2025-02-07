@@ -8,7 +8,6 @@ import com.yoong.sunnyside.domain.auth.dto.ForgotPasswordRequest
 import com.yoong.sunnyside.domain.auth.dto.NicknameResponse
 import com.yoong.sunnyside.domain.auth.dto.VerifyCodeRequest
 import com.yoong.sunnyside.domain.auth.repository.AuthRepository
-import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
 import com.yoong.sunnyside.domain.business.service.BusinessService
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
 import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
@@ -48,7 +47,7 @@ class AuthServiceTest : StringSpec({
         adminService = adminService
     )
 
-    "닉네임 중복 검사 중복 발생 시에 CustomIllegalArgumentException"{
+    "닉네임 중복 검사 중복 발생 시에 CustomIllegalArgumentException" {
 
         every { authRepository.validNickname(any()) } returns true
 
@@ -59,7 +58,7 @@ class AuthServiceTest : StringSpec({
         }
     }
 
-    "닉네임 중복 검사 정상 로직"{
+    "닉네임 중복 검사 정상 로직" {
 
         every { authRepository.validNickname(any()) } returns false
 
@@ -68,7 +67,7 @@ class AuthServiceTest : StringSpec({
         result shouldBe NicknameResponse(true)
     }
 
-    "인증 이메일 정상 동작"{
+    "인증 이메일 정상 동작" {
 
         val emailRequest = EmailRequest(
             "test@test.com",
@@ -88,7 +87,7 @@ class AuthServiceTest : StringSpec({
         redisResult shouldBe "code"
     }
 
-    "인증 번호가 일치하지 않을 경우 CustomIllegalArgumentException"{
+    "인증 번호가 일치하지 않을 경우 CustomIllegalArgumentException" {
 
         val verifyCodeRequest = VerifyCodeRequest(
             email = "test@test.com",
@@ -106,7 +105,7 @@ class AuthServiceTest : StringSpec({
 
     }
 
-    "인증 번호 검증 정상 동작"{
+    "인증 번호 검증 정상 동작" {
 
         val verifyCodeRequest = VerifyCodeRequest(
             email = "test@test.com",
@@ -140,7 +139,7 @@ class AuthServiceTest : StringSpec({
 
     }
 
-    "토큰 부여시 권한 체크 정상 작동 확인"{
+    "토큰 부여시 권한 체크 정상 작동 확인" {
 
         val principal = MemberPrincipal(
             1L,
@@ -153,7 +152,7 @@ class AuthServiceTest : StringSpec({
         result.role shouldBe "CONSUMER"
     }
 
-    "비밀번호 복구 정상 작동 확인"{
+    "비밀번호 복구 정상 작동 확인" {
 
         val forgotPasswordRequest = ForgotPasswordRequest(
             email = "test@test.com",

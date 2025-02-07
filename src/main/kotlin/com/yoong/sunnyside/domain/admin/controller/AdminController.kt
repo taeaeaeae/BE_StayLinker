@@ -4,7 +4,6 @@ import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.domain.admin.dto.CompanionRequest
 import com.yoong.sunnyside.domain.admin.service.AdminService
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
-import com.yoong.sunnyside.domain.business.dto.TempBusinessResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -37,13 +36,13 @@ class AdminController(
 
     @Operation(summary = "사업자 심사 단건 조회", description = "auditId에 임시사업자 아이디")
     @GetMapping("/audit/{auditId}")
-    fun audit(@PathVariable("auditId") aid: Long): ResponseEntity<TempBusinessResponse> {
+    fun audit(@PathVariable("auditId") aid: Long): ResponseEntity<BusinessResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(TODO())
     }
 
     @Operation(summary = "사업자 심사 목록 조회")
     @GetMapping("/audit")
-    fun getAllApplication(): ResponseEntity<List<TempBusinessResponse>> {
+    fun getAllApplication(): ResponseEntity<List<BusinessResponse>> {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getAllApplication())
     }
 
