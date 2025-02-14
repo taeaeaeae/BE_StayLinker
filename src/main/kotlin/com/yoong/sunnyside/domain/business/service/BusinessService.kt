@@ -34,6 +34,11 @@ class BusinessService(
         if (businessRepository.existsByBusinessCode(request.businessCode))
             throw IllegalArgumentException("business code ${request.businessCode} already exists")
 
+        val business = businessVerification.getOfficeInfo(request.registrationCode)
+        if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
+        if (business.bsnmCmpnm != request.businessName) throw ValidException("사업자 상호명이 일치하지 않습니다.")
+        if (business.registDe != request.registrationCode) throw ValidException("등록일자가 일치하지 않습니다.")
+        
         businessRepository.save(
             Business.from(request)
         )
