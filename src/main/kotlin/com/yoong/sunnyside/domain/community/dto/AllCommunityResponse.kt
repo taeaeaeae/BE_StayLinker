@@ -1,21 +1,17 @@
 package com.yoong.sunnyside.domain.community.dto
 
-import com.yoong.sunnyside.domain.community.entity.Community
+import com.yoong.sunnyside.common.type_class.Cursor
 
 data class AllCommunityResponse(
-    val userId: Long,
-    val communityId: Long,
-    val title: String,
-    val description: String
+    val posts: List<CommunityListResponse>,
+    val nextCursor: Cursor,
 ){
     companion object {
-        fun from(community: Community): AllCommunityResponse {
-            return AllCommunityResponse(
-                userId = community.consumerId,
-                communityId = community.id!!,
-                title = community.title,
-                description = community.description
-            )
+        fun from(communityList: List<CommunityProjectionDto>, lastCursor: Cursor): AllCommunityResponse {
+          return AllCommunityResponse(
+              posts = communityList.map { CommunityListResponse.from(it) },
+              nextCursor = lastCursor,
+          )
         }
     }
 }
