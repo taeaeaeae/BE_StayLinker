@@ -3,7 +3,6 @@ package com.yoong.sunnyside.domain.community.repository
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
-import com.yoong.sunnyside.common.type_class.Cursor
 import com.yoong.sunnyside.domain.community.comment.entity.QCommunityComment
 import com.yoong.sunnyside.domain.community.comment.entity.QCommunityReply
 import com.yoong.sunnyside.domain.community.dto.CommunityProjectionDto
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Repository
 class CommunityRepositoryImpl(
@@ -63,7 +61,7 @@ class CommunityRepositoryImpl(
         return CommunityResponse.from(communityResult, communityComments, communityReplies)
     }
 
-    override fun findAll(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): List<CommunityProjectionDto> {
+    override fun findAll(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType): List<CommunityProjectionDto> {
         //        val tempCursor:Cursor = when {
 //            cursor?.toLongOrNull() != null -> Cursor.LongCursor(cursor.toLong())
 //            kotlin.runCatching {
@@ -98,54 +96,64 @@ class CommunityRepositoryImpl(
             )
         }
 
-        when (setOrder) {
-            SetOrder.NEWEST -> {
-                query.where(
-//                    when(tempCursor){
-//                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
-//                        else -> null
-//                    },
-                    community.createdAt.lt(cursor),
-                    search?.let {
-                        community.title.like(it)
-                            .or(community.description.like(it))
-                    },
-                )
-                    .orderBy(community.createdAt.desc())
-                    .limit(safeLimit.toLong())
-            }
-            SetOrder.OLDEST -> {
-                query.where(
-//                    when(tempCursor){
-//                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
-//                        else -> null
-//                    },
-                    community.createdAt.lt(cursor),
-                    search?.let {
-                        community.title.like(it)
-                            .or(community.description.like(it))
-                    },
-                )
-                    .orderBy(community.createdAt.asc())
-                    .limit(safeLimit.toLong())
-            }
-            SetOrder.POPULAR -> {
+        query.where(
+            community.createdAt.lt(cursor),
+            search?.let {
+                community.title.like(it)
+                    .or(community.description.like(it))
+            },
+        )
+            .orderBy(community.createdAt.desc())
+            .limit(safeLimit.toLong())
 
-                query.where(
-//                    when(tempCursor){
-//                        is Cursor.LongCursor -> community.id.lt(tempCursor.value)
-//                        else -> null
+//        when (setOrder) {
+//            SetOrder.NEWEST -> {
+//                query.where(
+////                    when(tempCursor){
+////                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+////                        else -> null
+////                    },
+//                    community.createdAt.lt(cursor),
+//                    search?.let {
+//                        community.title.like(it)
+//                            .or(community.description.like(it))
 //                    },
-                    community.createdAt.lt(cursor),
-                    search?.let {
-                            community.title.like(it)
-                                .or(community.description.like(it))
-                        },
-                    )
-                    .orderBy(likeCount.desc() , community.id.desc())
-                    .limit(safeLimit.toLong())
-            }
-        }
+//                )
+//                    .orderBy(community.createdAt.desc())
+//                    .limit(safeLimit.toLong())
+//            }
+//            SetOrder.OLDEST -> {
+//                query.where(
+////                    when(tempCursor){
+////                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+////                        else -> null
+////                    },
+//                    community.createdAt.lt(cursor),
+//                    search?.let {
+//                        community.title.like(it)
+//                            .or(community.description.like(it))
+//                    },
+//                )
+//                    .orderBy(community.createdAt.asc())
+//                    .limit(safeLimit.toLong())
+//            }
+//            SetOrder.POPULAR -> {
+//
+//                query.where(
+////                    when(tempCursor){
+////                        is Cursor.LongCursor -> community.id.lt(tempCursor.value)
+////                        else -> null
+////                    },
+//                    community.createdAt.lt(cursor),
+//                    search?.let {
+//                            community.title.like(it)
+//                                .or(community.description.like(it))
+//                        },
+//                    )
+//                    .orderBy(likeCount.desc() , community.id.desc())
+//                    .limit(safeLimit.toLong())
+//            }
+//        }
 
         return query.fetch()
     }

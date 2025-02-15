@@ -27,18 +27,13 @@ class CommunityService(
         return DefaultResponse("Community created")
     }
 
-    fun getAllCommunity(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): AllCommunityResponse {
+    fun getAllCommunity(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType): AllCommunityResponse {
 
-        val communities = communityRepository.findAll(cursor, limit, search, communityType, setOrder)
+        val communities = communityRepository.findAll(cursor, limit, search, communityType)
 
-        return AllCommunityResponse.from(communities, when(setOrder){
-            SetOrder.POPULAR -> {
-                Cursor.LongCursor(communities.last().community.id!!)
-            }
-            SetOrder.NEWEST, SetOrder.OLDEST -> {
+        return AllCommunityResponse.from(communities,
                 Cursor.LocalDateTimeCursor(communities.last().community.createdAt)
-            }
-        })
+        )
     }
 
     fun getCommunity(communityId: Long): CommunityResponse {
