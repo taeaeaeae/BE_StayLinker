@@ -78,17 +78,12 @@ class AuthService(
         )
 
         when (forgotPasswordRequest.role) {
-            MemberRole.BUSINESS -> businessService.changePassword(
+            MemberRole.BUSINESS, MemberRole.TEMP_BUSINESS -> businessService.changePassword(
                 forgotPasswordRequest.newPassword,
                 forgotPasswordRequest.email
             )
 
-            MemberRole.TEMP_BUSINESS -> businessService.changePassword(
-                forgotPasswordRequest.newPassword,
-                forgotPasswordRequest.email
-            )
-
-            MemberRole.CONSUMER -> consumerService.forgotPassword(
+            MemberRole.CONSUMER, MemberRole.TEMP_CONSUMER -> consumerService.forgotPassword(
                 forgotPasswordRequest.newPassword,
                 forgotPasswordRequest.email
             )

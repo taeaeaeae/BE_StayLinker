@@ -7,12 +7,11 @@ import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
 import com.yoong.sunnyside.domain.consumer.dto.*
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
-import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
-import com.yoong.sunnyside.domain.consumer.repository.TempConsumerJpaRepository
 import com.yoong.sunnyside.infra.encrypt.utils.AESUtil
 import com.yoong.sunnyside.infra.redis.RedisUtils
 import com.yoong.sunnyside.infra.security.MemberPrincipal
+import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.config.PasswordEncoderConfig
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import com.yoong.sunnyside.infra.web_client.hikorea.HiKoreaClient
@@ -41,7 +40,7 @@ class ConsumerService(
         redisUtils.getStringData(request.email) ?: throw ModelNotFoundException("이메일 인증이 진행 되지 않았습니다")
 
         if(request.password != request.confirmPassword) throw CustomIllegalArgumentException("Password does not match")
-        consumerRepository.tempUserSave(TempConsumer(request, passwordEncoder.encode(request.password)))
+        consumerRepository.save(Consumer(request, passwordEncoder.encode(request.password)))
 
         return DefaultResponse("login successful")
     }
@@ -111,9 +110,9 @@ class ConsumerService(
 
         if(apiData["REGCHECKYN"].toString() != "Y") throw AccessDeniedException("외국인 등록 정보가 일치하지 않습니다")
 
-        val tempConsumer = consumerRepository.tempUserFindByIdOrNull(id) ?: throw ModelNotFoundException("해당 유저가 존재하지 않습니다")
+        val consumer = consumerRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("외국인 정보가 존재하지 않습니다")
 
-        consumerRepository.save(Consumer(alienRegistrationCardRequest, tempConsumer))
+        consumer.roleUpdate(MemberRole.CONSUMER)
 
         return DefaultResponse(apiData["REGCHECKYN"].toString())
 
