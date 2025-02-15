@@ -4,7 +4,6 @@ import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.common.type_class.Cursor
 import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
-import com.yoong.sunnyside.domain.community.dto.CommunityListResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
@@ -14,7 +13,6 @@ import com.yoong.sunnyside.domain.community.repository.CommunityRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Service
 class CommunityService(
@@ -29,7 +27,7 @@ class CommunityService(
         return DefaultResponse("Community created")
     }
 
-    fun getAllCommunity(cursor: String?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): AllCommunityResponse {
+    fun getAllCommunity(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): AllCommunityResponse {
 
         val communities = communityRepository.findAll(cursor, limit, search, communityType, setOrder)
 

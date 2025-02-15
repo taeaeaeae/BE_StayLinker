@@ -63,16 +63,14 @@ class CommunityRepositoryImpl(
         return CommunityResponse.from(communityResult, communityComments, communityReplies)
     }
 
-    override fun findAll(cursor: String?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): List<CommunityProjectionDto> {
-
-        //sealed class 로 빼는게 나을 듯??
-        val tempCursor:Cursor = when {
-            cursor?.toLongOrNull() != null -> Cursor.LongCursor(cursor.toLong())
-            kotlin.runCatching {
-                LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            }.isSuccess ->  Cursor.LocalDateTimeCursor(LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            else -> Cursor.NullCursor(cursor)
-        }
+    override fun findAll(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType, setOrder: SetOrder): List<CommunityProjectionDto> {
+        //        val tempCursor:Cursor = when {
+//            cursor?.toLongOrNull() != null -> Cursor.LongCursor(cursor.toLong())
+//            kotlin.runCatching {
+//                LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+//            }.isSuccess ->  Cursor.LocalDateTimeCursor(LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+//            else -> Cursor.NullCursor(cursor)
+//        }
 
         val likeCount = favorite.communityId.count().coalesce(0)
 
@@ -103,10 +101,11 @@ class CommunityRepositoryImpl(
         when (setOrder) {
             SetOrder.NEWEST -> {
                 query.where(
-                    when(tempCursor){
-                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
-                        else -> null
-                    },
+//                    when(tempCursor){
+//                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+//                        else -> null
+//                    },
+                    community.createdAt.lt(cursor),
                     search?.let {
                         community.title.like(it)
                             .or(community.description.like(it))
@@ -117,10 +116,11 @@ class CommunityRepositoryImpl(
             }
             SetOrder.OLDEST -> {
                 query.where(
-                    when(tempCursor){
-                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
-                        else -> null
-                    },
+//                    when(tempCursor){
+//                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+//                        else -> null
+//                    },
+                    community.createdAt.lt(cursor),
                     search?.let {
                         community.title.like(it)
                             .or(community.description.like(it))
@@ -132,11 +132,12 @@ class CommunityRepositoryImpl(
             SetOrder.POPULAR -> {
 
                 query.where(
-                    when(tempCursor){
-                        is Cursor.LongCursor -> community.id.lt(tempCursor.value)
-                        else -> null
-                    },
-                        search?.let {
+//                    when(tempCursor){
+//                        is Cursor.LongCursor -> community.id.lt(tempCursor.value)
+//                        else -> null
+//                    },
+                    community.createdAt.lt(cursor),
+                    search?.let {
                             community.title.like(it)
                                 .or(community.description.like(it))
                         },

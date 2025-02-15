@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @Tag(name = "커뮤니티 관련 API", description = "커뮤니티 댓글 API는 따로 관리 중입니다")
 @RestController
@@ -36,8 +37,7 @@ class CommunityController(
     @Operation(summary = "커뮤니티 글 전체 조회 API")
     @GetMapping
     fun getAllCommunity(
-        @Parameter(description = "String( number | LocalDateTime 타입이 아닐 경우 예외 발생 )")
-        @RequestParam cursor: String?,
+        @RequestParam cursor: LocalDateTime?,
         @RequestParam(defaultValue = "10") limit: Int,
         @Parameter(description = "Search 는 검색어 입력 (공란 입력 시에 전체 데이터 조회)" )
         @RequestParam search: String?,
