@@ -10,4 +10,5 @@ interface ConsumerRepository {
     fun tempUserSave(tempConsumer: TempConsumer)
     fun save(consumer: Consumer): Consumer
     fun existsByNickname(nickname: String): Boolean
+    fun tempUserFindByIdOrNull(id: Long): TempConsumer?
 }

@@ -1,10 +1,7 @@
 package com.yoong.sunnyside.common.exception.handler
 
 import com.yoong.sunnyside.common.dto.ErrorResponse
-import com.yoong.sunnyside.common.exception.AccessDeniedException
-import com.yoong.sunnyside.common.exception.CustomIllegalArgumentException
-import com.yoong.sunnyside.common.exception.InternalServerException
-import com.yoong.sunnyside.common.exception.ModelNotFoundException
+import com.yoong.sunnyside.common.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -27,5 +24,9 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(InternalServerException::class)
     fun internalServerException(e: InternalServerException): ResponseEntity<ErrorResponse>
-        = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse(500, e.message!!))
+            = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse(500, e.message!!))
+
+    @ExceptionHandler(ValidException::class)
+    fun validException(e: ValidException): ResponseEntity<ErrorResponse>
+        = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ErrorResponse(406, e.message!!))
 }
