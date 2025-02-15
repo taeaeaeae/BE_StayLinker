@@ -43,10 +43,10 @@ class CommunityController(
         @RequestParam search: String?,
         @Parameter(description = "default == ALL" )
         @RequestParam communityType: CommunityType = CommunityType.ALL,
-        @Parameter(description = "default == NEWEST" )
-        @RequestParam setOrder: SetOrder = SetOrder.NEWEST
+//        @Parameter(description = "default == NEWEST" )
+//        @RequestParam setOrder: SetOrder = SetOrder.NEWEST
     ): ResponseEntity<AllCommunityResponse>
-            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search, communityType, setOrder))
+            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search, communityType))
 
     @Operation(summary = "커뮤니티 특정 글 조회 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @GetMapping("/{communityId}")
