@@ -9,9 +9,8 @@ import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.domain.business.dto.LoginResponse
 import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
-import com.yoong.sunnyside.domain.business.entity.TempBusiness
+import com.yoong.sunnyside.domain.business.entity.Business
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
-import com.yoong.sunnyside.domain.business.repository.TempBusinessRepository
 import com.yoong.sunnyside.infra.openApi.BusinessVerification
 import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
@@ -25,7 +24,6 @@ import java.time.format.DateTimeFormatter
 @Service
 class BusinessService(
     private val businessRepository: BusinessRepository,
-    private val tempBusinessRepository: TempBusinessRepository,
     private val passwordEncoder: PasswordEncoder,
     private val businessVerification: BusinessVerification,
     private val jwtHelper: JwtHelper
@@ -35,24 +33,17 @@ class BusinessService(
     fun signUp(request: BusinessSignupRequest): DefaultResponse {
         if (businessRepository.existsByBusinessCode(request.businessCode))
             throw IllegalArgumentException("business code ${request.businessCode} already exists")
-        else if (tempBusinessRepository.existsByBusinessCode(request.businessCode))
-            throw IllegalArgumentException("business code ${request.businessCode} under review")
 
-        tempBusinessRepository.save(
-            TempBusiness.from(
-                businessCode = request.businessCode,
-                businessName = request.businessName,
-                phoneNumber = request.phoneNumber,
-                email = request.email,
-                password = passwordEncoder.encode(request.password),
-                address = request.address,
-                businessCertificate = request.businessCertificate,
-                nickName = request.nickName,
-                openingDate = request.openingDate,
-            )
+        val business = businessVerification.getOfficeInfo(request.registrationCode)
+        if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
+        if (business.bsnmCmpnm != request.businessName) throw ValidException("사업자 상호명이 일치하지 않습니다.")
+        if (business.registDe != request.registrationCode) throw ValidException("등록일자가 일치하지 않습니다.")
+        
+        businessRepository.save(
+            Business.from(request)
         )
 
-        return DefaultResponse("created")
+        return DefaultResponse("가입 신청이 완료되었습니다.")
     }
 
     fun login(request: LoginRequest): LoginResponse {
@@ -64,7 +55,7 @@ class BusinessService(
         return LoginResponse(
             accessToken = jwtHelper.generateToken(
                 userId = business.id!!,
-                role = MemberRole.BUSINESS
+                role = business.role
             )
         )
     }
@@ -77,9 +68,7 @@ class BusinessService(
 
     fun checkVerify(request: BusinessVerifyRequest): BusinessVerifyResponse {
         if (businessRepository.existsByBusinessCode(request.businessCode)) throw CustomIllegalArgumentException("이미 가입된 사업자 등록번호 입니다.")
-        else if (tempBusinessRepository.existsByBusinessCode(request.businessCode)) throw CustomIllegalArgumentException(
-            "가입심사 진행중입니다."
-        )
+
         val business = businessVerification.getOfficeInfo(request.registrationCode)
         if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
         if (business.bsnmCmpnm != request.name) throw ValidException("사업자 상호명이 일치하지 않습니다.")
@@ -99,13 +88,11 @@ class BusinessService(
     }
 
     fun checkNickName(nickName: String): Boolean {
-        return (businessRepository.existsByNickName(nickName)
-                || tempBusinessRepository.existsByNickName(nickName))
+        return (businessRepository.existsByNickName(nickName))
     }
 
     fun checkEmail(email: String): Boolean {
-        return (businessRepository.existsByEmail(email)
-                || tempBusinessRepository.existsByEmail(email))
+        return (businessRepository.existsByEmail(email))
     }
 
     fun changePassword(password: String, email: String) {

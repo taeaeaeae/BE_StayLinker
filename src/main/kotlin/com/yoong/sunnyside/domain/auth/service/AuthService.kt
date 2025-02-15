@@ -26,15 +26,14 @@ class AuthService(
     private val businessService: BusinessService,
     private val consumerService: ConsumerService,
     private val adminService: AdminService
-){
+) {
 
     fun checkNickname(nickname: String): NicknameResponse {
 
-        if(!validNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
+        if (!validNickname(nickname)) throw CustomIllegalArgumentException("There is a duplicate nickname")
 
         return NicknameResponse(true)
     }
-
 
 
     fun sendEmail(emailRequest: EmailRequest): DefaultResponse {
@@ -52,7 +51,7 @@ class AuthService(
 
         val verityCode = redisUtils.getStringData("${AUTHENTICATE}_${verifyCodeRequest.email}")
 
-        if(verityCode != verifyCodeRequest.code) throw CustomIllegalArgumentException("Verification code does not match")
+        if (verityCode != verifyCodeRequest.code) throw CustomIllegalArgumentException("Verification code does not match")
 
         redisUtils.deleteStringData("${AUTHENTICATE}_${verifyCodeRequest.email}")
 
@@ -68,18 +67,36 @@ class AuthService(
     }
 
     @Transactional
-    fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest):DefaultResponse{
+    fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest): DefaultResponse {
 
         val verityCode = redisUtils.getStringData("${AUTHENTICATE}_${forgotPasswordRequest.email}")
 
-        if(verityCode != forgotPasswordRequest.verificationCode) throw CustomIllegalArgumentException("Verification code does not match")
+        if (verityCode != forgotPasswordRequest.verificationCode) throw CustomIllegalArgumentException("Verification code does not match")
 
-        if(forgotPasswordRequest.newPassword != forgotPasswordRequest.retypeNewPassword) throw CustomIllegalArgumentException("password does not match")
+        if (forgotPasswordRequest.newPassword != forgotPasswordRequest.retypeNewPassword) throw CustomIllegalArgumentException(
+            "password does not match"
+        )
 
-        when(forgotPasswordRequest.role){
-            MemberRole.BUSINESS -> businessService.changePassword(forgotPasswordRequest.newPassword, forgotPasswordRequest.email)
-            MemberRole.CONSUMER -> consumerService.forgotPassword(forgotPasswordRequest.newPassword, forgotPasswordRequest.email)
-            MemberRole.ADMIN -> adminService.forgotPassword(forgotPasswordRequest.newPassword, forgotPasswordRequest.email)
+        when (forgotPasswordRequest.role) {
+            MemberRole.BUSINESS -> businessService.changePassword(
+                forgotPasswordRequest.newPassword,
+                forgotPasswordRequest.email
+            )
+
+            MemberRole.TEMP_BUSINESS -> businessService.changePassword(
+                forgotPasswordRequest.newPassword,
+                forgotPasswordRequest.email
+            )
+
+            MemberRole.CONSUMER -> consumerService.forgotPassword(
+                forgotPasswordRequest.newPassword,
+                forgotPasswordRequest.email
+            )
+
+            MemberRole.ADMIN -> adminService.forgotPassword(
+                forgotPasswordRequest.newPassword,
+                forgotPasswordRequest.email
+            )
         }
 
         return DefaultResponse("Password changed successfully")
@@ -91,7 +108,6 @@ class AuthService(
 
         return true
     }
-
 
 
 }

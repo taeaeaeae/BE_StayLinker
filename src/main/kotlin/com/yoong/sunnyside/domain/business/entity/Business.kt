@@ -1,5 +1,6 @@
 package com.yoong.sunnyside.domain.business.entity
 
+import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
 import com.yoong.sunnyside.infra.security.MemberRole
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -15,6 +16,12 @@ class Business(
 
     @Column(name = "phone_number", nullable = false)
     var phoneNumber: String,
+
+    @Column(name = "registration_code", nullable = false)
+    val registrationCode: String,
+
+    @Column(name = "agent_name")
+    val agentName: String,
 
     @Column(name = "email", nullable = false)
     var email: String,
@@ -36,9 +43,9 @@ class Business(
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    var role: MemberRole = MemberRole.BUSINESS
+    var role: MemberRole = MemberRole.TEMP_BUSINESS
 
-    ) {
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -54,20 +61,26 @@ class Business(
 
     companion object {
         fun from(
-            tempBusiness: TempBusiness
+            request: BusinessSignupRequest
         ): Business {
             return Business(
-                businessCode = tempBusiness.businessCode,
-                businessName = tempBusiness.businessName,
-                phoneNumber = tempBusiness.phoneNumber,
-                email = tempBusiness.email,
-                password = tempBusiness.password,
-                address = tempBusiness.address,
-                businessCertificate = tempBusiness.businessCertificate,
-                nickName = tempBusiness.nickName,
-                openingDate = tempBusiness.openingDate
+                businessCode = request.businessCode,
+                businessName = request.businessName,
+                registrationCode = request.registrationCode,
+                agentName = request.agentName,
+                phoneNumber = request.phoneNumber,
+                email = request.email,
+                password = request.password,
+                address = request.address,
+                businessCertificate = request.businessCertificate,
+                nickName = request.nickName,
+                openingDate = request.openingDate
             )
         }
+    }
+
+    fun allowBusiness() {
+        role = MemberRole.BUSINESS
     }
 
     fun passwdChange(passwd: String) {

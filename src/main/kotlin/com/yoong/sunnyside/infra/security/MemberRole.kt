@@ -1,5 +1,5 @@
 package com.yoong.sunnyside.infra.security
 
 enum class MemberRole {
-    ADMIN, BUSINESS, CONSUMER
+    ADMIN, BUSINESS, CONSUMER, TEMP_BUSINESS
 }
