@@ -20,7 +20,9 @@ class CommunityFavoriteService(
     @Transactional
     override fun createFavorite(id: Long, memberId: Long): DefaultResponse {
 
-        communityFavoriteRepository.save(CommunityFavorite(id, memberId))
+        communityFavoriteRepository.save(CommunityFavorite(
+            communityId = id,
+            consumerId = memberId))
 
         return DefaultResponse("favorite saved successfully")
     }
@@ -36,7 +38,7 @@ class CommunityFavoriteService(
         return DefaultResponse("favorite deleted successfully")
     }
 
-    fun getFavorite(memberId: Long): List<AllCommunityResponse> {
+    fun getFavorite(memberId: Long): AllCommunityResponse {
 
         val communityFavorites = communityFavoriteRepository.findByConsumerId(memberId)
 
@@ -44,6 +46,7 @@ class CommunityFavoriteService(
 
         val communities = communityRepository.findAllByIdIn(communityIds)
 
-        return communities.map { AllCommunityResponse.from(it) }
+//       return AllCommunityResponse.from(communities, 0)
+        TODO()
     }
 }

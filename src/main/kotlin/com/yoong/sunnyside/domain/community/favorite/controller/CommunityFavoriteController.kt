@@ -35,7 +35,7 @@ class CommunityFavoriteController(
     @GetMapping
     fun getFavorites(
         @AuthenticationPrincipal principal: MemberPrincipal
-    ): ResponseEntity<List<AllCommunityResponse>>
+    ): ResponseEntity<AllCommunityResponse>
             = ResponseEntity.status(HttpStatus.OK).body(communityFavoriteService.getFavorite(principal.id))
 
     @Operation(summary = "커뮤니티 찜하기 삭제 API", description = "커뮤니티 id 값을 넣어 주시면 됩니다")

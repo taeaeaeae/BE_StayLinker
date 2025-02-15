@@ -5,15 +5,18 @@ import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.enum_class.CommunityType
+import com.yoong.sunnyside.domain.community.enum_class.SetOrder
 import com.yoong.sunnyside.domain.community.service.CommunityService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @Tag(name = "커뮤니티 관련 API", description = "커뮤니티 댓글 API는 따로 관리 중입니다")
 @RestController
@@ -34,13 +37,16 @@ class CommunityController(
     @Operation(summary = "커뮤니티 글 전체 조회 API")
     @GetMapping
     fun getAllCommunity(
-        @RequestParam cursor: Long?,
+        @RequestParam cursor: LocalDateTime?,
         @RequestParam(defaultValue = "10") limit: Int,
+        @Parameter(description = "Search 는 검색어 입력 (공란 입력 시에 전체 데이터 조회)" )
         @RequestParam search: String?,
-        @RequestParam communityType: CommunityType,
-        @RequestParam orderBy: Boolean
-    ): ResponseEntity<List<AllCommunityResponse>>
-            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search, communityType, orderBy))
+        @Parameter(description = "default == ALL" )
+        @RequestParam communityType: CommunityType = CommunityType.ALL,
+//        @Parameter(description = "default == NEWEST" )
+//        @RequestParam setOrder: SetOrder = SetOrder.NEWEST
+    ): ResponseEntity<AllCommunityResponse>
+            = ResponseEntity.status(HttpStatus.OK).body(communityService.getAllCommunity(cursor, limit, search, communityType))
 
     @Operation(summary = "커뮤니티 특정 글 조회 API", description = "커뮤니티 글 id 값을 넣어 주시면 됩니다")
     @GetMapping("/{communityId}")

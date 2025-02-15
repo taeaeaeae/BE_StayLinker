@@ -1,23 +1,23 @@
 package com.yoong.sunnyside.domain.community.repository
 
-import com.querydsl.core.Tuple
 import com.querydsl.core.types.Projections
-import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
-import com.yoong.sunnyside.domain.community.comment.dto.CommentResponse
-import com.yoong.sunnyside.domain.community.comment.dto.ReplyResponse
 import com.yoong.sunnyside.domain.community.comment.entity.QCommunityComment
 import com.yoong.sunnyside.domain.community.comment.entity.QCommunityReply
+import com.yoong.sunnyside.domain.community.dto.CommunityProjectionDto
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
 import com.yoong.sunnyside.domain.community.entity.QCommunity
 import com.yoong.sunnyside.domain.community.enum_class.CommunityType
+import com.yoong.sunnyside.domain.community.enum_class.SetOrder
+import com.yoong.sunnyside.domain.community.favorite.entity.QCommunityFavorite
 import jakarta.persistence.EntityManager
-import jakarta.persistence.EntityNotFoundException
 import jakarta.persistence.PersistenceContext
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class CommunityRepositoryImpl(
@@ -26,10 +26,12 @@ class CommunityRepositoryImpl(
     private val em: EntityManager
 ): CommunityRepository {
 
+    val log = LoggerFactory.getLogger("CommunityRepository")
     val queryFactory = JPAQueryFactory(em)
     val community = QCommunity.community!!
     val communityComment = QCommunityComment.communityComment!!
     val communityReply = QCommunityReply.communityReply!!
+    val favorite = QCommunityFavorite.communityFavorite!!
 
     override fun save(community: Community): Community {
         return communityJpaRepository.save(community)
@@ -59,24 +61,101 @@ class CommunityRepositoryImpl(
         return CommunityResponse.from(communityResult, communityComments, communityReplies)
     }
 
-    override fun findAll(cursor: Long?, limit: Int, search: String?, communityType: CommunityType, orderBy: Boolean): List<Community> {
+    override fun findAll(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType): List<CommunityProjectionDto> {
+        //        val tempCursor:Cursor = when {
+//            cursor?.toLongOrNull() != null -> Cursor.LongCursor(cursor.toLong())
+//            kotlin.runCatching {
+//                LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+//            }.isSuccess ->  Cursor.LocalDateTimeCursor(LocalDateTime.parse(cursor!!, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+//            else -> Cursor.NullCursor(cursor)
+//        }
+
+        val likeCount = favorite.communityId.count().coalesce(0)
+
 
         val safeLimit = if (limit in 1..1000) limit else 10
 
         val query = queryFactory
-            .selectFrom(community)
-            .where(
-                community.communityType.eq(communityType),
-                cursor?.let{ community.id.lt(it) },
-                search?.let {
-                    community.title.like(it)
-                        .or(community.description.like(it))
-                           },
-            ).orderBy(community.id.desc())
-            .limit(safeLimit.toLong())
-            .fetch()
+            .select(
+               Projections.constructor(
+                   CommunityProjectionDto::class.java,
+                   community,
+                   likeCount
+               )
+            )
+            .from(community)
+            .leftJoin(favorite)
+            .on(community.id.eq(favorite.communityId))
+            .groupBy(community.id)
+            .fetchJoin()
 
-        return query
+
+        if(communityType != CommunityType.ALL){
+            query.where(
+                community.communityType.eq(communityType)
+            )
+        }
+
+        query.where(
+            community.createdAt.lt(cursor),
+            search?.let {
+                community.title.like(it)
+                    .or(community.description.like(it))
+            },
+        )
+            .orderBy(community.createdAt.desc())
+            .limit(safeLimit.toLong())
+
+//        when (setOrder) {
+//            SetOrder.NEWEST -> {
+//                query.where(
+////                    when(tempCursor){
+////                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+////                        else -> null
+////                    },
+//                    community.createdAt.lt(cursor),
+//                    search?.let {
+//                        community.title.like(it)
+//                            .or(community.description.like(it))
+//                    },
+//                )
+//                    .orderBy(community.createdAt.desc())
+//                    .limit(safeLimit.toLong())
+//            }
+//            SetOrder.OLDEST -> {
+//                query.where(
+////                    when(tempCursor){
+////                        is Cursor.LocalDateTimeCursor -> community.createdAt.lt(tempCursor.value)
+////                        else -> null
+////                    },
+//                    community.createdAt.lt(cursor),
+//                    search?.let {
+//                        community.title.like(it)
+//                            .or(community.description.like(it))
+//                    },
+//                )
+//                    .orderBy(community.createdAt.asc())
+//                    .limit(safeLimit.toLong())
+//            }
+//            SetOrder.POPULAR -> {
+//
+//                query.where(
+////                    when(tempCursor){
+////                        is Cursor.LongCursor -> community.id.lt(tempCursor.value)
+////                        else -> null
+////                    },
+//                    community.createdAt.lt(cursor),
+//                    search?.let {
+//                            community.title.like(it)
+//                                .or(community.description.like(it))
+//                        },
+//                    )
+//                    .orderBy(likeCount.desc() , community.id.desc())
+//                    .limit(safeLimit.toLong())
+//            }
+//        }
+
+        return query.fetch()
     }
 
     override fun findByIdAndConsumerId(id: Long, consumerId: Long): Community? {
@@ -87,4 +166,5 @@ class CommunityRepositoryImpl(
     override fun findAllByIdIn(ids: List<Long>): List<Community> {
         return communityJpaRepository.findAllByIdIn(ids)
     }
+
 }

@@ -2,14 +2,17 @@ package com.yoong.sunnyside.domain.community.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ModelNotFoundException
+import com.yoong.sunnyside.common.type_class.Cursor
 import com.yoong.sunnyside.domain.community.dto.AllCommunityResponse
 import com.yoong.sunnyside.domain.community.dto.CommunityRequest
 import com.yoong.sunnyside.domain.community.dto.CommunityResponse
 import com.yoong.sunnyside.domain.community.entity.Community
 import com.yoong.sunnyside.domain.community.enum_class.CommunityType
+import com.yoong.sunnyside.domain.community.enum_class.SetOrder
 import com.yoong.sunnyside.domain.community.repository.CommunityRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class CommunityService(
@@ -24,11 +27,13 @@ class CommunityService(
         return DefaultResponse("Community created")
     }
 
-    fun getAllCommunity(cursor: Long?, limit: Int, search: String?, communityType: CommunityType, orderBy: Boolean): List<AllCommunityResponse> {
+    fun getAllCommunity(cursor: LocalDateTime?, limit: Int, search: String?, communityType: CommunityType): AllCommunityResponse {
 
-        val communities = communityRepository.findAll(cursor, limit, search, communityType, orderBy)
+        val communities = communityRepository.findAll(cursor, limit, search, communityType)
 
-        return communities.map { AllCommunityResponse.from(it) }
+        return AllCommunityResponse.from(communities,
+                Cursor.LocalDateTimeCursor(communities.last().community.createdAt)
+        )
     }
 
     fun getCommunity(communityId: Long): CommunityResponse {
@@ -62,3 +67,4 @@ class CommunityService(
         TODO()
     }
 }
+
