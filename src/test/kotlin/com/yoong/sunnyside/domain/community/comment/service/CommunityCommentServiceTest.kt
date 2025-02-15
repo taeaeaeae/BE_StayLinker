@@ -155,7 +155,7 @@ class CommunityCommentServiceTest : StringSpec({
             consumerId = 1L,
             title = "test",
             description = "test2",
-            communityType = CommunityType.SMALL_TALKING
+            communityType = CommunityType.COMMUNITY
         )
 
         val CONSUMER = Consumer(
