@@ -1,12 +1,12 @@
 package com.yoong.sunnyside.domain.admin.service
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.common.exception.AccessDeniedException
 import com.yoong.sunnyside.domain.admin.dto.AdminSignupRequest
 import com.yoong.sunnyside.domain.admin.repository.AdminRepository
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.admin.dto.AdminLoginRequest
-import com.yoong.sunnyside.domain.admin.dto.LoginResponse
 import com.yoong.sunnyside.domain.admin.entity.Admin
 import com.yoong.sunnyside.domain.admin.enum_class.AdminStatus
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
@@ -53,6 +53,7 @@ class AdminService(
         return DefaultResponse("가입신청이 완료되었습니다.")
     }
 
+    
     @Transactional
     fun allowBusiness(id: Long): DefaultResponse {
         val business = businessRepository.findByIdOrNull(id)

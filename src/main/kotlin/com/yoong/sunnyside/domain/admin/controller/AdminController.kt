@@ -1,12 +1,12 @@
 package com.yoong.sunnyside.domain.admin.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.domain.admin.dto.AdminSignupRequest
 import com.yoong.sunnyside.domain.admin.dto.CompanionRequest
 import com.yoong.sunnyside.domain.admin.service.AdminService
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
 import com.yoong.sunnyside.domain.admin.dto.AdminLoginRequest
-import com.yoong.sunnyside.domain.admin.dto.LoginResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus

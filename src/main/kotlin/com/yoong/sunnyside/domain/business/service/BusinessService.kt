@@ -6,13 +6,12 @@ import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
-import com.yoong.sunnyside.domain.business.dto.LoginResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
 import com.yoong.sunnyside.domain.business.entity.Business
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.infra.openApi.BusinessVerification
-import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
