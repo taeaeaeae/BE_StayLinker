@@ -1,14 +1,12 @@
 package com.yoong.sunnyside.domain.consumer.repository
 
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
-import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
 class ConsumerRepositoryImpl(
     private val consumerJpaRepository: ConsumerJpaRepository,
-    private val tempConsumerJpaRepository: TempConsumerJpaRepository
 ): ConsumerRepository {
 
     override fun findByIdOrNull(id: Long): Consumer? {
@@ -19,9 +17,6 @@ class ConsumerRepositoryImpl(
         return consumerJpaRepository.findByEmail(email)
     }
 
-    override fun tempUserSave(tempConsumer: TempConsumer) {
-        tempConsumerJpaRepository.save(tempConsumer)
-    }
 
     override fun save(consumer: Consumer):Consumer {
         return consumerJpaRepository.save(consumer)
@@ -31,7 +26,4 @@ class ConsumerRepositoryImpl(
         return consumerJpaRepository.existsByNickname(nickname)
     }
 
-    override fun tempUserFindByIdOrNull(id: Long): TempConsumer? {
-        return tempConsumerJpaRepository.findByIdOrNull(id)
-    }
 }
