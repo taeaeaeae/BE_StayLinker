@@ -6,6 +6,8 @@ import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponse
 import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponse
 import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstate
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
+import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity.RealEstateAttribute
+import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.repository.RealEstateAttributeRepository
 import com.yoong.sunnyside.domain.real_estate.repository.RealEstateRepository
 import com.yoong.sunnyside.domain.real_estate_option.entity.RealEstateOption
 import com.yoong.sunnyside.domain.real_estate_option.repository.RealEstateOptionRepository
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class RealEstateServiceImpl(
     private val realEstateRepository: RealEstateRepository,
+    private val realEstateAttributeRepository: RealEstateAttributeRepository,
     private val realEstateOptionRepository: RealEstateOptionRepository
 ): RealEstateService {
 
@@ -24,12 +27,16 @@ class RealEstateServiceImpl(
     override fun createRealEstate(createRealEstate: CreateRealEstate): DefaultResponse {
 
         // 협의 필요
-        if(realEstateRepository.existsByAddress(createRealEstate.address)) throw RuntimeException("중복 되는 매물 입니다")
+        if(realEstateAttributeRepository.existsByAddress(createRealEstate.attributes["address"].toString())) throw RuntimeException("중복 되는 매물 입니다")
 
         val realEstate = realEstateRepository.saveAndFlush(
             //business 테이블 이 없는 관계로 우선 1L 로 설정
             RealEstate(1L, createRealEstate)
         )
+
+        createRealEstate.attributes.forEach{
+            realEstateAttributeRepository.save(RealEstateAttribute(realEstate, it.key, it.value))
+        }
 
         realEstateOptionRepository.saveAll(createRealEstate.options.map { RealEstateOption(it, realEstate) })
 
