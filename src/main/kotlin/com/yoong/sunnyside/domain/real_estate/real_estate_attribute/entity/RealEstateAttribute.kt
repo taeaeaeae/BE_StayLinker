@@ -1,12 +1,11 @@
 package com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity
 
-import com.yoong.sunnyside.common.config.TypeCheck
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
 import com.yoong.sunnyside.domain.real_estate.enum_class.DataType
+import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
 import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.dto.AttributeValueSet
 import jakarta.persistence.*
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Entity
 @Table(name = "real_estate_attribute")
@@ -17,7 +16,7 @@ class RealEstateAttribute(
     val realEstate: RealEstate,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    val name: RealEstateAttributeData,
 
     @Column(name = "data_type", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -44,15 +43,15 @@ class RealEstateAttribute(
     val id: Long? = null
 
 
-    constructor(realEstateData: RealEstate, attributeName: String, attributeValue: Any):this(
+    constructor(realEstateData: RealEstate, realEstateAttributeData: RealEstateAttributeData, attributeValue: Any):this(
         realEstate = realEstateData,
-        name = attributeName,
-        dataType = TypeCheck.realEstateAttribute(attributeName),
-        valueString = AttributeValueSet.castAttributeValue(TypeCheck.realEstateAttribute(attributeName), attributeValue).valueString,
-        valueInt = AttributeValueSet.castAttributeValue(TypeCheck.realEstateAttribute(attributeName), attributeValue).valueInt,
-        valueDouble = AttributeValueSet.castAttributeValue(TypeCheck.realEstateAttribute(attributeName), attributeValue).valueDouble,
-        valueDate = AttributeValueSet.castAttributeValue(TypeCheck.realEstateAttribute(attributeName), attributeValue).valueDate,
-        valueBoolean= AttributeValueSet.castAttributeValue(TypeCheck.realEstateAttribute(attributeName), attributeValue).valueBoolean,
+        name = realEstateAttributeData,
+        dataType = realEstateAttributeData.dataType,
+        valueString = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueString,
+        valueInt = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueInt,
+        valueDouble = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueDouble,
+        valueDate = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueDate,
+        valueBoolean= AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueBoolean,
     )
 
 }

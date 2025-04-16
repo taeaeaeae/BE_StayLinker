@@ -29,28 +29,28 @@ data class RealEstateResponse (
     val options: List<RealEstateOptionResponse>
 ){
     companion object {
-        fun from(realEstate: RealEstate, options: List<RealEstateOption>): RealEstateResponse {
-            return RealEstateResponse(
-                id = realEstate.id!!,
-                businessId = realEstate.businessId!!,
-                name = realEstate.name,
-                address = realEstate.address,
-                completionDate = realEstate.completionDate,
-                houseType = realEstate.houseType,
-                goodsType = realEstate.goodsType,
-                security = realEstate.security,
-                rent = realEstate.rent,
-                size = realEstate.houseSize,
-                maintenanceCost = realEstate.maintenanceCost,
-                roomCount = realEstate.roomCount,
-                floor = realEstate.floor,
-                contractPeriod = realEstate.contractPeriod,
-                description = realEstate.description,
-                bathroomCount = realEstate.bathroomCount,
-                isParked = realEstate.isParked,
-                rate = realEstate.rate,
-                options = options.map { RealEstateOptionResponse.from(it) }
-            )
-        }
+//        fun from(realEstate: RealEstate, options: List<RealEstateOption>): RealEstateResponse {
+//            return RealEstateResponse(
+//                id = realEstate.id!!,
+//                businessId = realEstate.businessId!!,
+//                name = realEstate.name,
+//                address = realEstate.address,
+//                completionDate = realEstate.completionDate,
+//                houseType = realEstate.houseType,
+//                goodsType = realEstate.goodsType,
+//                security = realEstate.security,
+//                rent = realEstate.rent,
+//                size = realEstate.houseSize,
+//                maintenanceCost = realEstate.maintenanceCost,
+//                roomCount = realEstate.roomCount,
+//                floor = realEstate.floor,
+//                contractPeriod = realEstate.contractPeriod,
+//                description = realEstate.description,
+//                bathroomCount = realEstate.bathroomCount,
+//                isParked = realEstate.isParked,
+//                rate = realEstate.rate,
+//                options = options.map { RealEstateOptionResponse.from(it) }
+//            )
+//        }
     }
 }

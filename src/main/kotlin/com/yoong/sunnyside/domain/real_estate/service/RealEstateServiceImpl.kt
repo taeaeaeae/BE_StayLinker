@@ -11,6 +11,7 @@ import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.repository.R
 import com.yoong.sunnyside.domain.real_estate.repository.RealEstateRepository
 import com.yoong.sunnyside.domain.real_estate_option.entity.RealEstateOption
 import com.yoong.sunnyside.domain.real_estate_option.repository.RealEstateOptionRepository
+import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -27,7 +28,7 @@ class RealEstateServiceImpl(
     override fun createRealEstate(createRealEstate: CreateRealEstate): DefaultResponse {
 
         // 협의 필요
-        if(realEstateAttributeRepository.existsByAddress(createRealEstate.attributes["address"].toString())) throw RuntimeException("중복 되는 매물 입니다")
+        if(realEstateAttributeRepository.existsByAddress(createRealEstate.attributes[RealEstateAttributeData.ADDRESS].toString())) throw RuntimeException("중복 되는 매물 입니다")
 
         val realEstate = realEstateRepository.saveAndFlush(
             //business 테이블 이 없는 관계로 우선 1L 로 설정
@@ -49,14 +50,18 @@ class RealEstateServiceImpl(
 
         val options = realEstateOptionRepository.findAllByRealEstateId(realEstateId)
 
-        return RealEstateResponse.from(realEstate, options)
+//        return RealEstateResponse.from(realEstate, options)
+
+        TODO()
     }
 
     override fun getRealEstatePage(pageable: Pageable): Page<RealEstatePageResponse> {
 
-        val realEstatePage = realEstateRepository.findAll(pageable)
+//        val realEstatePage = realEstateRepository.findAll(pageable)
+//
+//        return realEstatePage.map { RealEstatePageResponse.from(it) }
 
-        return realEstatePage.map { RealEstatePageResponse.from(it) }
+        TODO()
     }
 
     @Transactional

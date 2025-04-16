@@ -22,10 +22,6 @@ class RealEstateRepositoryImpl(
     private val queryFactory = JPAQueryFactory(em)
     private val realEstate = QRealEstate.realEstate
 
-    override fun existsByAddress(address: String): Boolean {
-        return realEstateJpaRepository.existsByAddress(address)
-    }
-
     override fun save(realEstate: RealEstate): RealEstate {
         return realEstateJpaRepository.save(realEstate)
     }

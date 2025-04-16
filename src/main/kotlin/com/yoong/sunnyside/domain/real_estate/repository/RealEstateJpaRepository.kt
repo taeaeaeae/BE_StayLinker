@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface RealEstateJpaRepository: JpaRepository<RealEstate, Long> {
 
-    fun existsByAddress(address: String): Boolean
+//    fun existsByAddress(address: String): Boolean
 }
