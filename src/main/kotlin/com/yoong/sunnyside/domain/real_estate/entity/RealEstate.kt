@@ -27,6 +27,9 @@ class RealEstate(
     @Column(name="rate", nullable = false)
     var rate: Double,
 
+    @Column(name="address", nullable = false)
+    var address: String,
+
     @Column(name="price", nullable = false)
     var price: Long,
 
@@ -65,6 +68,7 @@ class RealEstate(
         businessId = id,
         name = createRealEstate.name,
         description = createRealEstate.description,
+        address = createRealEstate.address,
         rate = 0.0,
         price = createRealEstate.price,
         latitude = createRealEstate.latitude,

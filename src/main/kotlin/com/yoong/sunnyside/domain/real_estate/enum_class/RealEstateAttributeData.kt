@@ -1,7 +1,6 @@
 package com.yoong.sunnyside.domain.real_estate.enum_class
 
 enum class RealEstateAttributeData(val dataType: DataType) {
-    ADDRESS(DataType.STRING),
     COMPLETION_DATE(DataType.DATE),
     HOUSE_TYPE(DataType.STRING),
     GOODS_TYPE(DataType.STRING),

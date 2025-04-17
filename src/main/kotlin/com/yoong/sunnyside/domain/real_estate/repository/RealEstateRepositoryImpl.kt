@@ -26,6 +26,10 @@ class RealEstateRepositoryImpl(
         return realEstateJpaRepository.save(realEstate)
     }
 
+    override fun existsByAddress(address: String): Boolean {
+        return realEstateJpaRepository.existsByAddress(address)
+    }
+
     override fun findAll(pageable: Pageable): Page<RealEstate> {
 
         val query = queryFactory

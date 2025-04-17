@@ -3,6 +3,8 @@ package com.yoong.sunnyside.domain.real_estate.real_estate_attribute.repository
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yoong.sunnyside.domain.real_estate.entity.QRealEstate
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
+import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
+import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity.QRealEstateAttribute
 import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity.RealEstateAttribute
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
@@ -20,13 +22,13 @@ class RealEstateAttributeRepositoryImpl(
 ): RealEstateAttributeRepository {
 
     private val queryFactory = JPAQueryFactory(em)
-
-    override fun existsByAddress(address: String): Boolean {
-       TODO()
-    }
+    private val realEstateAttribute: QRealEstateAttribute = QRealEstateAttribute.realEstateAttribute
 
     override fun save(realEstateAttribute: RealEstateAttribute): RealEstateAttribute {
         return realEstateJpaRepository.save(realEstateAttribute)
     }
 
+    override fun findByAttributeData(realEstateId: Long): Map<RealEstateAttributeData, Any> {
+        TODO("Not yet implemented")
+    }
 }

@@ -7,6 +7,7 @@ data class CreateRealEstate (
     var name: String,
     var price: Long,
     var description: String,
+    var address: String,
     var options: List<CreateRealEstateOption>,
     var latitude: Double,
     var longitude: Double,
