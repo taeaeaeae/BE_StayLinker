@@ -11,8 +11,6 @@ data class BusinessResponse(
     val email: String,
     val address: String,
     val businessCertificate: String,
-    val nickName: String,
-    val openingDate: String,
     val createdAt: LocalDateTime,
 ) {
     companion object {
@@ -25,9 +23,7 @@ data class BusinessResponse(
                 email = business.email,
                 address = business.address,
                 businessCertificate = business.businessCertificate,
-                nickName = business.nickName,
                 createdAt = business.createdAt,
-                openingDate = business.openingDate
             )
         }
     }

@@ -88,7 +88,8 @@ class BusinessService(
     }
 
     fun checkNickName(nickName: String): Boolean {
-        return (businessRepository.existsByNickName(nickName))
+        TODO()
+//        return (businessRepository.existsByNickName(nickName))
     }
 
     fun checkEmail(email: String): Boolean {

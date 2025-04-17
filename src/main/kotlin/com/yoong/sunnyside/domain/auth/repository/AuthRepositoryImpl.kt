@@ -30,7 +30,6 @@ class AuthRepositoryImpl(
             .fetchFirst() != null
                 || queryFactory.selectOne()
             .from(business)
-            .where(business.nickName.eq(nickname))
             .fetchFirst() != null;
     }
 }

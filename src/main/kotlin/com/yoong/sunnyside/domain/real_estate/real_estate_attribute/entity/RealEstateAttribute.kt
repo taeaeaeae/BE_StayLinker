@@ -1,5 +1,6 @@
 package com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity
 
+import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstate
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
 import com.yoong.sunnyside.domain.real_estate.enum_class.DataType
 import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
@@ -11,9 +12,13 @@ import java.time.LocalDateTime
 @Table(name = "real_estate_attribute")
 class RealEstateAttribute(
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "real_estate_id", nullable = false)
-    val realEstate: RealEstate,
+    var realEstate: RealEstate,
 
     @Column(name = "name", nullable = false)
     val name: RealEstateAttributeData,
@@ -38,20 +43,20 @@ class RealEstateAttribute(
     var valueBoolean: Boolean? = null
 ){
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-
-
-    constructor(realEstateData: RealEstate, realEstateAttributeData: RealEstateAttributeData, attributeValue: Any):this(
-        realEstate = realEstateData,
-        name = realEstateAttributeData,
-        dataType = realEstateAttributeData.dataType,
-        valueString = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueString,
-        valueInt = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueInt,
-        valueDouble = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueDouble,
-        valueDate = AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueDate,
-        valueBoolean= AttributeValueSet.castAttributeValue(realEstateAttributeData.dataType, attributeValue).valueBoolean,
-    )
+    companion object {
+        fun from(realEstate: RealEstate, name: RealEstateAttributeData, value: Any): RealEstateAttribute {
+            val casted = AttributeValueSet.castAttributeValue(name.dataType, value)
+            return RealEstateAttribute(
+                realEstate = realEstate,
+                name = name,
+                dataType = name.dataType,
+                valueString = casted.valueString,
+                valueInt = casted.valueInt,
+                valueDouble = casted.valueDouble,
+                valueDate = casted.valueDate,
+                valueBoolean = casted.valueBoolean
+            )
+        }
+    }
 
 }
