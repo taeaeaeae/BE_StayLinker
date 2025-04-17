@@ -4,5 +4,6 @@ import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity.RealE
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RealEstateAttributeJpaRepository: JpaRepository<RealEstateAttribute, Long> {
+    fun findByRealEstateId(realEstateId: Long): List<RealEstateAttribute>
 
 }

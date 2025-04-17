@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity
 
 import com.yoong.sunnyside.domain.real_estate.dto.CreateRealEstate
+import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstate
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
 import com.yoong.sunnyside.domain.real_estate.enum_class.DataType
 import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
@@ -42,6 +43,11 @@ class RealEstateAttribute(
     @Column(name = "value_boolean", nullable = true)
     var valueBoolean: Boolean? = null
 ){
+
+
+    fun update(updateRealEstate: UpdateRealEstate){
+        AttributeValueSet.castAttributeValue(dataType, updateRealEstate.attributes)
+    }
 
     companion object {
         fun from(realEstate: RealEstate, name: RealEstateAttributeData, value: Any): RealEstateAttribute {

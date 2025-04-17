@@ -60,4 +60,12 @@ class RealEstateAttributeRepositoryImpl(
             DataType.DATE -> requireNotNull(realEstateAttribute.valueDate)
         }
     }
+
+    override fun findByRealEstateId(realEstateId: Long): List<RealEstateAttribute> {
+        return realEstateJpaRepository.findByRealEstateId(realEstateId)
+    }
+
+    override fun delete(realEstateAttribute: RealEstateAttribute) {
+        return realEstateJpaRepository.delete(realEstateAttribute)
+    }
 }

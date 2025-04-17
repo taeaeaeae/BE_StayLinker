@@ -9,4 +9,6 @@ import org.springframework.data.domain.Pageable
 interface RealEstateAttributeRepository {
     fun save(realEstateAttribute: RealEstateAttribute): RealEstateAttribute
     fun findByAttributeData(realEstateId: Long): Map<RealEstateAttributeData, Any>
+    fun findByRealEstateId(realEstateId: Long): List<RealEstateAttribute>
+    fun delete(realEstateAttribute: RealEstateAttribute)
 }

@@ -6,6 +6,7 @@ import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponse
 import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponse
 import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstate
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
+import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
 import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity.RealEstateAttribute
 import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.repository.RealEstateAttributeRepository
 import com.yoong.sunnyside.domain.real_estate.repository.RealEstateRepository
@@ -74,7 +75,12 @@ class RealEstateServiceImpl(
 
         val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
 
+       val realEstateAttributes = realEstateAttributeRepository.findByRealEstateId(realEstateId)
+
         realEstate.update(updateRealEstate)
+        realEstateAttributes.forEach{
+            it.update(updateRealEstate)
+        }
 
         return DefaultResponse("매물 수정이 완료 되었습니다")
 
@@ -83,10 +89,17 @@ class RealEstateServiceImpl(
     @Transactional
     override fun deleteRealEstate(realEstateId: Long): DefaultResponse {
 
-        val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
+        val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")4
+
+        val realEstateAttributes = realEstateAttributeRepository.findByRealEstateId(realEstateId)
+
+        realEstateAttributes.forEach{
+            realEstateAttributeRepository.delete(it)
+        }
 
         realEstate.delete()
 
         return DefaultResponse("매물 삭제가 완료 되었습니다")
     }
 }
+
