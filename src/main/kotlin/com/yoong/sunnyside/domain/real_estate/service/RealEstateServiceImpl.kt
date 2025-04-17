@@ -89,7 +89,7 @@ class RealEstateServiceImpl(
     @Transactional
     override fun deleteRealEstate(realEstateId: Long): DefaultResponse {
 
-        val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")4
+        val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
 
         val realEstateAttributes = realEstateAttributeRepository.findByRealEstateId(realEstateId)
 
