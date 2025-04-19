@@ -28,7 +28,6 @@ class AuthServiceTest : StringSpec({
 
     val emailUtils = mockk<EmailUtils>()
     val redisUtils = mockk<RedisUtils>()
-    val tempConsumerRepository = mockk<TempConsumerJpaRepository>()
     val authRepository = mockk<AuthRepository>()
     val businessService = mockk<BusinessService>()
     val consumerService = mockk<ConsumerService>()
@@ -111,25 +110,9 @@ class AuthServiceTest : StringSpec({
             code = "test"
         )
 
-        val tempConsumer = TempConsumer(
-            email = verifyCodeRequest.email,
-            password = "",
-            address = "",
-            nickname = "",
-            country = "",
-            phoneNumber = "",
-            foreignNumber = null,
-            foreignCreateAt = null,
-            role = MemberRole.CONSUMER
-        )
-
         every { redisUtils.setStringData(any(), any(), any()) } just Runs
         every { redisUtils.getStringData("${AUTHENTICATE}_${verifyCodeRequest.email}") } returns "test"
         every { redisUtils.deleteStringData("${AUTHENTICATE}_${verifyCodeRequest.email}") } just Runs
-        every { tempConsumerRepository.saveAndFlush(any()) } answers {
-            tempConsumer.id = 1L
-            tempConsumer
-        }
 
         val result = authService.verifyEmail(verifyCodeRequest)
 
