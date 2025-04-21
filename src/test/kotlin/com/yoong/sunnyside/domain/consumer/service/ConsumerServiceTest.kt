@@ -67,33 +67,33 @@ class ConsumerServiceTest : StringSpec({
         }
     }
 
-//    "회원가입 정상 동작"{
+    "회원가입 정상 동작"{
+
+        //Given
+
+        val consumerSignupRequest = ConsumerSignupRequest(
+            email = "test@test.com",
+            password = "test",
+            confirmPassword = "test",
+            nickname = "test2",
+            address = "test",
+            phoneNumber = "test",
+            languages = listOf(),
+            country = "test"
+        )
+
+        //When
+        every { redisUtils.getStringData(any()) } returns "test"
+        every { passwordEncoder.encode(any()) } returns "testXX"
+//        every { consumerRepository.tempUserSave(any()) } answers {
 //
-//        //Given
-//
-//        val consumerSignupRequest = ConsumerSignupRequest(
-//            email = "test@test.com",
-//            password = "test",
-//            confirmPassword = "test",
-//            nickname = "test2",
-//            address = "test",
-//            phoneNumber = "test",
-//            languages = listOf(),
-//            country = "test"
-//        )
-//
-//        //When
-//        every { redisUtils.getStringData(any()) } returns "test"
-//        every { passwordEncoder.encode(any()) } returns "testXX"
-////        every { consumerRepository.tempUserSave(any()) } answers {
-////
-////        }
-//
-//        //Then
-//        val result = consumerService.signUp(consumerSignupRequest)
-//
-//        result shouldBe DefaultResponse("login successful")
-//    }
+//        }
+
+        //Then
+        val result = consumerService.signUp(consumerSignupRequest)
+
+        result shouldBe DefaultResponse("login successful")
+    }
 
     "새로운 패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException"{
         //Given
