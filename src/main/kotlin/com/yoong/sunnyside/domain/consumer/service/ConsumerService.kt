@@ -27,7 +27,6 @@ class ConsumerService(
     private val jwtHelper: JwtHelper,
     private val redisUtils: RedisUtils,
     private val hiKoreaClient: HiKoreaClient,
-    private val aesUtil: AESUtil
 ){
 
     private val passwordEncoder = passwordEncoderConfig.passwordEncoder()

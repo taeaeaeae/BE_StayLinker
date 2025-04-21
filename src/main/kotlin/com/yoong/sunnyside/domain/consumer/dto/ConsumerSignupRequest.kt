@@ -21,4 +21,12 @@ data class ConsumerSignupRequest(
     val phoneNumber: String,
     val languages: List<String>,
     val country: String,
+    @field: Pattern(
+        regexp = "^(?:(?:19|20)\\d{2})-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|02-(?:0[1-9]|1\\d|2[0-8]))\$|^(?:(?:19|20)(?:[02468][048]|[13579][26]))-02-29\$",
+        message = "The birthday format does not match"
+    )
+    @NotBlank(message = "cannot be blank")
+    val birthDay: String,
+    @field: Min(value = 2, message = "cannot be blank")
+    val name: String
 )
