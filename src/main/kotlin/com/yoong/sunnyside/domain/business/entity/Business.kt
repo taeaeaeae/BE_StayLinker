@@ -39,7 +39,7 @@ class Business(
     var nickName: String,
 
     @Column(name = "openingdate", nullable = false)
-    var openingDate: String,
+    var openingDate: String = "",
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -61,7 +61,8 @@ class Business(
 
     companion object {
         fun from(
-            request: BusinessSignupRequest
+            request: BusinessSignupRequest,
+            password: String
         ): Business {
             return Business(
                 businessCode = request.businessCode,
@@ -70,7 +71,7 @@ class Business(
                 agentName = request.agentName,
                 phoneNumber = request.phoneNumber,
                 email = request.email,
-                password = request.password,
+                password = password,
                 address = request.address,
                 businessCertificate = request.businessCertificate,
                 nickName = request.nickName,
