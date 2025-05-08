@@ -7,7 +7,6 @@ import com.yoong.sunnyside.domain.consumer.dto.ConsumerSignupRequest
 import com.yoong.sunnyside.domain.consumer.dto.ConsumerUpdateRequest
 import com.yoong.sunnyside.domain.consumer.dto.PasswordRequest
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
-import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
 import com.yoong.sunnyside.infra.encrypt.utils.AESUtil
 import com.yoong.sunnyside.infra.redis.RedisUtils

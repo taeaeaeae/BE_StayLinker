@@ -10,9 +10,7 @@ import com.yoong.sunnyside.domain.auth.dto.VerifyCodeRequest
 import com.yoong.sunnyside.domain.auth.repository.AuthRepository
 import com.yoong.sunnyside.domain.business.service.BusinessService
 import com.yoong.sunnyside.domain.consumer.entity.Consumer
-import com.yoong.sunnyside.domain.consumer.entity.TempConsumer
 import com.yoong.sunnyside.domain.consumer.repository.ConsumerRepository
-import com.yoong.sunnyside.domain.consumer.repository.TempConsumerJpaRepository
 import com.yoong.sunnyside.domain.consumer.service.ConsumerService
 import com.yoong.sunnyside.infra.email.EmailUtils
 import com.yoong.sunnyside.infra.redis.RedisUtils

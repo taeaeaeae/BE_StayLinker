@@ -57,6 +57,10 @@ class Consumer(
         this.deletedAt = LocalDateTime.now()
     }
 
+    fun roleUpdate(memberRole: MemberRole) {
+        this.role = memberRole
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -72,18 +76,6 @@ class Consumer(
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null
 
-    constructor(alienRegistrationCardRequest: AlienRegistrationCardRequest, tempConsumer: TempConsumer) : this (
-        email = tempConsumer.email,
-        password = tempConsumer.password,
-        address = tempConsumer.address,
-        nickname = tempConsumer.nickname,
-        country = tempConsumer.country,
-        phoneNumber = tempConsumer.phoneNumber,
-        foreignNumber = alienRegistrationCardRequest.toForeignJiminEncrypt(),
-        foreignCreateAt = alienRegistrationCardRequest.toIssueDateEncrypt(),
-        role = tempConsumer.role
-    )
-
     //임시 적용
     constructor(consumerSignupRequest: ConsumerSignupRequest, encodedPassword: String): this (
         email = consumerSignupRequest.email,
@@ -94,6 +86,6 @@ class Consumer(
         phoneNumber = consumerSignupRequest.phoneNumber,
         foreignNumber = "",
         foreignCreateAt = "",
-        role = MemberRole.CONSUMER
+        role = MemberRole.TEMP_CONSUMER
     )
 }
