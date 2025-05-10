@@ -17,6 +17,9 @@ class Business(
     @Column(name = "phone_number", nullable = false)
     var phoneNumber: String,
 
+    @Column(name = "registration_code", nullable = false)
+    val registrationCode: String,
+
     @Column(name = "agent_name")
     val agentName: String,
 
@@ -57,6 +60,7 @@ class Business(
             return Business(
                 businessCode = request.businessCode,
                 businessName = request.businessName,
+                registrationCode = request.registrationCode,
                 agentName = request.agentName,
                 phoneNumber = request.phoneNumber,
                 email = request.email,
