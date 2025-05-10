@@ -1,9 +1,12 @@
 package com.yoong.sunnyside.domain.admin.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
+import com.yoong.sunnyside.domain.admin.dto.AdminSignupRequest
 import com.yoong.sunnyside.domain.admin.dto.CompanionRequest
 import com.yoong.sunnyside.domain.admin.service.AdminService
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
+import com.yoong.sunnyside.domain.admin.dto.AdminLoginRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -16,6 +19,18 @@ import org.springframework.web.bind.annotation.*
 class AdminController(
     private val adminService: AdminService
 ) {
+    @Operation(summary = "관리자 로그인")
+    @PatchMapping("/login")
+    fun login(@RequestBody request: AdminLoginRequest): ResponseEntity<LoginResponse> {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.login(request))
+    }
+
+    @Operation(summary = "관리자 회원가입")
+    @PatchMapping("/signup")
+    fun signup(@RequestBody request: AdminSignupRequest): ResponseEntity<DefaultResponse> {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.signUp(request))
+    }
+
     @Operation(summary = "사업자 심사 통과", description = "auditId에 임시사업자 아이디")
     @PatchMapping("/regist/{auditId}")
     fun allow(@PathVariable("auditId") id: Long): ResponseEntity<DefaultResponse> {

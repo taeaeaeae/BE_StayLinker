@@ -1,6 +1,7 @@
 package com.yoong.sunnyside.domain.business.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.service.BusinessService
