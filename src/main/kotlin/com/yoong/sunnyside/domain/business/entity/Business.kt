@@ -55,7 +55,8 @@ class Business(
 
     companion object {
         fun from(
-            request: BusinessSignupRequest
+            request: BusinessSignupRequest,
+            password: String
         ): Business {
             return Business(
                 businessCode = request.businessCode,
@@ -64,7 +65,7 @@ class Business(
                 agentName = request.agentName,
                 phoneNumber = request.phoneNumber,
                 email = request.email,
-                password = request.password,
+                password = password,
                 address = request.address,
                 businessCertificate = request.businessCertificate,
             )
