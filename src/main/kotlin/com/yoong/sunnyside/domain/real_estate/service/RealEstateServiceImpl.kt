@@ -6,9 +6,14 @@ import com.yoong.sunnyside.domain.real_estate.dto.RealEstatePageResponse
 import com.yoong.sunnyside.domain.real_estate.dto.RealEstateResponse
 import com.yoong.sunnyside.domain.real_estate.dto.UpdateRealEstate
 import com.yoong.sunnyside.domain.real_estate.entity.RealEstate
+import com.yoong.sunnyside.domain.real_estate.enum_class.RealEstateAttributeData
+import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.entity.RealEstateAttribute
+import com.yoong.sunnyside.domain.real_estate.real_estate_attribute.repository.RealEstateAttributeRepository
 import com.yoong.sunnyside.domain.real_estate.repository.RealEstateRepository
 import com.yoong.sunnyside.domain.real_estate_option.entity.RealEstateOption
 import com.yoong.sunnyside.domain.real_estate_option.repository.RealEstateOptionRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -17,19 +22,25 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class RealEstateServiceImpl(
     private val realEstateRepository: RealEstateRepository,
+    private val realEstateAttributeRepository: RealEstateAttributeRepository,
     private val realEstateOptionRepository: RealEstateOptionRepository
 ): RealEstateService {
 
+    val log = LoggerFactory.getLogger("test")
     @Transactional
     override fun createRealEstate(createRealEstate: CreateRealEstate): DefaultResponse {
-
         // 협의 필요
         if(realEstateRepository.existsByAddress(createRealEstate.address)) throw RuntimeException("중복 되는 매물 입니다")
 
         val realEstate = realEstateRepository.saveAndFlush(
             //business 테이블 이 없는 관계로 우선 1L 로 설정
-            RealEstate(1L, createRealEstate)
+            RealEstate(5L, createRealEstate)
         )
+
+        createRealEstate.attributes.forEach{
+            log.info(realEstate.id.toString())
+            realEstateAttributeRepository.save(RealEstateAttribute.from(realEstate, it.key, it.value))
+        }
 
         realEstateOptionRepository.saveAll(createRealEstate.options.map { RealEstateOption(it, realEstate) })
 
@@ -40,16 +51,23 @@ class RealEstateServiceImpl(
 
         val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
 
+        val realEstateAttribute = realEstateAttributeRepository.findByAttributeData(realEstateId)
+
         val options = realEstateOptionRepository.findAllByRealEstateId(realEstateId)
 
-        return RealEstateResponse.from(realEstate, options)
+        return RealEstateResponse.from(realEstate, realEstateAttribute, options)
     }
 
     override fun getRealEstatePage(pageable: Pageable): Page<RealEstatePageResponse> {
 
         val realEstatePage = realEstateRepository.findAll(pageable)
 
-        return realEstatePage.map { RealEstatePageResponse.from(it) }
+        val combinedPage = realEstatePage.map {
+            val attributeData = realEstateAttributeRepository.findByAttributeData(it.id!!)
+            RealEstatePageResponse.from(it, attributeData)
+        }
+
+        return combinedPage
     }
 
     @Transactional
@@ -57,7 +75,12 @@ class RealEstateServiceImpl(
 
         val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
 
+       val realEstateAttributes = realEstateAttributeRepository.findByRealEstateId(realEstateId)
+
         realEstate.update(updateRealEstate)
+        realEstateAttributes.forEach{
+            it.update(updateRealEstate)
+        }
 
         return DefaultResponse("매물 수정이 완료 되었습니다")
 
@@ -68,8 +91,15 @@ class RealEstateServiceImpl(
 
         val realEstate = realEstateRepository.findByIdOrNull(realEstateId) ?: throw RuntimeException("해당 매물이 존재 하지 않습니다")
 
+        val realEstateAttributes = realEstateAttributeRepository.findByRealEstateId(realEstateId)
+
+        realEstateAttributes.forEach{
+            realEstateAttributeRepository.delete(it)
+        }
+
         realEstate.delete()
 
         return DefaultResponse("매물 삭제가 완료 되었습니다")
     }
 }
+

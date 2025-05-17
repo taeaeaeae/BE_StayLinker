@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table
+@Table(name = "business")
 class Business(
     @Column(name = "business_code", nullable = false, unique = true)
     val businessCode: String,
@@ -34,12 +34,6 @@ class Business(
 
     @Column(name = "business_certificate", nullable = false)
     var businessCertificate: String,
-
-    @Column(name = "nickname", nullable = false)
-    var nickName: String,
-
-    @Column(name = "openingdate", nullable = false)
-    var openingDate: String = "",
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -74,8 +68,6 @@ class Business(
                 password = password,
                 address = request.address,
                 businessCertificate = request.businessCertificate,
-                nickName = request.nickName,
-                openingDate = request.openingDate
             )
         }
     }
