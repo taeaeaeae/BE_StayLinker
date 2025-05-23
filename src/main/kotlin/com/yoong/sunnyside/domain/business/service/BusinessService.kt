@@ -66,11 +66,11 @@ class BusinessService(
         if (request.password == request.retryPassword) business.passwdChange(passwordEncoder.encode(request.password))
     }
 
-    fun searchBusiness(page: Long, type: BusinessSearchType, keyword: String): List<BusinessSearchResultResponse> {
+    fun searchBusiness(pageNum: Long, type: BusinessSearchType, keyword: String): List<BusinessSearchResultResponse> {
         val businessList = when (type) {
-            BusinessSearchType.NAME -> businessVerification.searchNameResult(keyword)
-            BusinessSearchType.AGENT_NAME -> businessVerification.searchAgentNameResult(keyword)
-            BusinessSearchType.CERTIFICATE -> businessVerification.searchCertificateResult(keyword)
+            BusinessSearchType.NAME -> businessVerification.searchNameResult(keyword, pageNum)
+            BusinessSearchType.AGENT_NAME -> businessVerification.searchAgentNameResult(keyword, pageNum)
+            BusinessSearchType.CERTIFICATE -> businessVerification.searchCertificateResult(keyword, pageNum)
         }
 
         return businessList

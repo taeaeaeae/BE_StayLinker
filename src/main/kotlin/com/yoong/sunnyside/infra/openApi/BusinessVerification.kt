@@ -30,15 +30,16 @@ class BusinessVerification(
             .block()
 
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
-        if (businessRes.EDOffices == null) throw ValidException("부동산 등록번호를 정확하게 입력했는지 확인해주세요.")
+        if (businessRes.EDOffices == null) throw ValidException("중개등록번호를 정확하게 입력했는지 확인해주세요.")
 
         return businessRes.EDOffices.field[0]
     }
 
-    fun searchNameResult(keyword: String): List<BusinessSearchResultResponse> {
+    fun searchNameResult(keyword: String, pageNum: Long): List<BusinessSearchResultResponse> {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
+            .queryParam("pageNo", pageNum.toString())
             .toUriString()
         val response = webClient.connect()
             .get()
@@ -48,35 +49,37 @@ class BusinessVerification(
             .block()
 
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
-        if (businessRes.EDOffices == null) throw ValidException("검색된 이름의 중개사무소가 존재하지 않습니다.")
+        if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 이름의 중개사무소가 존재하지 않습니다.")
 
         return businessRes.EDOffices.field.map { it.toResponse() }
     }
 
 
-    fun searchAgentNameResult(keyword: String): List<BusinessSearchResultResponse> {
+    fun searchAgentNameResult(keyword: String, pageNum: Long): List<BusinessSearchResultResponse> {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
+            .queryParam("pageNo", pageNum.toString())
             .toUriString()
         val response = webClient.connect()
             .get()
-            .uri("${url}&bsnmCmpnm=${keyword}")
+            .uri("${url}&brkrNm=${keyword}")
             .retrieve()
             .bodyToMono(String::class.java)
             .block()
 
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
-        if (businessRes.EDOffices == null) throw ValidException("검색된 대표명이 존재하지 않습니다.")
+        if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 대표명이 존재하지 않습니다.")
 
         return businessRes.EDOffices.field.map { it.toResponse() }
     }
 
 
-    fun searchCertificateResult(keyword: String): List<BusinessSearchResultResponse> {
+    fun searchCertificateResult(keyword: String, pageNum: Long): List<BusinessSearchResultResponse> {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
+            .queryParam("pageNo", pageNum.toString())
             .toUriString()
         val response = webClient.connect()
             .get()
@@ -86,7 +89,7 @@ class BusinessVerification(
             .block()
 
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
-        if (businessRes.EDOffices == null) throw ValidException("검색된 중개등록번호가 존재하지 않습니다.")
+        if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 중개등록번호가 존재하지 않습니다.")
 
         return businessRes.EDOffices.field.map { it.toResponse() }
     }
