@@ -27,32 +27,24 @@ class KoreaInfoRepositoryImpl(
     private val queryFactory = JPAQueryFactory(em)
     private val koreaInfo = QKoreaInfo.koreaInfo
     override fun findPage(
-        pageable: Pageable,
+        pageSize: Long,
+        cursor: Any?,
         division: String?,
-        searchType: SearchType?,
         keyword: String?
-    ): Page<KoreaInfo> {
+    ): List<KoreaInfo> {
+        
         val builder = BooleanBuilder()
+        builder.and(koreaInfo.deletedAt.isNull())
         division?.let { builder.and(koreaInfo.division.eq(it)) }
+        keyword?.let { builder.and(koreaInfo.title.contains(it)) }
+        cursor?.let { builder.and(koreaInfo.id.lt(cursor as Long)) }
 
-        if (searchType == SearchType.TITLE) {
-            keyword?.let { builder.and(koreaInfo.title.`in`(it)) }
-        } else if (searchType == SearchType.CONTENT) {
-            keyword?.let { builder.and(koreaInfo.content.`in`(it)) }
-        }
-
-        val totalCount = queryFactory.select(koreaInfo.count())
-            .from(koreaInfo)
-            .fetchOne() ?: 0L
-
-        val contents = queryFactory.selectFrom(koreaInfo)
-            .orderBy(*orderSpecifiers(pageable.sort, koreaInfo))
-            .offset(pageable.offset)
-            .limit(pageable.pageSize.toLong())
+        return queryFactory.selectFrom(koreaInfo)
             .where(builder)
+            .orderBy(koreaInfo.id.desc())
+            .limit(pageSize)
             .fetch()
 
-        return PageImpl(contents, pageable, totalCount)
     }
 
     private fun orderSpecifiers(sort: Sort, root: EntityPathBase<*>): Array<OrderSpecifier<*>> {
