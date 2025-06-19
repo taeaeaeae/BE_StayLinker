@@ -41,7 +41,13 @@ class Consumer(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    var role: MemberRole
+    var role: MemberRole,
+
+    @Column(name = "birthday")
+    val birthday: String,
+
+    @Column(name = "name")
+    val name: String,
 
 ) {
     fun changePassword(password: String) {
@@ -86,6 +92,8 @@ class Consumer(
         phoneNumber = consumerSignupRequest.phoneNumber,
         foreignNumber = "",
         foreignCreateAt = "",
-        role = MemberRole.TEMP_CONSUMER
+        role = MemberRole.TEMP_CONSUMER,
+        birthday = consumerSignupRequest.birthDay,
+        name = consumerSignupRequest.name,
     )
 }

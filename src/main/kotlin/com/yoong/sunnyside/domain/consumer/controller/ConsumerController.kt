@@ -2,7 +2,7 @@ package com.yoong.sunnyside.domain.consumer.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
 import com.yoong.sunnyside.common.exception.ValidException
-import com.yoong.sunnyside.domain.business.dto.LoginResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.domain.consumer.dto.*
 import com.yoong.sunnyside.domain.consumer.service.ConsumerService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/consumer")
 class ConsumerController(
     private val consumerService: ConsumerService
-){
+) {
 
     @Operation(summary = "소비자 회원 가입 API")
     @PostMapping("/signup")
     fun signup(
         @RequestBody consumerSignupRequest: ConsumerSignupRequest,
         bindingResult: BindingResult,
-    ): ResponseEntity<DefaultResponse>{
+    ): ResponseEntity<DefaultResponse> {
 
-        if(bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
+        if (bindingResult.hasErrors()) throw ValidException(bindingResult.fieldError?.defaultMessage.toString())
 
         return ResponseEntity.status(HttpStatus.CREATED).body(consumerService.signUp(consumerSignupRequest))
     }
@@ -38,8 +38,8 @@ class ConsumerController(
     @PostMapping("/login")
     fun login(
         @RequestBody consumerLoginRequest: ConsumerLoginRequest
-    ): ResponseEntity<LoginResponse>
-    = ResponseEntity.status(HttpStatus.OK).body(consumerService.login(consumerLoginRequest))
+    ): ResponseEntity<LoginResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(consumerService.login(consumerLoginRequest))
 
     @Operation(summary = "소비자 비밀번호 변경 API")
     @PreAuthorize("hasRole('CONSUMER')")
@@ -47,8 +47,8 @@ class ConsumerController(
     fun changePassword(
         @RequestBody passwordRequest: PasswordRequest,
         @AuthenticationPrincipal principal: MemberPrincipal
-    ): ResponseEntity<DefaultResponse>
-            = ResponseEntity.status(HttpStatus.OK).body(consumerService.changePassword(passwordRequest, principal.id))
+    ): ResponseEntity<DefaultResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(consumerService.changePassword(passwordRequest, principal.id))
 
     @Operation(summary = "소비자 회원 정보 변경 API")
     @PreAuthorize("hasRole('CONSUMER')")
@@ -56,16 +56,16 @@ class ConsumerController(
     fun updateConsumer(
         @RequestBody consumerUpdateRequest: ConsumerUpdateRequest,
         @AuthenticationPrincipal principal: MemberPrincipal
-    ): ResponseEntity<DefaultResponse>
-            = ResponseEntity.status(HttpStatus.OK).body(consumerService.updateConsumer(consumerUpdateRequest, principal.id))
+    ): ResponseEntity<DefaultResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(consumerService.updateConsumer(consumerUpdateRequest, principal.id))
 
     @Operation(summary = "소비자 회원 탈퇴 API")
     @PreAuthorize("hasRole('CONSUMER')")
     @DeleteMapping
     fun deleteConsumer(
         @AuthenticationPrincipal principal: MemberPrincipal
-    ): ResponseEntity<DefaultResponse>
-            = ResponseEntity.status(HttpStatus.OK).body(consumerService.deleteConsumer(principal.id))
+    ): ResponseEntity<DefaultResponse> =
+        ResponseEntity.status(HttpStatus.OK).body(consumerService.deleteConsumer(principal.id))
 
     @Operation(summary = "외국인 등록증 진위 여부 확인 (외국인 등록 번호)")
     @PreAuthorize("hasRole('CONSUMER')")
@@ -73,8 +73,9 @@ class ConsumerController(
     fun verifyAlienRegistrationCardByString(
         @AuthenticationPrincipal principal: MemberPrincipal,
         @RequestBody alienRegistrationCardRequest: AlienRegistrationCardRequest
-    ):ResponseEntity<DefaultResponse> =
-        ResponseEntity.status(HttpStatus.OK).body(consumerService.verifyAlienRegistrationCardByString(alienRegistrationCardRequest, principal.id))
+    ): ResponseEntity<DefaultResponse> =
+        ResponseEntity.status(HttpStatus.OK)
+            .body(consumerService.verifyAlienRegistrationCardByString(alienRegistrationCardRequest, principal.id))
 
 
 }

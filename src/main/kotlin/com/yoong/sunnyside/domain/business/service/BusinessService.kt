@@ -6,13 +6,13 @@ import com.yoong.sunnyside.common.exception.ModelNotFoundException
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
 import com.yoong.sunnyside.domain.business.dto.BusinessSignupRequest
-import com.yoong.sunnyside.domain.business.dto.LoginResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.domain.business.dto.LoginRequest
 import com.yoong.sunnyside.domain.business.dto.PasswordChangeRequest
 import com.yoong.sunnyside.domain.business.entity.Business
+import com.yoong.sunnyside.domain.business.enum_class.BusinessSearchType
 import com.yoong.sunnyside.domain.business.repository.BusinessRepository
 import com.yoong.sunnyside.infra.openApi.BusinessVerification
-import com.yoong.sunnyside.infra.security.MemberRole
 import com.yoong.sunnyside.infra.security.jwt.JwtHelper
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -38,9 +38,9 @@ class BusinessService(
         if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
         if (business.bsnmCmpnm != request.businessName) throw ValidException("사업자 상호명이 일치하지 않습니다.")
         if (business.registDe != request.registrationCode) throw ValidException("등록일자가 일치하지 않습니다.")
-        
+
         businessRepository.save(
-            Business.from(request)
+            Business.from(request, passwordEncoder.encode(request.password))
         )
 
         return DefaultResponse("가입 신청이 완료되었습니다.")
@@ -66,13 +66,21 @@ class BusinessService(
         if (request.password == request.retryPassword) business.passwdChange(passwordEncoder.encode(request.password))
     }
 
-    fun checkVerify(request: BusinessVerifyRequest): BusinessVerifyResponse {
+    fun searchBusiness(pageNum: Long, type: BusinessSearchType, keyword: String): List<BusinessSearchResultResponse> {
+        val businessList = when (type) {
+            BusinessSearchType.NAME -> businessVerification.searchNameResult(keyword, pageNum)
+            BusinessSearchType.AGENT_NAME -> businessVerification.searchAgentNameResult(keyword, pageNum)
+            BusinessSearchType.CERTIFICATE -> businessVerification.searchCertificateResult(keyword, pageNum)
+        }
+
+        return businessList
+
+    }
+
+    fun businessInfo(request: BusinessVerifyRequest): BusinessVerifyResponse {
         if (businessRepository.existsByBusinessCode(request.businessCode)) throw CustomIllegalArgumentException("이미 가입된 사업자 등록번호 입니다.")
 
         val business = businessVerification.getOfficeInfo(request.registrationCode)
-        if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
-        if (business.bsnmCmpnm != request.name) throw ValidException("사업자 상호명이 일치하지 않습니다.")
-        if (business.registDe != request.registrationCode) throw ValidException("등록일자가 일치하지 않습니다.")
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return BusinessVerifyResponse(
             request.businessCode,
@@ -88,7 +96,8 @@ class BusinessService(
     }
 
     fun checkNickName(nickName: String): Boolean {
-        return (businessRepository.existsByNickName(nickName))
+        TODO()
+//        return (businessRepository.existsByNickName(nickName))
     }
 
     fun checkEmail(email: String): Boolean {

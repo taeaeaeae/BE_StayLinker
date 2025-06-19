@@ -1,8 +1,10 @@
 package com.yoong.sunnyside.domain.business.controller
 
 import com.yoong.sunnyside.common.dto.DefaultResponse
+import com.yoong.sunnyside.common.dto.LoginResponse
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.*
+import com.yoong.sunnyside.domain.business.enum_class.BusinessSearchType
 import com.yoong.sunnyside.domain.business.service.BusinessService
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 import io.swagger.v3.oas.annotations.Operation
@@ -71,12 +73,25 @@ class BusinessController(private val businessService: BusinessService) {
     }
 
     @Operation(
-        summary = "부동산 정보 검사",
+        summary = "부동산 정보 상세 조회",
         description = "businessNumber: 사업자등록번호, registrationNumber : 부동산등록번호, name : 상호명 agentName: 대표자명, registDate : 등록일자"
     )
-    @PostMapping("/business-info-verify")
-    fun businessCheck(@RequestBody request: BusinessVerifyRequest): ResponseEntity<BusinessVerifyResponse> {
-        return ResponseEntity.status(HttpStatus.OK).body(businessService.checkVerify(request))
+    @PostMapping("/business-info-detail")
+    fun businessDetailInfo(@RequestBody request: BusinessVerifyRequest): ResponseEntity<BusinessVerifyResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(businessService.businessInfo(request))
+    }
+
+    @Operation(
+        summary = "부동산 정보 리스트 검색",
+        description = "NAME:상호명 AGENT_NAME: 대표자명, CERTIFICATE : 중개등록번호"
+    )
+    @PostMapping("/business-info-search")
+    fun businessSearch(
+        @RequestParam type: BusinessSearchType,
+        @RequestParam pageNumber: Long,
+        @RequestParam keyword: String
+    ): ResponseEntity<List<BusinessSearchResultResponse>> {
+        return ResponseEntity.status(HttpStatus.OK).body(businessService.searchBusiness(pageNumber, type, keyword))
     }
 
     @Operation(summary = "사업자 등록증 이미지 등록(업로드 한 링크 저장)")
