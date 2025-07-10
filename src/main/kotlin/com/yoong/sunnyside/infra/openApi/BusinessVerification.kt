@@ -3,6 +3,7 @@ package com.yoong.sunnyside.infra.openApi
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yoong.sunnyside.common.exception.ValidException
 import com.yoong.sunnyside.domain.business.dto.BusinessResponse
+import com.yoong.sunnyside.domain.business.dto.BusinessSearchListResponse
 import com.yoong.sunnyside.domain.business.dto.BusinessSearchResultResponse
 import com.yoong.sunnyside.infra.web_client.WebClientConfig
 import org.springframework.beans.factory.annotation.Value
@@ -35,11 +36,12 @@ class BusinessVerification(
         return businessRes.EDOffices.field[0]
     }
 
-    fun searchNameResult(keyword: String, pageNum: Long): List<BusinessSearchResultResponse> {
+    fun searchNameResult(keyword: String, pageNum: Long): BusinessSearchListResponse {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
             .queryParam("pageNo", pageNum.toString())
+            .queryParam("numOfRows", "4")
             .toUriString()
         val response = webClient.connect()
             .get()
@@ -51,15 +53,19 @@ class BusinessVerification(
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
         if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 이름의 중개사무소가 존재하지 않습니다.")
 
-        return businessRes.EDOffices.field.map { it.toResponse() }
+        return BusinessSearchListResponse(
+            totalPage = businessRes.totalCount,
+            result = businessRes.EDOffices.field.map { it.toResponse() }
+        )
     }
 
 
-    fun searchAgentNameResult(keyword: String, pageNum: Long): List<BusinessSearchResultResponse> {
+    fun searchAgentNameResult(keyword: String, pageNum: Long): BusinessSearchListResponse {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
             .queryParam("pageNo", pageNum.toString())
+            .queryParam("numOfRows", "4")
             .toUriString()
         val response = webClient.connect()
             .get()
@@ -71,15 +77,19 @@ class BusinessVerification(
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
         if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 대표명이 존재하지 않습니다.")
 
-        return businessRes.EDOffices.field.map { it.toResponse() }
+        return BusinessSearchListResponse(
+            totalPage = businessRes.totalCount,
+            result = businessRes.EDOffices.field.map { it.toResponse() }
+        )
     }
 
 
-    fun searchCertificateResult(keyword: String, pageNum: Long): List<BusinessSearchResultResponse> {
+    fun searchCertificateResult(keyword: String, pageNum: Long): BusinessSearchListResponse {
         val url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
             .queryParam("key", API_KEY)
             .queryParam("format", "json")
             .queryParam("pageNo", pageNum.toString())
+            .queryParam("numOfRows", "4")
             .toUriString()
         val response = webClient.connect()
             .get()
@@ -91,7 +101,10 @@ class BusinessVerification(
         val businessRes = objectMapper.readValue(response, OfficeInfo::class.java)
         if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 중개등록번호가 존재하지 않습니다.")
 
-        return businessRes.EDOffices.field.map { it.toResponse() }
+        return BusinessSearchListResponse(
+            totalPage = businessRes.totalCount,
+            result = businessRes.EDOffices.field.map { it.toResponse() }
+        )
     }
 
 

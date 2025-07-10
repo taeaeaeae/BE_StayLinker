@@ -37,7 +37,6 @@ class BusinessService(
         val business = businessVerification.getOfficeInfo(request.registrationCode)
         if (business.brkrNm != request.agentName) throw ValidException("대표자 이름이 일치하지 않습니다.")
         if (business.bsnmCmpnm != request.businessName) throw ValidException("사업자 상호명이 일치하지 않습니다.")
-        if (business.registDe != request.registrationCode) throw ValidException("등록일자가 일치하지 않습니다.")
 
         businessRepository.save(
             Business.from(request, passwordEncoder.encode(request.password))
@@ -66,7 +65,7 @@ class BusinessService(
         if (request.password == request.retryPassword) business.passwdChange(passwordEncoder.encode(request.password))
     }
 
-    fun searchBusiness(pageNum: Long, type: BusinessSearchType, keyword: String): List<BusinessSearchResultResponse> {
+    fun searchBusiness(pageNum: Long, type: BusinessSearchType, keyword: String): BusinessSearchListResponse {
         val businessList = when (type) {
             BusinessSearchType.NAME -> businessVerification.searchNameResult(keyword, pageNum)
             BusinessSearchType.AGENT_NAME -> businessVerification.searchAgentNameResult(keyword, pageNum)
