@@ -49,11 +49,11 @@ class KoreaInfoService(
     }
 
     fun getKoreaInfoPage(
-        pageable: Pageable,
+        pageSize: Long,
+        cursor: Any?,
         division: String?,
-        searchType: SearchType?,
         keyword: String?
-    ): Page<KoreaInfoResponse> {
-        return koreaInfoRepository.findPage(pageable, division, searchType, keyword).map { KoreaInfoResponse.from(it) }
+    ): List<KoreaInfoResponse> {
+        return koreaInfoRepository.findPage(pageSize, cursor, division, keyword).map { KoreaInfoResponse.from(it) }
     }
 }

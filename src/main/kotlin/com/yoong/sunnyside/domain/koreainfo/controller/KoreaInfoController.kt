@@ -38,13 +38,13 @@ class KoreaInfoController(
 
     @GetMapping
     fun getAllKoreaInfo(
-        pageable: Pageable,
+        pageSize: Long,
+        cursor: Any?,
         division: String?,
-        searchType: SearchType?,
         keyword: String?
-    ): ResponseEntity<Page<KoreaInfoResponse>> {
+    ): ResponseEntity<List<KoreaInfoResponse>> {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(koreaInfoService.getKoreaInfoPage(pageable, division, searchType, keyword))
+            .body(koreaInfoService.getKoreaInfoPage(pageSize, cursor, division, keyword))
     }
 
     @PostMapping

@@ -2,7 +2,7 @@ package com.yoong.sunnyside.domain.auth.dto
 
 import com.yoong.sunnyside.infra.security.MemberPrincipal
 
-data class MemberRoleResponse (
+data class MemberRoleResponse(
 
     val id: Long,
     val role: String,

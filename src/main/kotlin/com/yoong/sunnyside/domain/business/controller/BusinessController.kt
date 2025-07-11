@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "사업자(제공자)", description = "사업자(제공자) 관련 CRUD")
 class BusinessController(private val businessService: BusinessService) {
 
-    @Operation(summary = "사업자 신청")
+    @Operation(summary = "사업자 신청", description = "openingdate 는 \"yyyy-MM-dd\" 이런형식이면됩니다.")
     @PostMapping("/apply")
     fun signup(
         @RequestBody request: BusinessSignupRequest,
@@ -90,7 +90,7 @@ class BusinessController(private val businessService: BusinessService) {
         @RequestParam type: BusinessSearchType,
         @RequestParam pageNumber: Long,
         @RequestParam keyword: String
-    ): ResponseEntity<List<BusinessSearchResultResponse>> {
+    ): ResponseEntity<BusinessSearchListResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(businessService.searchBusiness(pageNumber, type, keyword))
     }
 
