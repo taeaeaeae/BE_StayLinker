@@ -60,3 +60,4 @@ jobs:
           sudo docker stop server
           sudo docker rm server || true
           sudo docker run -d --name server -p 8080:8080 ${{ secrets.DOCKER_NAME }}/be_staylinker:latest
+
