@@ -29,9 +29,14 @@ class CommunityCommentServiceTest : StringSpec({
     val communityRepository = mockk<CommunityRepository>()
     val consumerRepository = mockk<ConsumerRepository>()
     val communityReplyRepository = mockk<CommunityReplyJpaRepository>()
-    val communityCommentService = CommunityCommentService(communityCommentRepository, communityRepository, consumerRepository, communityReplyRepository)
+    val communityCommentService = CommunityCommentService(
+        communityCommentRepository,
+        communityRepository,
+        consumerRepository,
+        communityReplyRepository
+    )
 
-    "커뮤니티 댓글이 없을 경우 ModelNotFoundException"{
+    "커뮤니티 댓글이 없을 경우 ModelNotFoundException" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -49,7 +54,7 @@ class CommunityCommentServiceTest : StringSpec({
         }
     }
 
-    "소비자가 없을 경우 ModelNotFoundException"{
+    "소비자가 없을 경우 ModelNotFoundException" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -68,7 +73,7 @@ class CommunityCommentServiceTest : StringSpec({
         }
     }
 
-    "답글 정상 작성"{
+    "답글 정상 작성" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -97,7 +102,7 @@ class CommunityCommentServiceTest : StringSpec({
         communityReplyData!!.description shouldBe "description"
     }
 
-    "답글 정상 수정"{
+    "답글 정상 수정" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -110,7 +115,7 @@ class CommunityCommentServiceTest : StringSpec({
             consumer = CommunityReplyServiceTest.CONSUMER
         )
 
-        every { communityCommentRepository.findByIdAndConsumerId(any(), any()) } answers  {
+        every { communityCommentRepository.findByIdAndConsumerId(any(), any()) } answers {
             communityComment.id = 1L
             communityComment
         }
@@ -122,7 +127,7 @@ class CommunityCommentServiceTest : StringSpec({
         communityComment.description shouldBe "description2"
     }
 
-    "답글 정상 삭제"{
+    "답글 정상 삭제" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -135,7 +140,7 @@ class CommunityCommentServiceTest : StringSpec({
             consumer = CommunityReplyServiceTest.CONSUMER
         )
 
-        every { communityCommentRepository.findByIdAndConsumerId(any(), any()) } answers  {
+        every { communityCommentRepository.findByIdAndConsumerId(any(), any()) } answers {
             communityComment.id = 1L
             communityComment
         }
@@ -167,7 +172,9 @@ class CommunityCommentServiceTest : StringSpec({
             phoneNumber = "1234567890",
             foreignNumber = "1234567890",
             foreignCreateAt = "2020-01-01T00:00:00.000Z",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
     }

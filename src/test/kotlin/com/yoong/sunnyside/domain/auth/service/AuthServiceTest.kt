@@ -152,7 +152,9 @@ class AuthServiceTest : StringSpec({
             phoneNumber = "",
             foreignNumber = "null",
             foreignCreateAt = "null",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         every { redisUtils.setStringData(any(), any(), any()) } just Runs
