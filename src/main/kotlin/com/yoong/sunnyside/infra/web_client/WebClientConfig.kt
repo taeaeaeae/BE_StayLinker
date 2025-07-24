@@ -1,25 +1,42 @@
 package com.yoong.sunnyside.infra.web_client
 
-import org.springframework.beans.factory.annotation.Value
+import io.netty.channel.ChannelOption
+import io.netty.handler.timeout.ReadTimeoutHandler
+import io.netty.handler.timeout.WriteTimeoutHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.netty.http.client.HttpClient
+import java.time.Duration
+import java.util.concurrent.TimeUnit
+import org.springframework.http.client.reactive.ReactorClientHttpConnector
 
 
 @Configuration
 class WebClientConfig(
     @Value("\${api.auth.token}")
     private val token: String,
-){
+) {
 
     @Bean
     fun connect(): WebClient {
+        val httpClient = HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+            .responseTimeout(Duration.ofSeconds(5))
+            .doOnConnected { conn ->
+                conn.addHandlerLast(ReadTimeoutHandler(5, TimeUnit.SECONDS))
+                    .addHandlerLast(WriteTimeoutHandler(5, TimeUnit.SECONDS))
+            }
+
         return WebClient.builder()
-            .defaultHeaders{
+            .clientConnector(ReactorClientHttpConnector(httpClient))
+            .defaultHeaders {
                 it.add(HttpHeaders.CONTENT_TYPE, "application/json")
                 it.add(HttpHeaders.ACCEPT_CHARSET, "utf-8")
                 it.add("Authorization", "Token $token")
-            }.build()
+            }
+            .build()
     }
 }
