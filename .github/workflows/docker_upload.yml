@@ -17,8 +17,8 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: staylinker
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_SECRET }}
           POSTGRES_DB: stay
         options: >-
           --health-cmd pg_isready
@@ -49,7 +49,7 @@ jobs:
       
     - name: Build with Gradle Wrapper
       env:
-        SPRING_DATASOURCE_URL: ${{ secrets.DB_URL }}
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/stay
         SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
         SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_SECRET }}
       run: ./gradlew clean test build
