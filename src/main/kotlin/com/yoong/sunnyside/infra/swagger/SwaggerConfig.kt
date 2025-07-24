@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
+import io.swagger.v3.oas.models.servers.Server
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -13,6 +14,9 @@ class SwaggerConfig {
 
     @Bean
     fun openAPI(): OpenAPI = OpenAPI()
+        .addServersItem(
+            Server().url("https://staylinker.kro.kr")  // 여기를 실제 도메인이나 IP로 바꾸세요
+        )
         .addSecurityItem(
             SecurityRequirement().addList("Bearer Authentication")
         )
