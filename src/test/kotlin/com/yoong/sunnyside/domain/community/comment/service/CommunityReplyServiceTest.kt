@@ -27,18 +27,19 @@ class CommunityReplyServiceTest : StringSpec({
     val communityReplyRepository = mockk<CommunityReplyJpaRepository>()
     val communityCommentRepository = mockk<CommunityCommentJpaRepository>()
     val consumerRepository = mockk<ConsumerRepository>()
-    val communityReplyService = CommunityReplyService(communityReplyRepository, communityCommentRepository, consumerRepository)
+    val communityReplyService =
+        CommunityReplyService(communityReplyRepository, communityCommentRepository, consumerRepository)
 
 
 
-    "커뮤니티 댓글이 없을 경우 ModelNotFoundException"{
+    "커뮤니티 댓글이 없을 경우 ModelNotFoundException" {
 
         //Given
         val replyRequest = ReplyRequest(
             "description",
         )
 
-         every { communityCommentRepository.findByIdAndConsumerId(any(), any()) } returns null
+        every { communityCommentRepository.findByIdAndConsumerId(any(), any()) } returns null
 
         //When & Then
 
@@ -49,7 +50,7 @@ class CommunityReplyServiceTest : StringSpec({
         }
     }
 
-    "소비자가 없을 경우 ModelNotFoundException"{
+    "소비자가 없을 경우 ModelNotFoundException" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -68,7 +69,7 @@ class CommunityReplyServiceTest : StringSpec({
         }
     }
 
-    "답글 정상 작성"{
+    "답글 정상 작성" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -97,7 +98,7 @@ class CommunityReplyServiceTest : StringSpec({
         communityReplyData!!.description shouldBe "description"
     }
 
-    "답글 정상 수정"{
+    "답글 정상 수정" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -110,7 +111,7 @@ class CommunityReplyServiceTest : StringSpec({
             consumer = CONSUMER
         )
 
-        every { communityReplyRepository.findByIdAndConsumerId(any(), any()) } answers  {
+        every { communityReplyRepository.findByIdAndConsumerId(any(), any()) } answers {
             communityReply.id = 1L
             communityReply
         }
@@ -122,7 +123,7 @@ class CommunityReplyServiceTest : StringSpec({
         communityReply.description shouldBe "description2"
     }
 
-    "답글 정상 삭제"{
+    "답글 정상 삭제" {
 
         //Given
         val replyRequest = ReplyRequest(
@@ -135,7 +136,7 @@ class CommunityReplyServiceTest : StringSpec({
             consumer = CONSUMER
         )
 
-        every { communityReplyRepository.findByIdAndConsumerId(any(), any()) } answers  {
+        every { communityReplyRepository.findByIdAndConsumerId(any(), any()) } answers {
             communityReply.id = 1L
             communityReply
         }
@@ -146,9 +147,9 @@ class CommunityReplyServiceTest : StringSpec({
         result shouldBe DefaultResponse("CommunityReply deleted successfully")
         communityReply.deletedAt shouldNotBe null
     }
-}){
+}) {
 
-    companion object{
+    companion object {
 
         private val COMMUNITY = Community(
             consumerId = 1L,
@@ -166,7 +167,9 @@ class CommunityReplyServiceTest : StringSpec({
             phoneNumber = "1234567890",
             foreignNumber = "1234567890",
             foreignCreateAt = "2020-01-01T00:00:00.000Z",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         val COMMUNITY_COMMENT = CommunityComment(

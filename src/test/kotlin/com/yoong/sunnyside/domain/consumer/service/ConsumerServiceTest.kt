@@ -39,10 +39,11 @@ class ConsumerServiceTest : StringSpec({
         every { passwordEncoderConfig.passwordEncoder() } returns passwordEncoder
         every { passwordEncoder.encode(any()) } returns "password"
 
-        consumerService = ConsumerService(consumerRepository, passwordEncoderConfig, jwtHelper, redisUtils, hiKoreaClient, aesUtil)
+        consumerService =
+            ConsumerService(consumerRepository, passwordEncoderConfig, jwtHelper, redisUtils, hiKoreaClient, aesUtil)
     }
 
-    "패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException"{
+    "패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException" {
 
         //Given
 
@@ -54,7 +55,9 @@ class ConsumerServiceTest : StringSpec({
             address = "test",
             phoneNumber = "test",
             languages = listOf(),
-            country = "test"
+            country = "test",
+            birthDay = "1999-09-16",
+            name = "taekyoung"
         )
 
         every { redisUtils.getStringData(any()) } returns "test"
@@ -62,12 +65,12 @@ class ConsumerServiceTest : StringSpec({
         //When & Then
         shouldThrow<CustomIllegalArgumentException> {
             consumerService.signUp(consumerSignupRequest)
-        }.let{
+        }.let {
             it.message shouldBe "Password does not match"
         }
     }
 
-    "회원가입 정상 동작"{
+    "회원가입 정상 동작" {
 
         //Given
 
@@ -79,7 +82,9 @@ class ConsumerServiceTest : StringSpec({
             address = "test",
             phoneNumber = "test",
             languages = listOf(),
-            country = "test"
+            country = "test",
+            birthDay = "1999-09-16",
+            name = "taekyoung"
         )
 
         //When
@@ -95,7 +100,7 @@ class ConsumerServiceTest : StringSpec({
         result shouldBe DefaultResponse("login successful")
     }
 
-    "새로운 패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException"{
+    "새로운 패스워드와 패스워드 확인이 일치하지 않을 경우 CustomIllegalArgumentException" {
         //Given
         val passwordRequest = PasswordRequest(
             password = "test",
@@ -112,7 +117,7 @@ class ConsumerServiceTest : StringSpec({
 
     }
 
-    "DB 데이터 상 비밀번호와 이전 비밀번호가 일치하지 않을 경우 CustomIllegalArgumentException"{
+    "DB 데이터 상 비밀번호와 이전 비밀번호가 일치하지 않을 경우 CustomIllegalArgumentException" {
         //Given
         val passwordRequest = PasswordRequest(
             password = "test",
@@ -129,7 +134,9 @@ class ConsumerServiceTest : StringSpec({
             country = "test",
             foreignNumber = "001",
             foreignCreateAt = "2020-01-01",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         consumer.apply {
@@ -149,7 +156,7 @@ class ConsumerServiceTest : StringSpec({
 
     }
 
-    "새로운 비밀번호와 이전 비밀번호가 일치할 경우 CustomIllegalArgumentException"{
+    "새로운 비밀번호와 이전 비밀번호가 일치할 경우 CustomIllegalArgumentException" {
         //Given
         val passwordRequest = PasswordRequest(
             password = "test",
@@ -166,7 +173,9 @@ class ConsumerServiceTest : StringSpec({
             country = "test",
             foreignNumber = "001",
             foreignCreateAt = "2020-01-01",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         consumer.apply {
@@ -186,7 +195,7 @@ class ConsumerServiceTest : StringSpec({
 
     }
 
-    "개인 정보 업데이트 정상 동작"{
+    "개인 정보 업데이트 정상 동작" {
 
         //Given
         val consumerUpdateRequest = ConsumerUpdateRequest(
@@ -204,7 +213,9 @@ class ConsumerServiceTest : StringSpec({
             country = "test",
             foreignNumber = "001",
             foreignCreateAt = "2020-01-01",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         //When
@@ -218,7 +229,7 @@ class ConsumerServiceTest : StringSpec({
         consumer.nickname shouldBe "test3"
     }
 
-    "개인 정보 삭제 정상 동작"{
+    "개인 정보 삭제 정상 동작" {
 
         //Given
 
@@ -231,7 +242,9 @@ class ConsumerServiceTest : StringSpec({
             country = "test",
             foreignNumber = "001",
             foreignCreateAt = "2020-01-01",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         //When

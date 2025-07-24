@@ -22,7 +22,7 @@ class CommunityServiceTest : StringSpec({
     val communityRepository = mockk<CommunityRepository>()
     val communityService = CommunityService(communityRepository)
 
-    "커뮤니티 글 생성 정상 동작"{
+    "커뮤니티 글 생성 정상 동작" {
         val communityRequest = CommunityRequest(
             title = "title",
             description = "description",
@@ -46,7 +46,7 @@ class CommunityServiceTest : StringSpec({
         community.communityType shouldBe CommunityType.COMMUNITY
     }
 
-    "커뮤니티 글 전체 조회 정상 동작"{
+    "커뮤니티 글 전체 조회 정상 동작" {
         val communityRequest = CommunityRequest(
             title = "title",
             description = "description",
@@ -80,7 +80,7 @@ class CommunityServiceTest : StringSpec({
 
     }
 
-    "커뮤니티 글 단건 조회 정상 동작 (댓글, 답글 포함)"{
+    "커뮤니티 글 단건 조회 정상 동작 (댓글, 답글 포함)" {
         val communityRequest = CommunityRequest(
             title = "title",
             description = "description",
@@ -93,16 +93,17 @@ class CommunityServiceTest : StringSpec({
         )
 
         community1.apply { id = 1 }
-        COMMUNITY_COMMENT1.apply{ id = 1 }
+        COMMUNITY_COMMENT1.apply { id = 1 }
         COMMUNITY_COMMENT1.apply { consumer.id = 1 }
-        COMMUNITY_COMMENT2.apply{ id = 2 }
+        COMMUNITY_COMMENT2.apply { id = 2 }
         COMMUNITY_COMMENT2.apply { consumer.id = 1 }
-        COMMENT_REPLY.apply{ id = 1 }
+        COMMENT_REPLY.apply { id = 1 }
 
         every { communityRepository.findById(any()) } returns CommunityResponse.from(
             community1,
             listOf(COMMUNITY_COMMENT1, COMMUNITY_COMMENT2),
-            listOf(COMMENT_REPLY))
+            listOf(COMMENT_REPLY)
+        )
 
         val result = communityService.getCommunity(1)
 
@@ -113,7 +114,7 @@ class CommunityServiceTest : StringSpec({
 
     }
 
-    "커뮤니티 글 수정 정상 동작"{
+    "커뮤니티 글 수정 정상 동작" {
         val communityRequest = CommunityRequest(
             title = "title3",
             description = "description3",
@@ -137,7 +138,7 @@ class CommunityServiceTest : StringSpec({
         community.communityType shouldBe CommunityType.COMMUNITY
     }
 
-    "커뮤니티 글 삭제 정상 동작"{
+    "커뮤니티 글 삭제 정상 동작" {
         val communityRequest = CommunityRequest(
             title = "title3",
             description = "description3",
@@ -158,7 +159,7 @@ class CommunityServiceTest : StringSpec({
         result shouldBe DefaultResponse("Community deleted successfully")
         community.deletedAt shouldNotBe null
     }
-}){
+}) {
     companion object {
         private val COMMUNITY = Community(
             consumerId = 1L,
@@ -176,7 +177,9 @@ class CommunityServiceTest : StringSpec({
             phoneNumber = "1234567890",
             foreignNumber = "1234567890",
             foreignCreateAt = "2020-01-01T00:00:00.000Z",
-            role = MemberRole.CONSUMER
+            role = MemberRole.CONSUMER,
+            birthday = "1990-01-01",
+            name = "테스트"
         )
 
         val COMMUNITY_COMMENT1 = CommunityComment(
