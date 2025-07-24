@@ -72,8 +72,6 @@ class ConsumerServiceTest : StringSpec({
 
     "회원가입 정상 동작" {
 
-        //Given
-
         val consumerSignupRequest = ConsumerSignupRequest(
             email = "test@test.com",
             password = "test",
@@ -87,16 +85,15 @@ class ConsumerServiceTest : StringSpec({
             name = "taekyoung"
         )
 
-        //When
         every { redisUtils.getStringData(any()) } returns "test"
         every { passwordEncoder.encode(any()) } returns "testXX"
-//        every { consumerRepository.tempUserSave(any()) } answers {
-//
-//        }
+        every { consumerRepository.save(any()) } answers {
+            val consumer = it.invocation.args[0] as Consumer
+            consumer.id = 1L
+            consumer
+        }
 
-        //Then
         val result = consumerService.signUp(consumerSignupRequest)
-
         result shouldBe DefaultResponse("login successful")
     }
 
