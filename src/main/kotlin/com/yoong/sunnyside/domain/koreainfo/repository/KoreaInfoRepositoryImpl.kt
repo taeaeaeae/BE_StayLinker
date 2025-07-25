@@ -28,11 +28,11 @@ class KoreaInfoRepositoryImpl(
     private val koreaInfo = QKoreaInfo.koreaInfo
     override fun findPage(
         pageSize: Long,
-        cursor: Any?,
+        cursor: Long?,
         division: String?,
         keyword: String?
     ): List<KoreaInfo> {
-        
+
         val builder = BooleanBuilder()
         builder.and(koreaInfo.deletedAt.isNull())
         division?.let { builder.and(koreaInfo.division.eq(it)) }

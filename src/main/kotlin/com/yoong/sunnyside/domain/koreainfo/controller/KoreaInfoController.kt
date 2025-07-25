@@ -29,7 +29,7 @@ class KoreaInfoController(
     private val koreaInfoService: KoreaInfoService
 ) {
 
-    @GetMapping("/{category}/{informationId}")
+    @GetMapping("/{informationId}")
     fun getKoreaInfo(
         @PathVariable("informationId") informationId: Long,
     ): ResponseEntity<KoreaInfoResponse> {
@@ -39,7 +39,7 @@ class KoreaInfoController(
     @GetMapping
     fun getAllKoreaInfo(
         pageSize: Long,
-        cursor: Any?,
+        cursor: Long?,
         division: String?,
         keyword: String?
     ): ResponseEntity<List<KoreaInfoResponse>> {

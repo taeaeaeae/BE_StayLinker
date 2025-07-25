@@ -4,6 +4,6 @@ import com.yoong.sunnyside.domain.koreainfo.entity.KoreaInfo
 
 interface KoreaInfoQuerydslRepository {
     fun findPage(
-        pageSize: Long, cursor: Any?, division: String?, keyword: String?
+        pageSize: Long, cursor: Long?, division: String?, keyword: String?
     ): List<KoreaInfo>
 }

@@ -50,7 +50,7 @@ class KoreaInfoService(
 
     fun getKoreaInfoPage(
         pageSize: Long,
-        cursor: Any?,
+        cursor: Long?,
         division: String?,
         keyword: String?
     ): List<KoreaInfoResponse> {
