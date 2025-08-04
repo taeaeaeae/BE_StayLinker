@@ -23,11 +23,11 @@ class WebClientConfig(
     @Bean
     fun connect(): WebClient {
         val httpClient = HttpClient.create()
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000) 
-            .responseTimeout(Duration.ofSeconds(10))
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000) 
+            .responseTimeout(Duration.ofSeconds(30))
             .doOnConnected { conn ->
-                conn.addHandlerLast(ReadTimeoutHandler(10, TimeUnit.SECONDS))
-                    .addHandlerLast(WriteTimeoutHandler(10, TimeUnit.SECONDS))
+                conn.addHandlerLast(ReadTimeoutHandler(30, TimeUnit.SECONDS))
+                    .addHandlerLast(WriteTimeoutHandler(30, TimeUnit.SECONDS))
             }
 
         return WebClient.builder()
