@@ -23,15 +23,16 @@ class WebClientConfig(
     @Bean
     fun connect(): WebClient {
         val httpClient = HttpClient.create()
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-            .responseTimeout(Duration.ofSeconds(5))
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000) 
+            .responseTimeout(Duration.ofSeconds(10))
             .doOnConnected { conn ->
-                conn.addHandlerLast(ReadTimeoutHandler(5, TimeUnit.SECONDS))
-                    .addHandlerLast(WriteTimeoutHandler(5, TimeUnit.SECONDS))
+                conn.addHandlerLast(ReadTimeoutHandler(10, TimeUnit.SECONDS))
+                    .addHandlerLast(WriteTimeoutHandler(10, TimeUnit.SECONDS))
             }
 
         return WebClient.builder()
             .clientConnector(ReactorClientHttpConnector(httpClient))
+            .defaultHeader(HttpHeaders.USER_AGENT, "Mozilla/5.0 (compatible; VworldClient/1.0)")
             .defaultHeaders {
                 it.add(HttpHeaders.CONTENT_TYPE, "application/json")
                 it.add(HttpHeaders.ACCEPT_CHARSET, "utf-8")
