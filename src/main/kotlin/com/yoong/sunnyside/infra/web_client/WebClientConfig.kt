@@ -30,7 +30,7 @@ class WebClientConfig(
                     .trustManager(InsecureTrustManagerFactory.INSTANCE)
                     .build())
             }
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)  // 5초 → 10초
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)  
             .responseTimeout(Duration.ofSeconds(10))
             .doOnConnected { conn ->
                 conn.addHandlerLast(ReadTimeoutHandler(10, TimeUnit.SECONDS))
