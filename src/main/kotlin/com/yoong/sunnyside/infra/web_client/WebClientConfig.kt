@@ -39,7 +39,6 @@ class WebClientConfig(
 
         return WebClient.builder()
             .clientConnector(ReactorClientHttpConnector(httpClient))
-            .defaultHeader(HttpHeaders.USER_AGENT, "Mozilla/5.0 (compatible; VworldClient/1.0)")
             .defaultHeaders {
                 it.add(HttpHeaders.CONTENT_TYPE, "application/json")
                 it.add(HttpHeaders.ACCEPT_CHARSET, "utf-8")
