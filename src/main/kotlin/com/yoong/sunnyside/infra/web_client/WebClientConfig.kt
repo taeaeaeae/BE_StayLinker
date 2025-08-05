@@ -25,11 +25,6 @@ class WebClientConfig(
     @Bean
     fun connect(): WebClient {
         val httpClient = HttpClient.create()
-            .secure { it.sslContext(
-                SslContextBuilder.forClient()
-                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                    .build())
-            }
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)  
             .responseTimeout(Duration.ofSeconds(10))
             .doOnConnected { conn ->
