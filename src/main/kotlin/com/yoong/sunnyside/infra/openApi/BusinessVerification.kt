@@ -54,7 +54,7 @@ class BusinessVerification(
         if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 이름의 중개사무소가 존재하지 않습니다.")
 
         return BusinessSearchListResponse(
-            totalPage = businessRes.totalCount,
+            totalPage = businessRes.EDOffices.totalCount,
             result = businessRes.EDOffices.field.map { it.toResponse() }
         )
     }
@@ -78,7 +78,7 @@ class BusinessVerification(
         if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 대표명이 존재하지 않습니다.")
 
         return BusinessSearchListResponse(
-            totalPage = businessRes.totalCount,
+            totalPage = businessRes.EDOffices.totalCount,
             result = businessRes.EDOffices.field.map { it.toResponse() }
         )
     }
@@ -102,7 +102,7 @@ class BusinessVerification(
         if (businessRes.EDOffices == null) throw ValidException("영업중이 아니거나 검색된 중개등록번호가 존재하지 않습니다.")
 
         return BusinessSearchListResponse(
-            totalPage = businessRes.totalCount,
+            totalPage = businessRes.EDOffices.totalCount,
             result = businessRes.EDOffices.field.map { it.toResponse() }
         )
     }
